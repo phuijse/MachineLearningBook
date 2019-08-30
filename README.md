@@ -1,6 +1,6 @@
 ## Universidad Austral de Chile
 
-# INFO267: Inteligencia Artificial
+# INFO267: Inteligencia Artificial 2019
 
 ### Responsables: Pablo Huijse H, phuijse@inf.uach.cl, Eliana Scheihing, Jorge Maturana
 
@@ -9,7 +9,7 @@ Un electivo de especialización para el pregrado de Ingeniería Informática y c
 ***
 ## Abstract
 
-
+La asignatura de "Inteligencia Artificial” tiene como principal propósito que los estudiantes analicen temáticas referidas a inteligencia artificial, aplicando estrategias de aprendizaje supervisado, aprendizaje no supervisado y algoritmos de búsqueda con heurísticas para resolver problemas aplicados.
 
 
 ***
@@ -17,7 +17,6 @@ Un electivo de especialización para el pregrado de Ingeniería Informática y c
 
 - **Unidad 1:** Aprendizaje supervisado
     - [Fundamentos](unidad1/fundamentos.ipynb)
-    - 
 
 
 ***
@@ -49,4 +48,6 @@ Un electivo de especialización para el pregrado de Ingeniería Informática y c
 
 
 - [Programa del curso](programa_INFO267.pdf)
+- [Repositorio INFO267 2018](https://github.com/matthieuvernier/INFO267)
+- [Repositorio INFO147](https://github.com/magister-informatica-uach/INFO147)
 
