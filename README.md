@@ -16,7 +16,8 @@ La asignatura de "Inteligencia Artificial” tiene como principal propósito que
 ## Contenidos
 
 - **Unidad 1:** Aprendizaje supervisado
-    - [Fundamentos](unidad1/fundamentos.ipynb)
+    - [Fundamentos](unidad1/1_fundamentos.ipynb)
+    - [Árboles y Algoritmos de ensamble](unidad1/2_ensambles.ipynb)
 
 
 ***
@@ -24,9 +25,10 @@ La asignatura de "Inteligencia Artificial” tiene como principal propósito que
 
 
 ### Principal
-1. I. Goodfellow and Y. Bengio and A. Courville, “Deep Learning”, MIT PRESS, 2016, http://www.deeplearningbook.org/  
-1. V. Francois-Lavet, et al., “An Introduction to Deep Reinforcement Learning”, Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018, https://arxiv.org/abs/1811.12560
 
+1. I. Goodfellow and Y. Bengio and A. Courville, "Deep Learning", MIT PRESS, 2016, http://www.deeplearningbook.org/  
+1. V. Francois-Lavet, et al., "An Introduction to Deep Reinforcement Learning", Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018, https://arxiv.org/abs/1811.12560
+1. Hastie, Tibshirani, Friedman, "Elements of Statistical Learning", Springer, 2009, http://www.web.stanford.edu/~hastie/ElemStatLearn/
 
 
 ### Complementaria
