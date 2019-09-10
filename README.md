@@ -18,6 +18,7 @@ La asignatura de "Inteligencia Artificial” tiene como principal propósito que
 - **Unidad 1:** Aprendizaje supervisado
     - [Fundamentos](unidad1/1_fundamentos.ipynb)
     - [Árboles y Algoritmos de ensamble](unidad1/2_ensambles.ipynb)
+    - [Redes Neuronales Artificiales](unidad1/3_redes_neuronales.ipynb)
 
 
 ***
