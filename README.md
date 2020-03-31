@@ -21,6 +21,12 @@ La asignatura de "Inteligencia Artificial” tiene como principal propósito que
     - [Redes Neuronales Artificiales](unidad1/3_redes_neuronales.ipynb)
     - [Redes Convolucionales](unidad1/4_red_convolucional.ipynb)
 
+- **Unidad 4:** Aprendizaje reforzado
+    - [Fundamentos](unidad4/1_fundamentos.ipynb)
+    - [Deep Q Networks](unidad4/2_deep_q_networks.ipynb)
+    - [Policy Gradients](unidad4/3_policy_gradients.ipynb)
+    
+
 
 ***
 ## Bibliografía 
