@@ -1,12 +1,12 @@
 import numpy as np
-import os
-os.environ.setdefault('PATH', '')
+#import os
+#os.environ.setdefault('PATH', '')
 from collections import deque
 import gym
 from gym import spaces
 import cv2
 cv2.ocl.setUseOpenCL(False)
-from .wrappers import TimeLimit
+#from .wrappers import TimeLimit
 
 
 class NoopResetEnv(gym.Wrapper):
@@ -262,7 +262,7 @@ class LazyFrames(object):
 
     def frame(self, i):
         return self._force()[..., i]
-
+"""
 def make_atari(env_id, max_episode_steps=None):
     env = gym.make(env_id)
     assert 'NoFrameskip' in env.spec.id
@@ -273,8 +273,6 @@ def make_atari(env_id, max_episode_steps=None):
     return env
 
 def wrap_deepmind(env, episode_life=True, clip_rewards=True, frame_stack=False, scale=False):
-    """Configure environment for DeepMind-style Atari.
-    """
     if episode_life:
         env = EpisodicLifeEnv(env)
     if 'FIRE' in env.unwrapped.get_action_meanings():
@@ -287,4 +285,4 @@ def wrap_deepmind(env, episode_life=True, clip_rewards=True, frame_stack=False, 
     if frame_stack:
         env = FrameStack(env, 4)
     return env
-
+"""
