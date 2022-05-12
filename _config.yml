@@ -1,0 +1,34 @@
+# Book settings
+title: Aprendizaje de Máquinas
+author: Pablo Huijse Heise
+copyright: "2022"
+#logo: logo.png
+only_build_toc_files: true
+
+execute:
+  execute_notebooks: off
+
+repository:
+  url: https://github.com/phuijse/MachineLearningBook
+
+html:
+  home_page_in_navbar: false
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: false
+
+sphinx:
+  config:
+    language: es
+    myst_enable_extensions: 
+    - amsmath
+    - colon_fence
+    - deflist
+    - dollarmath
+    - html_image
+    - linkify
+    - replacements
+    - smartquotes
+    - substitution
+    - html_admonition
+

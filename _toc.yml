@@ -1,0 +1,16 @@
+format: jb-book
+root: README
+parts:
+- caption: "Aprendizaje Supervisado"
+  numbered: true
+  chapters:
+  - file: contents/supervised_learning/intro
+  - file: contents/supervised_learning/ensembles
+- caption: "Redes Neuronales Artificiales"
+  numbered: true
+  chapters:
+  - file: contents/neural_networks/intro
+- caption: "Aprendizaje Reforzado"
+  numbered: true
+  chapters:
+    - file: contents/reinforcement_learning/intro
