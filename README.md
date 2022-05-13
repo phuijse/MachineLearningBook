@@ -7,18 +7,19 @@ El código fuente del libro está en https://github.com/phuijse/MachineLearningB
 **Contenidos**
 
 - Fundamentos de aprendizaje supervisado
-- Árboles y algoritmos de ensamble
+- Regresión Lineal y logística
+- Árboles de decisión y ensambles
+- Selección de características
 - Redes Neuronales Artificiales 
-- Redes Convolucionales
 - Aprendizaje Reforzado
 
 **Referencias**
 
 1. I. Goodfellow and Y. Bengio and A. Courville, "Deep Learning", MIT PRESS, 2016, http://www.deeplearningbook.org/  
-1. V. Francois-Lavet, et al., "An Introduction to Deep Reinforcement Learning", Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018, https://arxiv.org/abs/1811.12560
-1. Hastie, Tibshirani, Friedman, "Elements of Statistical Learning", Springer, 2009, http://www.web.stanford.edu/~hastie/ElemStatLearn/
+1. A. Zhang, Z.C. Lipton, M. Li, A.J. Smola, "Dive into Deep Learning", (En desarrollo), https://www.d2l.ai/
 1. A. Ng, “Machine learning Yearning”, (En desarrollo), https://www.deeplearning.ai/machine-learning-yearning/  
-1. https://github.com/matthieuvernier/INFO267
+1. Hastie, Tibshirani, Friedman, "Elements of Statistical Learning", Springer, 2009, http://www.web.stanford.edu/~hastie/ElemStatLearn/
+1. V. Francois-Lavet, et al., "An Introduction to Deep Reinforcement Learning", Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018, https://arxiv.org/abs/1811.12560
 
 **Como compilar este libro**
 
