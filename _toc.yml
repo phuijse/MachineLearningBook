@@ -11,8 +11,8 @@ parts:
 - caption: "Redes Neuronales Artificiales"
   numbered: true
   chapters:
-    #  - file: contents/neural_networks/intro
+      - file: contents/neural_networks/intro
 - caption: "Aprendizaje Reforzado"
   numbered: true
   chapters:
-    #    - file: contents/reinforcement_learning/intro
+        - file: contents/reinforcement_learning/intro
