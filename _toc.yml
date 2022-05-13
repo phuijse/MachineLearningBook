@@ -8,6 +8,7 @@ parts:
   - file: contents/supervised_learning/linear
   - file: contents/supervised_learning/validation
   - file: contents/supervised_learning/logistic
+  - file: contents/supervised_learning/metrics
     #  - file: contents/supervised_learning/ensembles
 - caption: "Redes Neuronales Artificiales"
   numbered: true
