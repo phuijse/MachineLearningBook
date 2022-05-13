@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Regresión lineal &#8212; Aprendizaje de Máquinas</title>
+    <title>2. Regresión Lineal &#8212; Aprendizaje de Máquinas</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="3. Capacidad, Sobreajuste y Regularización" href="validation.html" />
+    <link rel="next" title="3. Sobreajuste, Validación y Regularización" href="validation.html" />
     <link rel="prev" title="1. Fundamentos de Aprendizaje Supervisado" href="intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="es">
@@ -79,6 +79,11 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/logo.png" class="logo" alt="logo">
       
       
       <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
@@ -102,17 +107,22 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2. Regresión lineal
+   2. Regresión Lineal
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="validation.html">
-   3. Capacidad, Sobreajuste y Regularización
+   3. Sobreajuste, Validación y Regularización
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="logistic.html">
-   4. Regresión logística y evaluación de clasificadores
+   4. Regresión Logística
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metrics.html">
+   5. Evaluación de clasificadores
   </a>
  </li>
 </ul>
@@ -239,7 +249,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Regresión lineal</h1>
+                <h1>Regresión Lineal</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -269,7 +279,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="regresion-lineal">
-<h1><span class="section-number">2. </span>Regresión lineal<a class="headerlink" href="#regresion-lineal" title="Enlazar permanentemente con este título">¶</a></h1>
+<h1><span class="section-number">2. </span>Regresión Lineal<a class="headerlink" href="#regresion-lineal" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>La regresión lineal es un modelo que mapeo una o más variables continuas hacia una variable también continua definido como</p>
 <div class="math notranslate nohighlight">
 \[
@@ -555,7 +565,7 @@ f_\theta(x_i) = \theta_0 + \sum_{j=1}^M \theta_j x_{i}^j,
     <a class='right-next' id="next-link" href="validation.html" title="siguiente página">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Capacidad, Sobreajuste y Regularización</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Sobreajuste, Validación y Regularización</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
