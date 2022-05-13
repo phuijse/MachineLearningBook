@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Regresión logística y evaluación de clasificadores &#8212; Aprendizaje de Máquinas</title>
+    <title>4. Regresión logística y evaluación de clasificadores &#8212; Aprendizaje de Máquinas</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -56,7 +56,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="prev" title="2. Regresión lineal y técnicas de validación" href="linear.html" />
+    <link rel="prev" title="3. Capacidad, Sobreajuste y Regularización" href="validation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="es">
     
@@ -101,12 +101,17 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear.html">
-   2. Regresión lineal y técnicas de validación
+   2. Regresión lineal
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="validation.html">
+   3. Capacidad, Sobreajuste y Regularización
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. Regresión logística y evaluación de clasificadores
+   4. Regresión logística y evaluación de clasificadores
   </a>
  </li>
 </ul>
@@ -215,17 +220,17 @@ const thebe_selector_output = ".output, .cell_output"
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metodo-de-newton-y-gradiente-descedente">
-   3.1. Método de Newton y Gradiente descedente
+   4.1. Método de Newton y Gradiente descedente
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#regresor-logistico-en-scikit-learn">
-   3.2. Regresor logístico en Scikit-Learn
+   4.2. Regresor logístico en Scikit-Learn
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metricas-evaluando-un-clasificador-binario">
-   3.3. Métricas: Evaluando un clasificador binario
+   4.3. Métricas: Evaluando un clasificador binario
   </a>
  </li>
 </ul>
@@ -250,17 +255,17 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metodo-de-newton-y-gradiente-descedente">
-   3.1. Método de Newton y Gradiente descedente
+   4.1. Método de Newton y Gradiente descedente
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#regresor-logistico-en-scikit-learn">
-   3.2. Regresor logístico en Scikit-Learn
+   4.2. Regresor logístico en Scikit-Learn
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#metricas-evaluando-un-clasificador-binario">
-   3.3. Métricas: Evaluando un clasificador binario
+   4.3. Métricas: Evaluando un clasificador binario
   </a>
  </li>
 </ul>
@@ -273,7 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="regresion-logistica-y-evaluacion-de-clasificadores">
-<h1><span class="section-number">3. </span>Regresión logística y evaluación de clasificadores<a class="headerlink" href="#regresion-logistica-y-evaluacion-de-clasificadores" title="Enlazar permanentemente con este título">¶</a></h1>
+<h1><span class="section-number">4. </span>Regresión logística y evaluación de clasificadores<a class="headerlink" href="#regresion-logistica-y-evaluacion-de-clasificadores" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>El regresor logístico es un modelo que mapea una o más variables continuas a una variable objetivo binaria</p>
 <p>Matemáticamente el modelo se define como</p>
 <div class="math notranslate nohighlight">
@@ -415,7 +420,7 @@ L(\theta) = \sum_{i=1}^N  -y_i \log( f_\theta(\vec x_i) ) - (1-y_i) \log(1 - f_\
 </div>
 <p>Para entrenar este modelo se utilizan métodos de optimización iterativos, como los que se presentan a continuación</p>
 <div class="section" id="metodo-de-newton-y-gradiente-descedente">
-<h2><span class="section-number">3.1. </span>Método de Newton y Gradiente descedente<a class="headerlink" href="#metodo-de-newton-y-gradiente-descedente" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Método de Newton y Gradiente descedente<a class="headerlink" href="#metodo-de-newton-y-gradiente-descedente" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Sea el valor actual del vector de parámetros <span class="math notranslate nohighlight">\(\theta_t\)</span></p>
 <p>Queremos encontrar el mejor “próximo valor” según nuestra función objetivo</p>
 <div class="math notranslate nohighlight">
@@ -510,7 +515,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 <div class="section" id="regresor-logistico-en-scikit-learn">
-<h2><span class="section-number">3.2. </span>Regresor logístico en Scikit-Learn<a class="headerlink" href="#regresor-logistico-en-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Regresor logístico en Scikit-Learn<a class="headerlink" href="#regresor-logistico-en-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>En scikit-learn el regresor logístico está implementado en <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"><code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegression</span></code></a></p>
 <p>Los principales argumentos son</p>
 <ul class="simple">
@@ -578,7 +583,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 <div class="section" id="metricas-evaluando-un-clasificador-binario">
-<h2><span class="section-number">3.3. </span>Métricas: Evaluando un clasificador binario<a class="headerlink" href="#metricas-evaluando-un-clasificador-binario" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">4.3. </span>Métricas: Evaluando un clasificador binario<a class="headerlink" href="#metricas-evaluando-un-clasificador-binario" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>La salida del regresor logístico es un valor en el rango <span class="math notranslate nohighlight">\([0, 1]\)</span>. Para tomar un decisión binaria se debe seleccionar un umbral <span class="math notranslate nohighlight">\(\mathcal{T}\)</span> tal que</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -791,11 +796,11 @@ weighted avg       0.95      0.95      0.95       100
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="linear.html" title="anterior página">
+    <a class='left-prev' id="prev-link" href="validation.html" title="anterior página">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">anterior</p>
-            <p class="prev-next-title"><span class="section-number">2. </span>Regresión lineal y técnicas de validación</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Capacidad, Sobreajuste y Regularización</p>
         </div>
     </a>
 </div>
