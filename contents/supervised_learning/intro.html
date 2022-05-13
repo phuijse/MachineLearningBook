@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. Fundamentos de Aprendizaje Supervisado &#8212; Aprendizaje de Máquinas</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="2. Regresión lineal y técnicas de validación" href="linear.html" />
+    <link rel="prev" title="Machine Learning Book" href="../../README.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="es">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Aprendizaje Supervisado
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1. Fundamentos de Aprendizaje Supervisado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear.html">
+   2. Regresión lineal y técnicas de validación
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="logistic.html">
+   3. Regresión logística y evaluación de clasificadores
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/intro.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/phuijse/MachineLearningBook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
+                    class="fab fa-github"></i>repositorio</button></a>
+        <a class="issues-button"
+            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/intro.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/intro.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenido
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conceptos-clave-en-aprendizaje-supervisado">
+   1.1. Conceptos clave en aprendizaje supervisado
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Fundamentos de Aprendizaje Supervisado</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contenido </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conceptos-clave-en-aprendizaje-supervisado">
+   1.1. Conceptos clave en aprendizaje supervisado
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="fundamentos-de-aprendizaje-supervisado">
+<h1><span class="section-number">1. </span>Fundamentos de Aprendizaje Supervisado<a class="headerlink" href="#fundamentos-de-aprendizaje-supervisado" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Dentro del aprendizaje de máquinas (<em>machine learning</em>) el aprendizaje <strong>supervisado</strong> es un esquema en que se busca obtener una función</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\theta}: \mathcal{X} \rightarrow \mathcal{Y},
+\]</div>
+<p>donde</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{X}\)</span> es el dominio de entrada al cual pertenecen nuestros datos o atributos</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> el dominio de salida al cual pertenece la variable objetivo que queremos predecir</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> es un vector de parámetros de la función o modelo</p></li>
+</ul>
+<p>En esta unidad nos concentraremos en dos tipos de problemas o tareas</p>
+<p><strong>Regresión</strong></p>
+<p>En esta tarea buscamos un modelo que asocie una variable continua a otras <span class="math notranslate nohighlight">\(m\)</span> variables</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\theta}: \mathbb{R}^m \rightarrow \mathbb{R}
+\]</div>
+<p>Ejemplos:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/traffic+flow+forecasting">El flujo de tráfico de una calle en función de un feed de video</a></p></li>
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/air+quality">La concentración de un químico aereo en función del valor del mismo en el pasado</a></p></li>
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/solar+flare">La ocurrencia de una llamarada solar en función del brillo y la cantidad de manchas en la corona del sol</a></p></li>
+</ul>
+<p><strong>Clasificación</strong></p>
+<p>En esta tarea buscamos un modelo que retorne una entre <span class="math notranslate nohighlight">\(K\)</span> categorías para una entidad representada por <span class="math notranslate nohighlight">\(m\)</span> variables</p>
+<div class="math notranslate nohighlight">
+\[
+f_{\theta}: \mathbb{R}^m \rightarrow \{1, 2, \ldots, K\}
+\]</div>
+<p>Ejemplos:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/spambase">Identificar si un correo es spam o no en base a su descriptores de su contenido y metadata</a></p></li>
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/breast+cancer">Diagnóstico benigno o maligno en función de descriptores de una biopsia</a></p></li>
+<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/australian+sign+language+signs">Identificar letra correspondiente a imagen que representa un gesto de lengua de señas</a></p></li>
+</ul>
+<p>Otros problemas que se pueden resolver con machine learning son</p>
+<ul class="simple">
+<li><p>Machine Translation: Convertir una secuencia de texto de un idioma a otro</p></li>
+<li><p>Imputación: Rellenar valores faltantes en una base de datos</p></li>
+<li><p>Detección de anomalías: Encontrar ejemplos atípicos, es decir que difieren en características al resto de la base de datos</p></li>
+<li><p>Denoising: Retornar una versión de los datos de entrada con menos ruido</p></li>
+<li><p>Síntesis: Generación de ejemplos de texto, audio, imágenes que asemejan datos reales</p></li>
+<li><p>Clustering: Agrupar los ejemplos según criterio de similitud o densidad</p></li>
+</ul>
+<div class="section" id="conceptos-clave-en-aprendizaje-supervisado">
+<h2><span class="section-number">1.1. </span>Conceptos clave en aprendizaje supervisado<a class="headerlink" href="#conceptos-clave-en-aprendizaje-supervisado" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><strong>Entrenamiento</strong></p>
+<p>Los problemas de aprendizaje <strong>supervisado</strong> se resuelven “enseñándole” al modelo en base a ejemplos donde la respuesta correcta se conoce de antemano. Este proceso se denomina <strong>entrenamiento</strong> o ajuste del modelo.</p>
+<p>Para entrenar necesitamos entonces un conjunto de <span class="math notranslate nohighlight">\(N\)</span> ejemplos:</p>
+<div class="math notranslate nohighlight">
+\[
+\{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\},
+\]</div>
+<p>donde cada ejemplo es una tupla que contiene</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x_i \in \mathcal{X}\)</span>: la entrada para el modelo (datos o atributos)</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i \in \mathcal{Y}\)</span>: la salida que el modelo debiera retornar (objetivo)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En problemas de clasificación, la variable objetivo suele llamarse <strong>etiqueta</strong>.</p>
+</div>
+<p>En modelos parámetricos <span class="math notranslate nohighlight">\(f_\theta\)</span>, entrenar se reduce a encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> con el cual se obtiene “el mejor” mapeo entre entrada y salida</p>
+<p><strong>Función de costo</strong></p>
+<p>La función de costo, también llamada pérdida, mide el error de nuestro modelo sobre un conjunto de datos etiquetados.</p>
+<p>Por ejemplo, para problemas de regresión, se utiliza la suma de errores cuadrados</p>
+<div class="math notranslate nohighlight">
+\[
+L(\theta) = \sum_{i=1}^N (f_\theta(x_i) - y_i)^2
+\]</div>
+<p>Mientras más cerca a cero sea <span class="math notranslate nohighlight">\(L(\theta)\)</span>, mejor es nuestro modelo según este criterio</p>
+<p>Con modelos parámetricos, encontrar el mejor mapeo es equivalente a encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> que minimiza <span class="math notranslate nohighlight">\(L(\theta)\)</span>, es decir el <span class="math notranslate nohighlight">\(\theta\)</span> óptimo</p>
+<p><strong>Optimización</strong></p>
+<p>Para entrenar el modelo tenemos que resolver el siguiente problema</p>
+<div class="math notranslate nohighlight">
+\[
+\min_\theta L(\theta)
+\]</div>
+<p>Las opciones que tenemos son</p>
+<ul class="simple">
+<li><p>Evaluar <span class="math notranslate nohighlight">\(L()\)</span> con una estrategia de fuerza bruta: en general infactible</p></li>
+<li><p>Aplicar técnicas analíticas, por ejemplo resolver <span class="math notranslate nohighlight">\(\nabla_\theta L(\theta) = \vec 0\)</span></p></li>
+<li><p>Usar técnicas numéricas iterativas, por ejemplo el método de Newton o gradiente descendente</p></li>
+</ul>
+<p><strong>Inferencia</strong></p>
+<p>Luego de entrenar y validar el modelo podemos utilizarlo para hacer inferir la variable objetivo en datos nuevos,  es decir fuera de los que se utilizaron para entrenar.</p>
+<div class="math notranslate nohighlight">
+\[
+f_\theta(x^*) = y^*
+\]</div>
+<blockquote>
+<div><p>Este es el objetivo principal de machine learning: Aprender modelos complejos a partir de ejemplos para luego aplicarlos automaticamente sobre nuevos flujos de datos</p>
+</div></blockquote>
+<p>El siguiente diagrama ejemplifica este proceso y además compara machine learning con la programación tradicional</p>
+<a class="reference internal image-reference" href="../../_images/traditional_vs_ml.png"><img alt="../../_images/traditional_vs_ml.png" src="../../_images/traditional_vs_ml.png" style="width: 700px;" /></a>
+<p><strong>Generalización</strong></p>
+<p>Es la capacidad de un modelo de hacer buenas inferencias o predicciones en datos que no ha visto. Para medir la capacidad de generalización se suele “esconder” una parte del conjunto de entrenamiento</p>
+<p><strong>Representatividad</strong></p>
+<p>Es crítico que los datos que utilizemos <strong>representen</strong> adecuadamente el problema que queremos resolver. Idealmente, la distribución de los datos de entrenamiento no debiera diferir demasiado de los datos de prueba</p>
+<p>En caso de que esto ocurriera sería necesario reentrenar el modelo con nuevos datos que reflejen este cambio</p>
+<p><strong>Sesgos</strong></p>
+<p>Un sesgo es una preferencia generalmente indeseada en un modelo. Muchas veces los sesgos del modelo son sesgos de los datos que utilizamos para entrenar. El más típico es el sesgo causado por clases desbalanceadas o exclusión de clases</p>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p>Sin embargo esto puede ser más grave, por ejemplo sesgos raciales y de género, como muestra <a class="reference external" href="https://docs.google.com/presentation/d/1txaRV35N6OOxv4DF4ZIlAFUKty7pBfMu1erLe2k4-Xg/edit#slide=id.g8fcb23695b_1_0">la siguiente breve presentación</a></p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./contents/supervised_learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../../README.html" title="anterior página">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">anterior</p>
+            <p class="prev-next-title">Machine Learning Book</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="linear.html" title="siguiente página">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Regresión lineal y técnicas de validación</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      Por Pablo Huijse Heise<br/>
+    
+        &copy; Derechos de autor 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
