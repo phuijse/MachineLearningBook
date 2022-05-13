@@ -2,7 +2,7 @@
 title: Aprendizaje de Máquinas
 author: Pablo Huijse Heise
 copyright: "2022"
-#logo: logo.png
+logo: logo.png
 only_build_toc_files: true
 
 execute:
