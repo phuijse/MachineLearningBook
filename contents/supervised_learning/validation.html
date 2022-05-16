@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
@@ -235,8 +236,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#busqueda-de-hiperparametros-con-scikit-learn">
+   3.2. Búsqueda de hiperparámetros con scikit-learn
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#regularizacion">
-   3.2. Regularización
+   3.3. Regularización
   </a>
  </li>
 </ul>
@@ -265,8 +271,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#busqueda-de-hiperparametros-con-scikit-learn">
+   3.2. Búsqueda de hiperparámetros con scikit-learn
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#regularizacion">
-   3.2. Regularización
+   3.3. Regularización
   </a>
  </li>
 </ul>
@@ -411,8 +422,46 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>Alto error de entrenamiento y de validación: Considera un modelo de mayor complejidad y asegurate que tu código no tenga bugs</p></li>
 </ul>
 </div>
+<div class="section" id="busqueda-de-hiperparametros-con-scikit-learn">
+<h2><span class="section-number">3.2. </span>Búsqueda de hiperparámetros con scikit-learn<a class="headerlink" href="#busqueda-de-hiperparametros-con-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Podemos automatizar aun más la búsqueda de hiperparámetros utilizando <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a></p>
+<p>Los argumentos principales de esta clase son</p>
+<ul class="simple">
+<li><p>Un estimador (regresor o clasificador) de scikit-learn</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">param_grid</span></code>: Un diccionario con los valores de los hiperparámetros que se han de explorar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cv</span></code>: La cantidad de particiones para la validación cruzada</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scoring</span></code>: Una métrica que se utilizará para evaluar los modelos</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>: El número de núcleos de CPU</p></li>
+</ul>
+<p>El método principal de esta clase es <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y)</span></code> el cual realiza la validación cruzada con todas las combinaciones de hiperparámetros especificadas en <code class="docutils literal notranslate"><span class="pre">param_grid</span></code></p>
+<p>Los principales atributos de la clase son</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">best_estimator_</span></code>: Retorna el estimador de mejor desempeño en validación</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">best_params_</span></code>: Retorna un diccionario que los hiperparámetros del mejor modelo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">best_score_</span></code>: Retorna el error del mejor modelo</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> tiene también los métodos <code class="docutils literal notranslate"><span class="pre">predict</span></code> y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>, siempre y cuando estos estén implementados en el estimador utilizado. Se retorna la predicción del mejor modelo según la validación cruzada</p>
+</div>
+<p>Exhaustive search over specified parameter values for an estimator.</p>
+<p>Important members are fit, predict.</p>
+<p>GridSearchCV implements a “fit” and a “score” method. It also implements “score_samples”, “predict”, “predict_proba”, “decision_function”, “transform” and “inverse_transform” if they are implemented in the estimator used.</p>
+<p>The parameters of the estimator used to apply these methods are optimized by cross-validated grid-search over a parameter grid.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="regularizacion">
-<h2><span class="section-number">3.2. </span>Regularización<a class="headerlink" href="#regularizacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<h2><span class="section-number">3.3. </span>Regularización<a class="headerlink" href="#regularizacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p><a class="reference external" href="https://docs.google.com/presentation/d/1UUpK4zSdzRcS79V7_wU9nXe-sR7qYLEWhbmid-Rfp1k/edit?usp=sharing">Una presentación sobre regresión que incluye métodos que no veremos en este curso</a></p>
+</div>
 </div>
 </div>
 
