@@ -561,8 +561,8 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_extrapolate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-<span class="n">y_extrapolate</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y_range</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_range</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -571,7 +571,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="p">,</span> <span class="n">y_extrapolate</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -587,11 +587,11 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 <span class="n">simple_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">y_pred_simple</span> <span class="o">=</span> <span class="n">simple_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y_pred_simple</span> <span class="o">=</span> <span class="n">simple_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_range</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 <span class="n">complex_model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 <span class="n">complex_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">y_pred_complex</span> <span class="o">=</span> <span class="n">complex_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y_pred_complex</span> <span class="o">=</span> <span class="n">complex_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_range</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -600,9 +600,9 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="p">,</span> <span class="n">y_pred_simple</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Simple (grado=3)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_extrapolate</span><span class="p">,</span> <span class="n">y_pred_complex</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Complejo (grado=20)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_pred_complex</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Complejo (grado=20)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_pred_simple</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Simple (grado=3)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -611,21 +611,72 @@ const thebe_selector_output = ".output, .cell_output"
 <img alt="../../_images/validation_32_0.png" src="../../_images/validation_32_0.png" />
 </div>
 </div>
-<p>Respecto a este escenario William de Ockham enunció lo siguiente</p>
+<p>Respecto a un escenario similar al anterior, se enunció lo siguiente:</p>
 <blockquote class="epigraph">
-<div><p>…en igualdad de condiciones, la explicación más simple suele ser la más probable…
+<div><p>“en igualdad de condiciones, la explicación más simple suele ser la más probable”
 — <a class="reference external" href="https://es.wikipedia.org/wiki/Guillermo_de_Ockham">William de Ockham</a></p>
 </div></blockquote>
-<p>que se conoce como la navaja de Ockham o el principio de parsimonia</p>
-<dl class="simple myst">
-<dt>Otra forma de atacar el problema del sobreajuste es utilizando <strong>regularización</strong></dt><dd><p>Regularización
-Concepto estadístico que consiste en guiar la optimización de un problema mediante una penalización adicional</p>
-</dd>
-</dl>
-<p>Esto consiste en escoger el mejor modelo no sólo en base error sino también a su complejidad.</p>
+<p>que se conoce como la navaja de Ockham o el principio de parsimonia.</p>
+<p>Aplicando este principio al regresor polinomial llegaríamos a que ante modelos con error comparable deberíamos seleccionar el más simple (o menos complejo)</p>
+<blockquote>
+<div><p>Esto es la base de la <strong>regularización</strong>, un concepto estadístico que consiste en guiar la optimización de un problema mediante una penalización adicional</p>
+</div></blockquote>
+<p>En este caso buscamos penalizar la complejidad del modelo. En problemas de regresión y clasificación esto se suele implementar como un término extra en la función de costo.</p>
+<p><strong>Regresor lineal regularizado</strong></p>
+<p>Podemos regularizar el regresor lineal utilizando la siguiente función de costo:</p>
+<div class="math notranslate nohighlight">
+\[
+L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T \theta
+\]</div>
+<p>donde el término de la derecha es la norma euclidiana (L2) del vector de parámetros y <span class="math notranslate nohighlight">\(\alpha\)</span> es un hiperparámetro que controla el peso relativo entre ambos objetivos de optimización.</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Cuando regularizamos el regresor lineal buscamos el <span class="math notranslate nohighlight">\(\theta\)</span> de mínimo error y además de mínima norma. La mínima norma euclidiana se puede interpretar como la solución “más suave”</p>
+</div>
+<p>La solución con la función de costo regularizada es</p>
+<div class="math notranslate nohighlight">
+\[
+\hat \theta = (X^T X + I\alpha)^{-1} X^T Y,
+\]</div>
+<p>que se conoce como regresión contraida o <em>ridge regression</em></p>
+<p>Este modelo está implementado en scikit-learn como <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html">Ridge</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1e+5</span><span class="p">]:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> 
+                          <span class="n">StandardScaler</span><span class="p">(</span><span class="n">with_mean</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> 
+                          <span class="n">Ridge</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_range</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Alpha: </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/validation_35_0.png" src="../../_images/validation_35_0.png" />
+</div>
+</div>
+<p>Mientras mayor sea <span class="math notranslate nohighlight">\(\alpha\)</span>, más suave es el resultado del regresor</p>
+<ul class="simple">
+<li><p>Si <span class="math notranslate nohighlight">\(\alpha=0.0\)</span> sólo optimizamos el error y no la suavidad</p></li>
+<li><p>Si <span class="math notranslate nohighlight">\(\alpha \to \infty\)</span> entonces sólo optimizamos la suavidad y no el error</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Utilizando <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> calibramos <span class="math notranslate nohighlight">\(\alpha\)</span> en lugar del grado del polinomio. Si los datos están estandarizados <span class="math notranslate nohighlight">\(\alpha=1\)</span> es un buen valor inicial</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p><a class="reference external" href="https://docs.google.com/presentation/d/1UUpK4zSdzRcS79V7_wU9nXe-sR7qYLEWhbmid-Rfp1k/edit?usp=sharing">Una presentación sobre regresión que incluye métodos que no veremos en este curso</a></p>
+<p><a class="reference external" href="https://docs.google.com/presentation/d/1UUpK4zSdzRcS79V7_wU9nXe-sR7qYLEWhbmid-Rfp1k/edit?usp=sharing">Una presentación sobre regresión que incluye métodos que no veremos en este curso</a>. En particular se presenta otro método de regularización popular: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">LASSO</a></p>
 </div>
 </div>
 </div>
