@@ -285,7 +285,7 @@ h(x) = \langle w, x \rangle + b
 \[
 D = \{(x_1, y_1), (x_2, y_2), \ldots (x_N, y_N)\}
 \]</div>
-<p>donde <span class="math notranslate nohighlight">\(x_i \in \mathbb{R}^M\)</span> con etiquetas <span class="math notranslate nohighlight">\(x_i \in \{-1, +1\}\)</span></p>
+<p>donde <span class="math notranslate nohighlight">\(x_i \in \mathbb{R}^M\)</span> con etiquetas <span class="math notranslate nohighlight">\(y_i \in \{-1, +1\}\)</span></p>
 <p>Considere los siguientes hiperplanos separadores</p>
 <a class="reference internal image-reference" href="../../_images/svm1.png"><img alt="../../_images/svm1.png" src="../../_images/svm1.png" style="width: 500px;" /></a>
 <p>Para la SVM el hiperplano óptimo es el de más a la derecha: aquel que tiene <strong>máximo margen</strong></p>
@@ -486,7 +486,7 @@ b = y_k - \langle w, x_k \rangle
 <p>La ecuación anterior se conoce como el <strong>truco del kernel</strong></p>
 </div>
 <p>Veamos dos kernels ampliamente utilizados</p>
-<p>El primero es el kernel polinomial con hiperparámetros <span class="math notranslate nohighlight">\(c_0\)</span>, <span class="math notranslate nohighlight">\(d\)</span> y <span class="math notranslate nohighlight">\(\gamma&gt;\)</span></p>
+<p>El primero es el kernel polinomial con hiperparámetros <span class="math notranslate nohighlight">\(c_0\)</span>, <span class="math notranslate nohighlight">\(d\)</span> y <span class="math notranslate nohighlight">\(\gamma&gt;0\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \kappa(x_i, x_j) = (c_0 + \gamma \langle x_i, x_j \rangle)^d
