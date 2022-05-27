@@ -22,7 +22,7 @@ El código fuente del libro está en https://github.com/phuijse/MachineLearningB
 
 **Como compilar este libro**
 
-1. Clonar el repositorio: git clone https://github.com/phuijse/PythonBook.git
+1. Clonar el repositorio: git clone https://github.com/phuijse/MachineLearningBook.git
 1. Instalar dependencias: pip install -r requirements.txt
 1. Ejecutar los cuadernillos
 1. Compilar libro: jupyter-book build .
