@@ -38,23 +38,21 @@
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/translations.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
     <link rel="prev" title="5. Evaluación de clasificadores" href="metrics.html" />
@@ -176,7 +174,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -227,7 +225,7 @@ const thebe_selector_output = ".output, .cell_output"
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+        <div class="d-none d-md-block col-md-2 bd-toc show">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contenido
@@ -272,55 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Máquinas de soporte vectorial</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contenido </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#formulacion-primal-de-la-svm">
-   6.1. Formulación primal de la SVM
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#formulacion-dual-de-la-svm">
-   6.2. Formulación dual de la SVM
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#margen-relajado-de-la-svm">
-   6.3. Margen relajado de la SVM
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#transformacion-no-lineal-de-los-datos">
-   6.4. Transformación no lineal de los datos
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kernels-y-svm">
-   6.5. Kernels y SVM
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#svm-para-clasificacion-con-scikit-learn">
-   6.6. SVM para clasificación con scikit-learn
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
+        
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="maquinas-de-soporte-vectorial">
@@ -338,12 +288,12 @@ D = \{(x_1, y_1), (x_2, y_2), \ldots (x_N, y_N)\}
 <p>donde <span class="math notranslate nohighlight">\(x_i \in \mathbb{R}^M\)</span> con etiquetas <span class="math notranslate nohighlight">\(x_i \in \{-1, +1\}\)</span></p>
 <p>Considere los siguientes hiperplanos separadores</p>
 <a class="reference internal image-reference" href="../../_images/svm1.png"><img alt="../../_images/svm1.png" src="../../_images/svm1.png" style="width: 500px;" /></a>
-<p>Para la SVM el hiperplano óptimo es el de más a la derecha, aquel que tiene <strong>máximo margen</strong></p>
+<p>Para la SVM el hiperplano óptimo es el de más a la derecha: aquel que tiene <strong>máximo margen</strong></p>
 <dl class="simple myst">
 <dt>Margen (<span class="math notranslate nohighlight">\(\tau\)</span>)</dt><dd><p>Distancia del hiperplano a la muestra más cercana</p>
 </dd>
 </dl>
-<p>A continuación veremos como se obtienen los parámetros del hiperplano óptimo</p>
+<p>A continuación veremos el problema de optimización planteado por la SVM para obtener el hiperplano óptimo</p>
 <div class="section" id="formulacion-primal-de-la-svm">
 <h2><span class="section-number">6.1. </span>Formulación primal de la SVM<a class="headerlink" href="#formulacion-primal-de-la-svm" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Se parte definiendo las siguientes condiciones</p>
@@ -351,17 +301,20 @@ D = \{(x_1, y_1), (x_2, y_2), \ldots (x_N, y_N)\}
 <li><p>Para <span class="math notranslate nohighlight">\(y_i = +1\)</span> se tiene <span class="math notranslate nohighlight">\(\langle w, x_i \rangle + b \geq 1\)</span></p></li>
 <li><p>Para <span class="math notranslate nohighlight">\(y_i = -1\)</span> se tiene <span class="math notranslate nohighlight">\(\langle w, x_i \rangle + b \leq 1\)</span></p></li>
 </ul>
-<p>que puede escribirse como</p>
+<p>que pueden escribirse como</p>
 <div class="math notranslate nohighlight">
 \[
 y_i \left(\langle w, x_i \rangle + b\right) \geq 1
 \]</div>
-<p>Llamamos <strong>vectores de soporte</strong> a los ejemplos <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> que cumplen con</p>
+<p>donde llamamos <strong>vectores de soporte</strong> a los ejemplos <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> que cumplen con</p>
 <div class="math notranslate nohighlight">
 \[
 y_i \left(\langle w, x_i \rangle + b\right) = 1
 \]</div>
-<p>Los vectores de soporte definen el hiperplano separador.</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Los vectores de soporte definen el hiperplano separador</p>
+</div>
 <a class="reference internal image-reference" href="../../_images/svm2.png"><img alt="../../_images/svm2.png" src="../../_images/svm2.png" style="width: 400px;" /></a>
 <p>La figura muestra un hiperplano (linea negra) que separa datos de dos clases representados por puntos verdes y rojos, respectivamente</p>
 <ul class="simple">
@@ -369,8 +322,8 @@ y_i \left(\langle w, x_i \rangle + b\right) = 1
 <li><p>Los ejemplos <span class="math notranslate nohighlight">\(x_2\)</span>, <span class="math notranslate nohighlight">\(x_3\)</span> y <span class="math notranslate nohighlight">\(x_4\)</span> son vectores de soporte de la clase <span class="math notranslate nohighlight">\(+1\)</span></p></li>
 <li><p>El margen entre el hiperplano y los vectores de soporte es <span class="math notranslate nohighlight">\(\tau = \frac{1}{\|w\|}\)</span></p></li>
 </ul>
-<p>Aplicando las ecuaciones de los vectore de soporte llegamos a que <span class="math notranslate nohighlight">\(w= (1,1)\)</span> y <span class="math notranslate nohighlight">\(b=-1\)</span></p>
-<p>Lo anterior se conoce como formulación primal de la SVM y se puede escribir como</p>
+<p><strong>Ejercicio propuesto:</strong> Para el ejemplo de la figura, planteando las ecuaciones de los vectores de soporte es posible despejar el valor de <span class="math notranslate nohighlight">\(w\)</span> y <span class="math notranslate nohighlight">\(b\)</span>. En este caso <span class="math notranslate nohighlight">\(w= (1,1)\)</span> y <span class="math notranslate nohighlight">\(b=-1\)</span></p>
+<p>Considerando las ecuaciones anteriores como restricciones y planteando el objetivo de maximizar el margen se tiene la formulación primal de la SVM:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
@@ -398,7 +351,7 @@ L(w, b, \alpha) = \frac{1}{2}\|w\|^2 - \sum_{i=1}^N \alpha_i \left [ y_i \left(\
 \[
 w = \sum_{i=1}^N \alpha_i y_i x_i
 \]</div>
-<p>Reemplazando esta definición de <span class="math notranslate nohighlight">\(w\)</span> en el lagrangiano se obtiene la formulación dual de la SVM</p>
+<p>Reemplazando esta definición de <span class="math notranslate nohighlight">\(w\)</span> en el lagrangiano se obtiene la formulación dual de la SVM:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
@@ -422,10 +375,9 @@ b = y_k - \langle w, x_k \rangle
 <p class="admonition-title">Nota</p>
 <p>Los vectores de soporte son los ejemplos donde <span class="math notranslate nohighlight">\(\alpha_i &gt; 0\)</span>. En cambio para los ejemplos que no son vectores de soporte se tiene <span class="math notranslate nohighlight">\(\alpha_i=0\)</span></p>
 </div>
-<p><strong>Ejercicio</strong></p>
-<p>Considere el siguiente dataset</p>
+<p><strong>Ejercicio:</strong> Considere el dataset que se muestra en la siguiente figura</p>
 <a class="reference internal image-reference" href="../../_images/svm3.png"><img alt="../../_images/svm3.png" src="../../_images/svm3.png" style="width: 300px;" /></a>
-<p>donde se han demarcado los vectores de soporte y el hiperplano de máxima separación. Obtenga los parámetros del hiperlano separador utilizando la formulación primal y luego la dual.</p>
+<p>donde se han demarcado los vectores de soporte y el hiperplano de máxima separación. Obtenga los parámetros del hiperplano separador utilizando la formulación primal y luego la dual.</p>
 </div>
 <div class="section" id="margen-relajado-de-la-svm">
 <h2><span class="section-number">6.3. </span>Margen relajado de la SVM<a class="headerlink" href="#margen-relajado-de-la-svm" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -436,12 +388,12 @@ b = y_k - \langle w, x_k \rangle
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
-\min_{w,b} &amp;\frac{1}{2}\|w\|^2  + \frac{C}{N} \sum_{i=1}^N \xi_i \\
+\min_{w,b} &amp;\frac{1}{2}\|w\|^2  + C \sum_{i=1}^N \xi_i \\
 \text{sujeto a: }&amp; y_i \left(\langle w, x_i \rangle + b\right) \geq 1 - \xi_i,  \forall i \\
 &amp;\xi_i \geq 0, \forall i
 \end{split}
 \end{split}\]</div>
-<p>donde se ha agregado un hiperparámetro llamado <span class="math notranslate nohighlight">\(C\)</span> que pondera la regularización de la función de costo.</p>
+<p>donde se ha agregado <span class="math notranslate nohighlight">\(C&gt;0\)</span> que pondera la regularización de la función de costo.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>El hiperparámetro <span class="math notranslate nohighlight">\(C\)</span> controla el trade-off entre la minimización del margen y la cantidad de ejemplos mal clasificados</p>
@@ -457,7 +409,7 @@ b = y_k - \langle w, x_k \rangle
 \begin{split}
 \max_\alpha \sum_{i=1}^N \alpha_i - &amp;\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_j\langle x_i, x_j \rangle \\
 \text{sujeto a:} &amp;\sum_{i=1}^N \alpha_i y_i = 0 \\
-&amp;\frac{C}{N} &gt; \alpha_i \geq 0, \forall i
+&amp;C &gt; \alpha_i \geq 0, \forall i
 \end{split}
 \end{split}\]</div>
 </div>
@@ -465,7 +417,7 @@ b = y_k - \langle w, x_k \rangle
 <h2><span class="section-number">6.4. </span>Transformación no lineal de los datos<a class="headerlink" href="#transformacion-no-lineal-de-los-datos" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>La SVM es capaz de encontrar fronteras lineales (hiperplanos) para separar los datos de entrenamiento, pero</p>
 <blockquote>
-<div><p>¿Qué ocurre si nuestros datos no son linealmente separables?</p>
+<div><p>¿Qué ocurre si en primer lugar nuestros datos no son linealmente separables?</p>
 </div></blockquote>
 <p>Considere el siguiente ejemplo donde las clases se agrupan  como dos circulos concéntricos:</p>
 <div class="cell docutils container">
@@ -534,7 +486,7 @@ b = y_k - \langle w, x_k \rangle
 <p>La ecuación anterior se conoce como el <strong>truco del kernel</strong></p>
 </div>
 <p>Veamos dos kernels ampliamente utilizados</p>
-<p>El primero es el kernel polinomial con parámetros <span class="math notranslate nohighlight">\(c_0\)</span>, <span class="math notranslate nohighlight">\(d\)</span> y <span class="math notranslate nohighlight">\(\gamma\)</span></p>
+<p>El primero es el kernel polinomial con hiperparámetros <span class="math notranslate nohighlight">\(c_0\)</span>, <span class="math notranslate nohighlight">\(d\)</span> y <span class="math notranslate nohighlight">\(\gamma&gt;\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \kappa(x_i, x_j) = (c_0 + \gamma \langle x_i, x_j \rangle)^d
@@ -546,7 +498,7 @@ b = y_k - \langle w, x_k \rangle
 \kappa(x_i, x_j) &amp;= (1 + x_i x_j)^2 = 1 + 2 x_i x_j + x_i^2 x_j^2 \\&amp;= \left\langle \begin{pmatrix} 1\\ \sqrt{2} x_i \\ x_i^2 \end{pmatrix}, \begin{pmatrix} 1\\ \sqrt{2} x_j \\ x_j^2 \end{pmatrix} \right\rangle
 \end{split}
 \end{split}\]</div>
-<p>El segundo es el kernel gaussiano o RBF (<em>radial basis function</em>)</p>
+<p>El segundo es el kernel gaussiano o RBF (<em>radial basis function</em>) con hiperparámetro <span class="math notranslate nohighlight">\(\gamma&gt;0\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \kappa(x_i, x_j) = \exp \left(-\gamma \| x_i -  x_j \|^2 \right),
@@ -576,16 +528,17 @@ b = y_k - \langle w, x_k \rangle
 <p class="admonition-title">Consejo</p>
 <p>Cuando utilizamos kernels, el hiperparámetro <span class="math notranslate nohighlight">\(C\)</span> cobra mayor relevancia. Utilizando un valor de <span class="math notranslate nohighlight">\(C\)</span> pequeño privilegiamos un hiperplano más suave (menos complejo) con margen ancho: regularización</p>
 </div>
-<blockquote>
-<div><p>Los hiperparámetros de la SVM, como <span class="math notranslate nohighlight">\(\gamma\)</span> y <span class="math notranslate nohighlight">\(C\)</span>, son sensibles. Debemos calibrarlos utilizando técnicas de validación</p>
-</div></blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>Los hiperparámetros de la SVM, como <span class="math notranslate nohighlight">\(\gamma\)</span> y <span class="math notranslate nohighlight">\(C\)</span>, son sensibles. Debemos calibrarlos utilizando técnicas de validación</p>
+</div>
 <p>Utilizando el <strong>truco del kernel</strong> no es necesario conocer la transformación no lineal <span class="math notranslate nohighlight">\(\phi\)</span>. Basta reemplazar <span class="math notranslate nohighlight">\(\langle \phi(x_i), \phi(x_j) \rangle\)</span> por <span class="math notranslate nohighlight">\(\kappa(x_i, x_j)\)</span> en la formulación dual de la SVM como se muestra a continuación:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
 \max_\alpha \sum_{i=1}^N \alpha_i - &amp;\frac{1}{2} \sum_{i=1}^N \sum_{j=1}^N \alpha_i \alpha_j y_i y_j \kappa(x_i, x_j)\\
 \text{sujeto a:} &amp;\sum_{i=1}^N \alpha_i y_i = 0 \\
-&amp;\frac{C}{N} &gt; \alpha_i \geq 0, \forall i
+&amp;C &gt; \alpha_i \geq 0, \forall i
 \end{split}
 \end{split}\]</div>
 <p>y el hiperplano utilizando kernels es:</p>
@@ -632,13 +585,7 @@ h(x) = \sum_{i=1}^N \alpha_i y_i \kappa(x, x_i) + b
 <span class="n">model</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> 
                       <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.69
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -799,8 +746,8 @@ h(x) = \sum_{i=1}^N \alpha_i y_i \kappa(x, x_i) + b
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+        
+            <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="metrics.html" title="anterior página">
         <i class="fas fa-angle-left"></i>
@@ -810,17 +757,19 @@ h(x) = \sum_{i=1}^N \alpha_i y_i \kappa(x, x_i) + b
         </div>
     </a>
 </div>
-            
+        
         </div>
     </div>
     <footer class="footer">
-  <p>
-    
-      Por Pablo Huijse Heise<br/>
-    
-        &copy; Derechos de autor 2022.<br/>
-  </p>
-</footer>
+    <div class="container">
+      <p>
+        
+          Por Pablo Huijse Heise<br/>
+        
+            &copy; Derechos de autor 2022.<br/>
+      </p>
+    </div>
+  </footer>
 </main>
 
 
