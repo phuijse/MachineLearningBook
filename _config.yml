@@ -31,4 +31,5 @@ sphinx:
     - smartquotes
     - substitution
     - html_admonition
-
+  extra_extensions:
+    - sphinx_proof
