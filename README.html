@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
@@ -38,18 +39,20 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script src="_static/translations.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Búsqueda" href="search.html" />
@@ -126,6 +129,11 @@
    6. Máquinas de soporte vectorial
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="contents/supervised_learning/ensembles.html">
+   7. Métodos de ensamble
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -172,7 +180,7 @@
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -206,43 +214,58 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
         </div>
     </div>
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Machine Learning Book</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="machine-learning-book">
 <h1>Machine Learning Book<a class="headerlink" href="#machine-learning-book" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Un libro virtual diseñado como recurso de aprendizaje para los estudiantes del curso de Inteligencia Artificial (INFO257) de la carrera de Ingeniería Civil en Informática de la Universidad Austral de Chile. El libro fue escrito por Pablo Huijse y está en continuo desarrollo.</p>
-<p>El código fuente del libro está en <a class="reference external" href="https://github.com/phuijse/MachineLearningBook">https://github.com/phuijse/MachineLearningBook</a>. El libro virtual está publicado en : <a class="reference external" href="https://phuijse.github.io/MachineLearningBook/">https://phuijse.github.io/MachineLearningBook/</a>. El libro fue desarrollado utilizando jupyter-book. Si encuentras errores por favor deja un issue en el repositorio que contiene el libro.</p>
+<p>Un libro sobre métodos de <em>Machine Learning</em> enfocado en su aplicación utilizando librerías del lenguaje Python. El código fuente del libro está en <a class="reference external" href="https://github.com/phuijse/MachineLearningBook">https://github.com/phuijse/MachineLearningBook</a>. El libro está publicado en: <a class="reference external" href="https://phuijse.github.io/MachineLearningBook/">https://phuijse.github.io/MachineLearningBook/</a>. Este libro fue desarrollado utilizando <a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">jupyter-book</a>. Si encuentra errores por favor deja un <em>issue</em> en el repositorio que contiene el libro. El libro fue escrito por <a class="reference external" href="https://phuijse.github.io/">Pablo Huijse</a> y está en continuo desarrollo.</p>
 <p><strong>Contenidos</strong></p>
+<p>El libro incluye los siguientes temas</p>
 <ul class="simple">
 <li><p>Fundamentos de aprendizaje supervisado</p></li>
 <li><p>Regresión Lineal y logística</p></li>
+<li><p>Máquinas de Soporte Vectorial</p></li>
 <li><p>Árboles de decisión y ensambles</p></li>
 <li><p>Selección de características</p></li>
 <li><p>Redes Neuronales Artificiales</p></li>
 <li><p>Aprendizaje Reforzado</p></li>
 </ul>
+<p>A lo largo del libro encontrará ejemplos en base a las librerías <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> y <a class="reference external" href="https://pytorch.org/">PyTorch</a></p>
 <p><strong>Referencias</strong></p>
 <ol class="simple">
+<li><p><a class="reference external" href="http://www.web.stanford.edu/~hastie/ElemStatLearn/">Hastie, Tibshirani, Friedman, “Elements of Statistical Learning”, Springer, 2009</a></p></li>
+<li><p><a class="reference external" href="http://www.mlebook.com/wiki/doku.php">A. Burkov, “Machine Learning ENGINEERING”, True Positive INC, 2020</a></p></li>
 <li><p><a class="reference external" href="http://www.deeplearningbook.org/">I. Goodfellow and Y. Bengio and A. Courville, “Deep Learning”, MIT PRESS, 2016</a></p></li>
 <li><p><a class="reference external" href="https://www.d2l.ai/">A. Zhang, Z.C. Lipton, M. Li, A.J. Smola, “Dive into Deep Learning”</a></p></li>
-<li><p><a class="reference external" href="http://www.web.stanford.edu/~hastie/ElemStatLearn/">Hastie, Tibshirani, Friedman, “Elements of Statistical Learning”, Springer, 2009</a></p></li>
 <li><p><a class="reference external" href="https://arxiv.org/abs/1811.12560">V. Francois-Lavet, et al., “An Introduction to Deep Reinforcement Learning”, Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018</a></p></li>
 </ol>
-<p><strong>Como compilar este libro</strong></p>
+<p><strong>Dedicatoria</strong></p>
+<p>Este libro fue diseñado como recurso de aprendizaje para los estudiantes del curso de Inteligencia Artificial (INFO257) de la carrera de Ingeniería Civil en Informática de la Universidad Austral de Chile.</p>
+<p><strong>Como compilar/publicar este libro</strong></p>
 <ol class="simple">
 <li><p>Clonar el repositorio: git clone <a class="reference external" href="https://github.com/phuijse/MachineLearningBook.git">https://github.com/phuijse/MachineLearningBook.git</a></p></li>
 <li><p>Instalar dependencias: pip install -r requirements.txt</p></li>
 <li><p>Ejecutar los cuadernillos</p></li>
-<li><p>Compilar libro: jupyter-book build .</p></li>
-<li><p>(Opcional) Subir a github pages: ghp-import -n -p -f _build/html/</p></li>
+<li><p>Compilar con: jupyter-book build .</p></li>
+<li><p>Subir a github pages: ghp-import -n -p -f _build/html/</p></li>
 </ol>
 <div class="toctree-wrapper compound">
 </div>
@@ -274,8 +297,8 @@
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'>
     <a class='right-next' id="next-link" href="contents/supervised_learning/intro.html" title="siguiente página">
     <div class="prev-next-info">
@@ -285,19 +308,17 @@
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          Por Pablo Huijse Heise<br/>
-        
-            &copy; Derechos de autor 2022.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      Por Pablo Huijse Heise<br/>
+    
+        &copy; Derechos de autor 2022.<br/>
+  </p>
+</footer>
 </main>
 
 
