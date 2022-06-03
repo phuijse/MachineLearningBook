@@ -1,0 +1,813 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9. Ensambles secuenciales &#8212; Aprendizaje de Máquinas</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="prev" title="8. Ensambles paralelos" href="ensembles1.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="es">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Aprendizaje Supervisado
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   1. Fundamentos de Aprendizaje Supervisado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear.html">
+   2. Regresión Lineal
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="validation.html">
+   3. Sobreajuste, Validación y Regularización
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="logistic.html">
+   4. Regresión Logística
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metrics.html">
+   5. Evaluación de clasificadores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svm.html">
+   6. Máquinas de soporte vectorial
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="trees.html">
+   7. Árboles de decisión
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ensembles1.html">
+   8. Ensambles paralelos
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   9. Ensambles secuenciales
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/ensembles2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/phuijse/MachineLearningBook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
+                    class="fab fa-github"></i>repositorio</button></a>
+        <a class="issues-button"
+            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/ensembles2.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/ensembles2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenido
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#boosting">
+   9.1. Boosting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adaptive-boosting-adaboost">
+   9.2. Adaptive Boosting (Adaboost)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradient-boosting">
+   9.3. Gradient Boosting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
+   9.4. Implementación en
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     scikit-learn
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Ensambles secuenciales</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contenido </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#boosting">
+   9.1. Boosting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#adaptive-boosting-adaboost">
+   9.2. Adaptive Boosting (Adaboost)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradient-boosting">
+   9.3. Gradient Boosting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
+   9.4. Implementación en
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     scikit-learn
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="ensambles-secuenciales">
+<h1><span class="section-number">9. </span>Ensambles secuenciales<a class="headerlink" href="#ensambles-secuenciales" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="boosting">
+<h2><span class="section-number">9.1. </span>Boosting<a class="headerlink" href="#boosting" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Boosting es una familia de algoritmos que buscan combinar estimadores (clasificadores o regresores) débiles de forma secuencial (cadena) para construir un estimador fuerte</p>
+<dl class="simple myst">
+<dt>Estimador débil</dt><dd><p>Algoritmo que produce un resultado (al menos) levemente mejor que el azar</p>
+</dd>
+<dt>Estimador fuerte</dt><dd><p>Algoritmo que produce un resultado correcto en la mayoría de los ejemplos</p>
+</dd>
+</dl>
+<blockquote class="epigraph">
+<div><p>Cualquier estimador débil puede ser mejorado (<em>boosted</em>) a un estimador fuerte</p>
+<p class="attribution">—<a class="reference external" href="https://link.springer.com/article/10.1007/BF00116037">Robert Shapire</a>
+</p>
+</div></blockquote>
+<p>El procedimiento general de un algoritmo de tipo boosting es:</p>
+<ol class="simple">
+<li><p>Entrenar un estimador débil con toda la distribución de datos</p></li>
+<li><p>Crear una nueva distribución que le da más peso a los errores del clasificador débil anterior</p></li>
+<li><p>Entrenar otro estimador débil en la nueva distribución</p></li>
+<li><p>Combinar los estimadores débiles y volver a 2</p></li>
+</ol>
+<p>Estos pasos se muestran esquemáticamente en la siguiente figura para el caso particular de clasificación:</p>
+<a class="reference internal image-reference" href="../../_images/boosting.png"><img alt="../../_images/boosting.png" src="../../_images/boosting.png" style="width: 700px;" /></a>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>El clasificador <span class="math notranslate nohighlight">\(H_2\)</span> se encarga de corregir los errores de <span class="math notranslate nohighlight">\(H_1\)</span>. La combinación de <span class="math notranslate nohighlight">\(H_1\)</span> y <span class="math notranslate nohighlight">\(H_2\)</span> es el clasificador fuerte</p>
+</div>
+<p>Matemáticamente:</p>
+<div class="proof algorithm admonition" id="algorithm-0">
+<p class="admonition-title"><span class="caption-number">Algorithm 9.1 </span> (Algoritmo general de Boosting)</p>
+<div class="algorithm-content section" id="proof-content">
+<p><strong>Entradas</strong> Un conjunto de datos <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> y un número máximo de estimadores <span class="math notranslate nohighlight">\(T\)</span></p>
+<ol class="simple">
+<li><p>Definir conjunto inicial <span class="math notranslate nohighlight">\(D_{1} = D\)</span></p></li>
+<li><p>Para <span class="math notranslate nohighlight">\(t = 1, \ldots, T\)</span>:</p>
+<ol class="simple">
+<li><p>Entrenar un estimador débil sobre <span class="math notranslate nohighlight">\(D_t\)</span></p></li>
+<li><p>Evaluar el error del estimador débil</p></li>
+<li><p>Ponderar los ejemplos en base al error para crear <span class="math notranslate nohighlight">\(D_{t+1}\)</span></p></li>
+</ol>
+</li>
+<li><p>Combinar las salidas de los estimadores débiles</p></li>
+</ol>
+</div>
+</div><p>En esta lección utilizaremos árboles de decisión como estimador débil. Esto define los pasos de entrenamiento y evaluación del algoritmo anterior. Sólo resta definir como</p>
+<ul class="simple">
+<li><p>Crear <span class="math notranslate nohighlight">\(D_{t+1}\)</span></p></li>
+<li><p>Combinar los estimadores débiles</p></li>
+</ul>
+<p>A continuación veremos como definen estos puntos dos algoritmos particulares de Boosting</p>
+</div>
+<div class="section" id="adaptive-boosting-adaboost">
+<h2><span class="section-number">9.2. </span>Adaptive Boosting (Adaboost)<a class="headerlink" href="#adaptive-boosting-adaboost" title="Enlazar permanentemente con este título">¶</a></h2>
+<p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S002200009791504X">Adaboost</a> es un algoritmo diseñado para clasificación binaria <span class="math notranslate nohighlight">\(\{-1,1\}\)</span> donde los clasificadores débiles se combinan linealmente como</p>
+<div class="math notranslate nohighlight">
+\[
+H_T(x) = \sum_{t=1}^T \alpha_t h_t(x)
+\]</div>
+<p>donde la clase predicha se obtiene aplicando la función signo sobre <span class="math notranslate nohighlight">\(H_T(x)\)</span></p>
+<p>El ensamble se entrena minimizando la función de pérdida exponencial</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{split}
+\mathcal{L}(H_T) &amp;= \sum_{i=1}^N \exp \left (-y_i H_T(x_i) \right) \\
+&amp;= \sum_{i=1}^N \exp \left (-y_i H_{T-1}(x_i) -y_i \alpha_T h_T(x_i)\right) \\
+&amp;= \sum_{i=1}^N w_i^{(T)}\exp \left (-y_i \alpha_T h_T(x_i)\right) 
+\end{split}
+\end{split}\]</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Para entrenar el último clasificador de la secuencia <span class="math notranslate nohighlight">\(h_T\)</span> podemos asumir <span class="math notranslate nohighlight">\(w_i^{(T)}\)</span> constante</p>
+</div>
+<p>Dividiendo la función de costo en los casos bien y mal clasificados</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{split}
+\mathcal{L}(H_T) &amp;= \sum_{i=1}^N w_i^{(T)}\exp \left (-y_i \alpha_T h_T(x_i)\right) \\
+&amp;= \sum_{h(x_i)y_i = 1} e^{-\alpha_T} w_i^{(T)} + \sum_{h(x_i)y_i \neq 1} e^{\alpha_T} w_i^{(T)} 
+\end{split}
+\end{split}\]</div>
+<p>Derivando en función de <span class="math notranslate nohighlight">\(\alpha\)</span> se tiene</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_t = \frac{1}{2} \log \left(\frac{1-\epsilon_t}{\epsilon_t} \right),
+\]</div>
+<p>donde</p>
+<div class="math notranslate nohighlight">
+\[
+\epsilon_t = \frac{\sum_{i=1}^N w_i^{(T)} \mathbb{1}(h_t(x_i)\neq y_i)}{\sum_{i=1}^N w_i^{(T)}}
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\mathbb{1}()\)</span> es la función indicadora que es 1 si su argumento es cierto o 0 en caso contrario.</p>
+<p>Con esto tenemos</p>
+<div class="proof algorithm admonition" id="algorithm-1">
+<p class="admonition-title"><span class="caption-number">Algorithm 9.2 </span> (Algoritmo Adaptive Boosting)</p>
+<div class="algorithm-content section" id="proof-content">
+<p><strong>Entradas</strong> Un conjunto de datos <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> y un número máximo de estimadores <span class="math notranslate nohighlight">\(T\)</span></p>
+<ol class="simple">
+<li><p>Inicializar los pesos <span class="math notranslate nohighlight">\(w_i^{(1)} = 1/N\)</span></p></li>
+<li><p>Para <span class="math notranslate nohighlight">\(t = 1, \ldots, T\)</span>:</p>
+<ol class="simple">
+<li><p>Entrenar un estimador débil <span class="math notranslate nohighlight">\(h_t\)</span> sobre los datos ponderados por <span class="math notranslate nohighlight">\(w_i^{(t)}\)</span></p></li>
+<li><p>Calcular <span class="math notranslate nohighlight">\(\alpha_t\)</span></p></li>
+<li><p>Actualizar los pesos <span class="math notranslate nohighlight">\(w_i^{(t+1)} = w_i^{(t)} \exp (2 \alpha_t \mathbb{1}(h_t(x_i) \neq y_i))\)</span></p></li>
+</ol>
+</li>
+</ol>
+</div>
+</div><p>El clasificador fuerte está totalmente definido por los clasificadores débiles <span class="math notranslate nohighlight">\(h_t\)</span> y los ponderadores <span class="math notranslate nohighlight">\(\alpha_t\)</span></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Los pesos de los datos se actualizan con los errores del último clasificador</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Los ensambles de tipo boosting reducen progresivamente el sesgo (error) agregando secuencialmente clasificadores débiles</p>
+</div>
+</div>
+<div class="section" id="gradient-boosting">
+<h2><span class="section-number">9.3. </span>Gradient Boosting<a class="headerlink" href="#gradient-boosting" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El algoritmo de <a class="reference external" href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boostingmachine/10.1214/aos/1013203451.full">gradient boosting</a> combina el método de gradiente descendente con el algoritmo general de boosting. Es capaz de hacer tanto clasificación como regresión y puede usar cualquier función de pérdida que sea derivable</p>
+<p>Sea una función de costo sobre un dataset <span class="math notranslate nohighlight">\((x_i, y_i)_{i=1,\ldots,N}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\min \sum_{i=1}^N L(y_i, H_T(x_i)),
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(H_T\)</span> es el estimador fuerte</p>
+<p>Por ejemplo, en un problema de regresión, este se define como</p>
+<div class="math notranslate nohighlight">
+\[
+H_T(x_i) = \sum_{t=1}^T h_t(x_i),
+\]</div>
+<p>es decir una suma de “regresores” débiles</p>
+<p>En un problema de regresión se utiliza típicamente el error cuadrático medio como función de costo</p>
+<div class="math notranslate nohighlight">
+\[
+L(H_T(x_i), y_i) = \frac{1}{2} \left(y_i - H_T(x_i) \right)^2
+\]</div>
+<p>Supongamos que tenemos <span class="math notranslate nohighlight">\(H_3 = h_1 + h_2 + h_3\)</span> y deseamos agregar un nuevo estimador tal que</p>
+<div class="math notranslate nohighlight">
+\[
+H_4 = H_3 + h_4
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Los estimadores se agregan de uno por uno de forma <em>greedy</em></p>
+</div>
+<p>Agregar el nuevo estimador debería acercar al estimador fuerte a la etiqueta es decir</p>
+<div class="math notranslate nohighlight">
+\[
+H_3 + h_4 \approx y
+\]</div>
+<p>Para lograr esto el nuevo estimador <span class="math notranslate nohighlight">\(h_4\)</span> se entrena <strong>minimizando el residuo</strong> <span class="math notranslate nohighlight">\(y-H_3\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+h_4 = \text{arg} \min_{h} \sum_{i=1}^N L(h(x_i), y_i - H_3(x_i))
+\]</div>
+<p>Donde el residuo está relacionado a</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{dL(H_3(x_i), y_i)}{dH_3(x_i)} = H_3(x_i) - y_i
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Si utilizamos el error cuadrático, entonces los residuos son equivalentes al negativo del gradiente, esta es la razón del nombre del algoritmo</p>
+</div>
+<p>Para reducir el sobreajuste del ensamble (regularización) se agrega tipicamente</p>
+<div class="math notranslate nohighlight">
+\[
+H_{t+1} = H_t + \nu h_t
+\]</div>
+<p>una constate <span class="math notranslate nohighlight">\(\nu\)</span> denominada tasa de aprendizaje. Esto disminuye la contribución de cada estimador débil (enlentece el entrenamiento)</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En general una tasa de aprendizaje pequeña requerirá una mayor cantidad de clasificadores débiles. La ventaja de una tasa pequeña es que está relacionada a menores errores en el conjunto de test</p>
+</div>
+<p>Para problemas de clasificación con <span class="math notranslate nohighlight">\(K\)</span> clases se suele utilizar la siguiente función de costo, llamada generalmente <em>logarithmic loss</em> o <em>log loss</em></p>
+<div class="math notranslate nohighlight">
+\[
+L(y_i, x_i) = \sum_{k=1}^K y_{ik} \log p_k (x_i)
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(y_i\)</span> es un vector de largo K de tipo <em>one-hot</em> y <span class="math notranslate nohighlight">\(H(x)\)</span> retorna también un vector de largo <span class="math notranslate nohighlight">\(K\)</span> que se normaliza como</p>
+<div class="math notranslate nohighlight">
+\[
+p_k(x) = \frac{e^{H^{(k)}(x)}}{ \sum_{k=1}^K e^{H^{(k)}(x)} }
+\]</div>
+<p>tal que cada componente este en el rango <span class="math notranslate nohighlight">\([0,1]\)</span> y que además los <span class="math notranslate nohighlight">\(K\)</span> sumen uno</p>
+</div>
+<div class="section" id="implementacion-en-scikit-learn">
+<h2><span class="section-number">9.4. </span>Implementación en <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#implementacion-en-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>Gradient Boosting</em> para problemas de clasificación y regresión. Nos enfocaremos en la primera</p>
+<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html"><code class="docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> son</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code>: La función de costo. Las opciones son <code class="docutils literal notranslate"><span class="pre">'log_loss'/'deviance'</span></code> (dependiendo de su versión de scikit-learn) o <code class="docutils literal notranslate"><span class="pre">'exponential'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_estimators:</span></code> Cantidad de clasificadores débiles</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: Tasa de aprendizaje (no-negativo)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">subsample</span></code>: Booleano que indica si cada clasificador débil utiliza el dataset completo o una submuestra</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Si se utiliza <code class="docutils literal notranslate"><span class="pre">loss='exponential'</span></code> el algoritmo se vuelve equivalent a <em>AdaBoost</em> (sólo para clasificación binaria)</p>
+</div>
+<p>También recibe argumentos relacionados a los clasificadores débiles (árboles), entre ellos:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: Profundidad máxima de los árboles</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: Número mínimo de muestras para permitir un <code class="docutils literal notranslate"><span class="pre">split</span></code></p></li>
+</ul>
+<p>El objeto tiene implementados los métodos usuales <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">decision_function</span></code></p>
+<p>Adicionalmente cuenta con <code class="docutils literal notranslate"><span class="pre">staged_predict</span></code>, <code class="docutils literal notranslate"><span class="pre">staged_predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">staged_decision_function</span></code>, que retornan las predicciones de los clasificadores débiles individuales</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0.2
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Ejemplo</strong> Entrenamiento de ensamble gradient boosting para clasificación de vino</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">data_struct</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">target</span>
+<span class="n">X_names</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">feature_names</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Se realiza una validación cruzada buscando los mejores hiperparámetros del modelo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> 
+          <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+          <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]}</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;deviance&#39;</span><span class="p">)</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">validator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV(cv=3, estimator=GradientBoostingClassifier(),
+             param_grid={&#39;learning_rate&#39;: [0.1, 0.2, 0.5],
+                         &#39;max_depth&#39;: [1, 5, 10, 20],
+                         &#39;n_estimators&#39;: [1, 10, 20, 50, 100]})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los mejores modelos de acuerdo a la validación cruzada son:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;param_learning_rate&quot;</span><span class="p">,</span> <span class="s2">&quot;param_max_depth&quot;</span><span class="p">,</span> <span class="s2">&quot;param_n_estimators&quot;</span><span class="p">,</span> 
+           <span class="s2">&quot;mean_test_score&quot;</span><span class="p">,</span> <span class="s2">&quot;std_test_score&quot;</span><span class="p">,</span> <span class="s2">&quot;rank_test_score&quot;</span><span class="p">]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;rank_test_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>param_learning_rate</th>
+      <th>param_max_depth</th>
+      <th>param_n_estimators</th>
+      <th>mean_test_score</th>
+      <th>std_test_score</th>
+      <th>rank_test_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>24</th>
+      <td>0.2</td>
+      <td>1</td>
+      <td>100</td>
+      <td>0.959930</td>
+      <td>0.022174</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>0.5</td>
+      <td>1</td>
+      <td>10</td>
+      <td>0.959930</td>
+      <td>0.022174</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.2</td>
+      <td>1</td>
+      <td>10</td>
+      <td>0.951994</td>
+      <td>0.033398</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>0.5</td>
+      <td>1</td>
+      <td>20</td>
+      <td>0.951994</td>
+      <td>0.033398</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.2</td>
+      <td>1</td>
+      <td>50</td>
+      <td>0.944057</td>
+      <td>0.044622</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>En este caso hay varios modelos que obtuvieron el primer lugar en términos de <em>accuracy</em> promedio</p>
+<p><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> retorna arbitrariamente el primero en orden de ejecución:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">validator</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;learning_rate&#39;: 0.2, &#39;max_depth&#39;: 1, &#39;n_estimators&#39;: 100}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Boosting funciona bien con árboles poco profundos. Los árboles de poca profundidad suelen tener alto sesgo y baja varianza</p>
+</div>
+<p>El resultado de predicción en el conjunto de test es</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="n">best_gb</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">best_estimator_</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">best_gb</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+           0       0.95      1.00      0.97        19
+           1       1.00      0.95      0.98        22
+           2       1.00      1.00      1.00        13
+
+    accuracy                           0.98        54
+   macro avg       0.98      0.98      0.98        54
+weighted avg       0.98      0.98      0.98        54
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ensembles2_21_0.png" src="../../_images/ensembles2_21_0.png" />
+</div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p>Otros algoritmos de Boosting con árboles de decisión extremadamente competitivos:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html#sklearn.ensemble.HistGradientBoostingClassifier">HistGradientBoostingClassifier</a></p></li>
+<li><p><a class="reference external" href="http://dmlc.cs.washington.edu/xgboost.html">XGBoost</a></p></li>
+<li><p><a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/index.html">LightGBM</a></p></li>
+</ul>
+<p>Estos implementan estrategias para mejorar la eficiencia y realizar cálculos paralelos/distribuidos</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./contents/supervised_learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="ensembles1.html" title="anterior página">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">anterior</p>
+            <p class="prev-next-title"><span class="section-number">8. </span>Ensambles paralelos</p>
+        </div>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      Por Pablo Huijse Heise<br/>
+    
+        &copy; Derechos de autor 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

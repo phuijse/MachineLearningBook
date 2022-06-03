@@ -1,0 +1,1186 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>7. Árboles de decisión &#8212; Aprendizaje de Máquinas</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="8. Ensambles paralelos" href="ensembles1.html" />
+    <link rel="prev" title="6. Máquinas de soporte vectorial" href="svm.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="es">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Aprendizaje Supervisado
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   1. Fundamentos de Aprendizaje Supervisado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear.html">
+   2. Regresión Lineal
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="validation.html">
+   3. Sobreajuste, Validación y Regularización
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="logistic.html">
+   4. Regresión Logística
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metrics.html">
+   5. Evaluación de clasificadores
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svm.html">
+   6. Máquinas de soporte vectorial
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   7. Árboles de decisión
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ensembles1.html">
+   8. Ensambles paralelos
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ensembles2.html">
+   9. Ensambles secuenciales
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
+                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/trees.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/phuijse/MachineLearningBook"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
+                    class="fab fa-github"></i>repositorio</button></a>
+        <a class="issues-button"
+            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/trees.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
+        title="Modo de pantalla completa"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/trees.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contenido
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduccion">
+   7.1. Introducción
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algoritmo-iterative-dichotomiser-3-id3">
+   7.2. Algoritmo Iterative Dichotomiser 3 (ID3)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algoritmos-c4-5-y-cart">
+   7.3. Algoritmos C4.5 y CART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
+   7.4. Implementación en scikit-learn
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Árboles de decisión</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contenido </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduccion">
+   7.1. Introducción
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algoritmo-iterative-dichotomiser-3-id3">
+   7.2. Algoritmo Iterative Dichotomiser 3 (ID3)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#algoritmos-c4-5-y-cart">
+   7.3. Algoritmos C4.5 y CART
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
+   7.4. Implementación en scikit-learn
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="arboles-de-decision">
+<h1><span class="section-number">7. </span>Árboles de decisión<a class="headerlink" href="#arboles-de-decision" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="section" id="introduccion">
+<h2><span class="section-number">7.1. </span>Introducción<a class="headerlink" href="#introduccion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Un árbol de decisión es una secuencia de operadores relacionales organizados como árbol</p>
+<ul class="simple">
+<li><p>Los atributos de un dato son evaluados desde la raiz hasta las hojas</p></li>
+<li><p>Los nodos hoja (terminales) están asociados a una clase</p></li>
+<li><p>Los nodos no-hoja están asociados a un operador lógico que divide los datos en dos o más conjuntos</p></li>
+<li><p>El operador lógico o <em>split</em> se aplica sobre un atributo (feature) de los datos</p></li>
+</ul>
+<p>El siguiente diagrama ejemplifica el funcionamiento del árbol de decisión sobre datos con dos atributos (bidimensionales)</p>
+<a class="reference internal image-reference" href="../../_images/dt_diagram.png"><img alt="../../_images/dt_diagram.png" src="../../_images/dt_diagram.png" style="width: 600px;" /></a>
+<ul class="simple">
+<li><p>La figura izquierda muestra un árbol de decisión binario con 5 nodos: 3 nodos hoja y 2 nodos de decisión</p></li>
+<li><p>La figura derecha muestra la partición que produce el árbol de decisión en el espacio de los datos.</p></li>
+<li><p>Las separaciones o <em>splits</em> son siempre perpendiculares a los ejes de los datos (atributos)</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Entrenar el árbol de decisión es el proceso de escoger los atributos, operadores y umbrales de separación en los nodos de decisión</p>
+</div>
+</div>
+<div class="section" id="algoritmo-iterative-dichotomiser-3-id3">
+<h2><span class="section-number">7.2. </span>Algoritmo Iterative Dichotomiser 3 (ID3)<a class="headerlink" href="#algoritmo-iterative-dichotomiser-3-id3" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El algoritmo ID3 para atributos categóricos selecciona los <em>splits</em> recursivamente en base a la <strong>ganancia de información</strong></p>
+<p>La ganacia de información para un nodo que separa un conjunto de datos <span class="math notranslate nohighlight">\(D\)</span> en dos <span class="math notranslate nohighlight">\(D_{izq}\)</span> y <span class="math notranslate nohighlight">\(D_{der}\)</span> es</p>
+<div class="math notranslate nohighlight">
+\[
+G(D; D_{izq}, D_{der}) = H(D) - \frac{|D_{izq}|}{|D|} H(D_{izq}) - \frac{|D_{der}|}{|D|} H(D_{der})
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(|A|\)</span> es la cardinalidad del subconjunto <span class="math notranslate nohighlight">\(A\)</span> y</p>
+<div class="math notranslate nohighlight">
+\[
+H(A) = - \sum_{y \in \mathcal{Y}} p(y|A) \log p(y|A)
+\]</div>
+<p>es la entropía del subconjunto <span class="math notranslate nohighlight">\(A\)</span>. En la expresión anterior <span class="math notranslate nohighlight">\(p(y|A)\)</span> es la frecuencia relativa de los ejemplos de clase <span class="math notranslate nohighlight">\(y\)</span> dentro de <span class="math notranslate nohighlight">\(A\)</span></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>La entropía mide la “pureza” del subconjunto en términos de sus clases</p>
+</div>
+<p><strong>Ejemplo:</strong> Sea el siguiente subconjunto con las etiquetas de 12 ejemplos</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Asumiendo que el problema sólo tiene dos clases las frecuencias relativas son</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">counts</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.33333333, 0.66666667])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Y la entropía del conjunto sería:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">subset</span><span class="p">):</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">counts</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freqs</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">freqs</span><span class="o">+</span><span class="mf">1e-16</span><span class="p">))</span>
+
+<span class="n">entropy</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9182958340544893
+</pre></div>
+</div>
+</div>
+</div>
+<p>La entropía es máxima si hay igual cantidad de ejemplos de ambas clases (mínima pureza)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">entropy</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9999999999999997
+</pre></div>
+</div>
+</div>
+</div>
+<p>y mínima si todos los ejemplos son de una clase  (máxima pureza)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">entropy</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Más en general si un nodo separa el conjunto en <span class="math notranslate nohighlight">\(k\)</span> subconjuntos la regla sería</p>
+<div class="math notranslate nohighlight">
+\[
+G(D; D_1, D_2, \ldots D_k) = H(D) - \sum_{i=1}^k \frac{|D_i|}{|D|} H(D_i)
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>En cada nodo se escoge el atributo que maximiza la ganancia de información</p>
+</div>
+<p>Consideremos el siguiente problema:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tiempo&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;soleado&#39;</span><span class="p">,</span> <span class="s1">&#39;soleado&#39;</span><span class="p">,</span> <span class="s1">&#39;soleado&#39;</span><span class="p">,</span> <span class="s1">&#39;lluvioso&#39;</span><span class="p">,</span> <span class="s1">&#39;lluvioso&#39;</span><span class="p">],</span> 
+     <span class="s1">&#39;humedad&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;baja&#39;</span><span class="p">,</span> <span class="s1">&#39;baja&#39;</span><span class="p">,</span> <span class="s1">&#39;alta&#39;</span><span class="p">,</span> <span class="s1">&#39;alta&#39;</span><span class="p">,</span> <span class="s1">&#39;alta&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;temperatura&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;templado&#39;</span><span class="p">,</span> <span class="s1">&#39;caluroso&#39;</span><span class="p">,</span> <span class="s1">&#39;caluroso&#39;</span><span class="p">,</span> <span class="s1">&#39;templado&#39;</span><span class="p">,</span> <span class="s1">&#39;frio&#39;</span><span class="p">]}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>soleado</td>
+      <td>baja</td>
+      <td>templado</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>soleado</td>
+      <td>baja</td>
+      <td>caluroso</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>soleado</td>
+      <td>alta</td>
+      <td>caluroso</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>lluvioso</td>
+      <td>alta</td>
+      <td>templado</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>lluvioso</td>
+      <td>alta</td>
+      <td>frio</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>donde queremos obtener un árbol de decisión que prediga el tiempo en función de la humedad y de la temperatura</p>
+<p>Para decidir cual variable debe ir en el primer nodo comparamos sus ganancias de información</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">subset</span><span class="p">):</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="s2">&quot;tiempo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+    <span class="n">freqs</span> <span class="o">=</span> <span class="n">counts</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freqs</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">freqs</span><span class="o">+</span><span class="mf">1e-16</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">info_gain</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
+    <span class="n">entropy_root</span> <span class="o">=</span> <span class="n">entropy</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+    <span class="n">entropy_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">possibility</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">subset</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="n">possibility</span><span class="p">]</span>
+        <span class="n">entropy_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">entropy_root</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">entropy_nodes</span><span class="p">)</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="n">df</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">,</span> <span class="s2">&quot;temperatura&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ganancia de información de </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">info_gain</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ganancia de información de humedad: 0.29110316603236863
+Ganancia de información de temperatura: 0.39575279478527814
+</pre></div>
+</div>
+</div>
+</div>
+<p>Temperatura tiene mayor ganancia que humedad, por lo tanto el primer nodo separador utiliza temperatura</p>
+<p>Separando por temperatura tenemos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;temperatura&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;frio&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4</th>
+      <td>lluvioso</td>
+      <td>alta</td>
+      <td>frio</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>En el caso <code class="docutils literal notranslate"><span class="pre">frio</span></code> se produce un nodo con un sólo ejemplo. El algoritmo no seguirá dividiendo</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;temperatura&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;caluroso&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>soleado</td>
+      <td>baja</td>
+      <td>caluroso</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>soleado</td>
+      <td>alta</td>
+      <td>caluroso</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>En el caso <code class="docutils literal notranslate"><span class="pre">caluroso</span></code> se produce un nodo con “puro”. El algoritmo no seguirá dividiendo</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;temperatura&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;templado&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>soleado</td>
+      <td>baja</td>
+      <td>templado</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>lluvioso</td>
+      <td>alta</td>
+      <td>templado</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>En el caso <code class="docutils literal notranslate"><span class="pre">templado</span></code> el nodo no es puro, debemos nuevamente escoger un atributo para separar:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;temperatura&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;templado&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">,</span> <span class="s2">&quot;temperatura&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ganancia de información de </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">info_gain</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ganancia de información de humedad: 0.6931471805599451
+Ganancia de información de temperatura: 0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Por lo tanto se escoge humedad, lo cual produce dos nodos puros (con un sólo ejemplo)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;baja&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>soleado</td>
+      <td>baja</td>
+      <td>templado</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;alta&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tiempo</th>
+      <th>humedad</th>
+      <th>temperatura</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>lluvioso</td>
+      <td>alta</td>
+      <td>templado</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>El algoritmo ID3 sigue separando el dataset de forma recursiva hasta que todos los nodos sean puros</p>
+</div>
+</div>
+<div class="section" id="algoritmos-c4-5-y-cart">
+<h2><span class="section-number">7.3. </span>Algoritmos C4.5 y CART<a class="headerlink" href="#algoritmos-c4-5-y-cart" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El algoritmo C4.5 extiende ID3 para manejar atributos continuos.</p>
+<p>Sea <span class="math notranslate nohighlight">\(Y\)</span> un atributo continuo para un nodo con <span class="math notranslate nohighlight">\(N\)</span> ejemplos. Primero se ordena <span class="math notranslate nohighlight">\(Y\)</span> de menor a mayor y luego  se prueban <span class="math notranslate nohighlight">\(N-1\)</span> umbrales <span class="math notranslate nohighlight">\(z_i = (\hat y_{i+1} + \hat y_i)\)</span>, donde <span class="math notranslate nohighlight">\(\hat y\)</span> son los valores ordenados de <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Se escoge el umbral <span class="math notranslate nohighlight">\(\hat z\)</span> con mayor ganancia de información y se dividen los datos en dos grupos según</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y \leq \hat z\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Y &gt; \hat z\)</span></p></li>
+</ul>
+<p>El algoritmo CART extiende aun más C4.5 permitiendo crear árboles para variables objetivo continuas (regresión). Para esto se reemplaza la entropía en la ganancia de información por el índice de Gini:</p>
+<div class="math notranslate nohighlight">
+\[
+I(D) = 1 - \sum_{y\in \mathcal{Y}} p_y^2
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(p_y\)</span> es la probabilidad asignada a la clase <span class="math notranslate nohighlight">\(y\)</span></p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>La diferencia en clasificación entre el índice de gini y la entropía suele ser muy baja. Sin embargo el índice de gini es menos costoso (computacionalmente hablando). El criterio de ganancia de información se puede escoger mediante validación cruzada</p>
+</div>
+</div>
+<div class="section" id="implementacion-en-scikit-learn">
+<h2><span class="section-number">7.4. </span>Implementación en scikit-learn<a class="headerlink" href="#implementacion-en-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.tree"><code class="docutils literal notranslate"><span class="pre">tree</span></code></a> de scikit-learn tiene implementaciones de árboles de decisión para problemas de clasificación y regresión. Nos enfocaremos en la primera</p>
+<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier"><code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code></a> son</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">criterion</span></code>: El criterio que se utiliza para escoger los <em>splits</em>, las opciones son <code class="docutils literal notranslate"><span class="pre">'gini'</span></code> y <code class="docutils literal notranslate"><span class="pre">'entropy'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: Límite para la profundidad máxima del árbol</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: El número mínimo de ejemplos en un nodo para realizar un <em>split</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>: El número mínimo de ejemplos que pueden estar en un nodo hoja</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_impurity_decrease</span></code>: La disminución de pureza mínima en un nodo para realizar un <em>split</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">class_weight</span></code>: Permite asignar ponderación a las clases, es de utilidad si se tienen clases medianamente desbalanceadas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code>: El número máximo de atributos a considerar en cada <em>split</em></p></li>
+</ul>
+<div class="admonition caution">
+<p class="admonition-title">Prudencia</p>
+<p>Si se utilizan los argumentos (hiperparámetros) por defecto el árbol crecera hasta que sus nodos sean todos puros. Esto en general produce árboles de gran profundidad (muy capaces de sobreajustarse).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Se puede limitar el tamaño de un árbol aumentando <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code> y/o <code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>, o disminuyendo <code class="docutils literal notranslate"><span class="pre">max_depth</span></code></p>
+</div>
+<p>Los principales métodos son:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">predict(X)</span></code>: Retorna la clase predicha</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">predict_proba(X)</span></code>: Retorna las probabilidades de pertenecer a cada una de las clases</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">score(X,y)</span></code>: Retorna el <em>accuracy</em> de clasificación</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_params()</span></code>: Retorna los nombres de los parámetros</p></li>
+</ul>
+<p>Además tiene algunos métodos no compartidos con otros estimadores como</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_depth()</span></code>: Retorna la profunidad del árbol aprendido</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_n_leaves()</span></code>: Retorna la cantidad de nodos hoja del árbol aprendida</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">apply(X)</span></code>: Retorna el índice de la hoja que predice cada ejemplo</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> A continuación entrenaremos un árbol de decisión sobre <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/wine"><code class="docutils literal notranslate"><span class="pre">wine</span></code></a>, una base de datos con 13 atributos numéricos y 3 clases asociadas a vinos de distinto origen. Los atributos representan propiedades químicas de los vinos</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">data_struct</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">target</span>
+<span class="n">X_names</span> <span class="o">=</span> <span class="n">data_struct</span><span class="o">.</span><span class="n">feature_names</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Los árboles de decisión no son sensibles a la normalización de los datos. En general no es necesario normalizar o escalar los datos antes de entrenar un árbol de decisión</p>
+</div>
+<p>En primer lugar se entrena un árbol de decisión con sus parámetros por defecto</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">plot_tree</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test accuracy: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.9630
+</pre></div>
+</div>
+</div>
+</div>
+<p>Podemos utilizar la función <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.plot_tree.html#sklearn.tree.plot_tree"><code class="docutils literal notranslate"><span class="pre">plot_tree</span></code></a> para obtener una visualización del árbol de decisión</p>
+<p>En cada nodo se muestra:</p>
+<ul class="simple">
+<li><p>El atributo y umbral seleccionados</p></li>
+<li><p>El valor del criterio (índice de gini)</p></li>
+<li><p>La cantidad de ejemplos que entraron al nodo</p></li>
+<li><p>La cantidad de ejemplos que entraron al nodo separados por clase (en este caso tres)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">plot_tree</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">X_names</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/trees_37_0.png" src="../../_images/trees_37_0.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>El árbol por defecto crece hasta que todos sus nodos sean puros (ejemplos de una sola clase)</p>
+</div>
+<p>Podemos limitar el tamaño de un árbol utilizando el argumento <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test accuracy: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">X_names</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.9444
+</pre></div>
+</div>
+<img alt="../../_images/trees_39_1.png" src="../../_images/trees_39_1.png" />
+</div>
+</div>
+<p>o el argumento <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test accuracy: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">X_names</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test accuracy: 0.9444
+</pre></div>
+</div>
+<img alt="../../_images/trees_41_1.png" src="../../_images/trees_41_1.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Forzar una profundidad con <code class="docutils literal notranslate"><span class="pre">max_depth</span></code> tiende a producir árboles simétricos. Los árboles restringidos con <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code> pueden ser resultar en cambio asímetricos</p>
+</div>
+<p>Realicemos ahora una búsqueda de hiperparámetros con validación cruzada</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;criterion&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="s1">&#39;gini&#39;</span><span class="p">],</span> 
+          <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+          <span class="s1">&#39;min_samples_leaf&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+          <span class="p">}</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">validator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV(cv=3, estimator=DecisionTreeClassifier(),
+             param_grid={&#39;criterion&#39;: [&#39;entropy&#39;, &#39;gini&#39;],
+                         &#39;max_depth&#39;: [1, 2, 3, 4, 5, 10, 20, None],
+                         &#39;min_samples_leaf&#39;: [1, 2, 5, 10, 20]})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los mejores modelos de acuerdo a la validación cruzada son:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;param_criterion&quot;</span><span class="p">,</span> <span class="s2">&quot;param_max_depth&quot;</span><span class="p">,</span> <span class="s2">&quot;param_min_samples_leaf&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;mean_test_score&quot;</span><span class="p">,</span> <span class="s2">&quot;std_test_score&quot;</span><span class="p">,</span> <span class="s2">&quot;rank_test_score&quot;</span><span class="p">]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;rank_test_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>param_criterion</th>
+      <th>param_max_depth</th>
+      <th>param_min_samples_leaf</th>
+      <th>mean_test_score</th>
+      <th>std_test_score</th>
+      <th>rank_test_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>76</th>
+      <td>gini</td>
+      <td>None</td>
+      <td>2</td>
+      <td>0.911537</td>
+      <td>0.029399</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>gini</td>
+      <td>5</td>
+      <td>1</td>
+      <td>0.911537</td>
+      <td>0.029399</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>gini</td>
+      <td>20</td>
+      <td>2</td>
+      <td>0.911537</td>
+      <td>0.029399</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>gini</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0.903407</td>
+      <td>0.018742</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>gini</td>
+      <td>None</td>
+      <td>1</td>
+      <td>0.903407</td>
+      <td>0.018742</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>El mejor árbol de decisión para este problema es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">validator</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;criterion&#39;: &#39;gini&#39;, &#39;max_depth&#39;: 5, &#39;min_samples_leaf&#39;: 1}
+</pre></div>
+</div>
+</div>
+</div>
+<p>El resultado del mejor árbol en el conjunto de prueba en términos de f1-score por clase es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+           0       1.00      0.89      0.94        19
+           1       0.91      0.95      0.93        22
+           2       0.93      1.00      0.96        13
+
+    accuracy                           0.94        54
+   macro avg       0.95      0.95      0.95        54
+weighted avg       0.95      0.94      0.94        54
+</pre></div>
+</div>
+</div>
+</div>
+<p>También podemos utilizar <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.ConfusionMatrixDisplay.html#sklearn-metrics-confusionmatrixdisplay"><code class="docutils literal notranslate"><span class="pre">ConfusionMatrixDisplay</span></code></a> para desplegar una matriz de confusión y así estudiar de mejor forma los errores que cometé el modelo en el conjunto de prueba</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+
+<span class="n">ConfusionMatrixDisplay</span><span class="o">.</span><span class="n">from_predictions</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">validator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                                        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/trees_52_0.png" src="../../_images/trees_52_0.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>La matriz de la izquierda utiliza cantidades absolutas, mientras que la derecha utiliza cantidades relativas, con respecto a la cantidad de etiquetas reales</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./contents/supervised_learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="svm.html" title="anterior página">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">anterior</p>
+            <p class="prev-next-title"><span class="section-number">6. </span>Máquinas de soporte vectorial</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="ensembles1.html" title="siguiente página">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>Ensambles paralelos</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      Por Pablo Huijse Heise<br/>
+    
+        &copy; Derechos de autor 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
