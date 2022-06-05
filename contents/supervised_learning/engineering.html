@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>1. Fundamentos de Aprendizaje Supervisado &#8212; Aprendizaje de Máquinas</title>
+    <title>10. Machine Learning Engineering (MLE) &#8212; Aprendizaje de Máquinas</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -54,12 +54,9 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="2. Regresión Lineal" href="linear.html" />
-    <link rel="prev" title="Machine Learning Book" href="../../README.html" />
+    <link rel="prev" title="9. Ensambles secuenciales" href="ensembles2.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="es">
     
@@ -102,8 +99,8 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
    1. Fundamentos de Aprendizaje Supervisado
   </a>
  </li>
@@ -147,8 +144,8 @@ const thebe_selector_output = ".output, .cell_output"
    9. Ensambles secuenciales
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="engineering.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    10. Machine Learning Engineering (MLE)
   </a>
  </li>
@@ -193,7 +190,7 @@ const thebe_selector_output = ".output, .cell_output"
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/intro.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/engineering.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -213,7 +210,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
                     class="fab fa-github"></i>repositorio</button></a>
         <a class="issues-button"
-            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/intro.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/engineering.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
         
@@ -234,7 +231,7 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/intro.ipynb"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/engineering.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -257,8 +254,27 @@ const thebe_selector_output = ".output, .cell_output"
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conceptos-clave-en-aprendizaje-supervisado">
-   1.1. Conceptos clave en aprendizaje supervisado
+  <a class="reference internal nav-link" href="#ciclo-de-vida-de-un-proyecto-de-ml">
+   10.1. Ciclo de vida de un proyecto de ML
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recoleccion-y-preparacion-de-datos">
+   10.2. Recolección y preparación de datos
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ingenieria-de-features-atributos">
+   10.3. Ingeniería de
+   <em>
+    features
+   </em>
+   (atributos)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#herramientas-de-mlops">
+   10.4. Herramientas de MLOps
   </a>
  </li>
 </ul>
@@ -271,7 +287,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Fundamentos de Aprendizaje Supervisado</h1>
+                <h1>Machine Learning Engineering (MLE)</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -282,8 +298,27 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#conceptos-clave-en-aprendizaje-supervisado">
-   1.1. Conceptos clave en aprendizaje supervisado
+  <a class="reference internal nav-link" href="#ciclo-de-vida-de-un-proyecto-de-ml">
+   10.1. Ciclo de vida de un proyecto de ML
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recoleccion-y-preparacion-de-datos">
+   10.2. Recolección y preparación de datos
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ingenieria-de-features-atributos">
+   10.3. Ingeniería de
+   <em>
+    features
+   </em>
+   (atributos)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#herramientas-de-mlops">
+   10.4. Herramientas de MLOps
   </a>
  </li>
 </ul>
@@ -295,115 +330,105 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="fundamentos-de-aprendizaje-supervisado">
-<h1><span class="section-number">1. </span>Fundamentos de Aprendizaje Supervisado<a class="headerlink" href="#fundamentos-de-aprendizaje-supervisado" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Dentro del aprendizaje de máquinas (<em>machine learning</em>) el aprendizaje <strong>supervisado</strong> es un esquema en que se busca obtener una función</p>
-<div class="math notranslate nohighlight">
-\[
-f_{\theta}: \mathcal{X} \rightarrow \mathcal{Y},
-\]</div>
-<p>donde</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\mathcal{X}\)</span> es el dominio de entrada al cual pertenecen nuestros datos o atributos</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mathcal{Y}\)</span> el dominio de salida al cual pertenece la variable objetivo que queremos predecir</p></li>
-<li><p><span class="math notranslate nohighlight">\(\theta\)</span> es un vector de parámetros de la función o modelo</p></li>
-</ul>
-<p>En esta unidad nos concentraremos en dos tipos de problemas o tareas</p>
-<p><strong>Regresión</strong></p>
-<p>En esta tarea buscamos un modelo que asocie una variable continua a otras <span class="math notranslate nohighlight">\(m\)</span> variables</p>
-<div class="math notranslate nohighlight">
-\[
-f_{\theta}: \mathbb{R}^m \rightarrow \mathbb{R}
-\]</div>
-<p>Ejemplos:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/traffic+flow+forecasting">El flujo de tráfico de una calle en función de un feed de video</a></p></li>
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/air+quality">La concentración de un químico aereo en función del valor del mismo en el pasado</a></p></li>
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/solar+flare">La ocurrencia de una llamarada solar en función del brillo y la cantidad de manchas en la corona del sol</a></p></li>
-</ul>
-<p><strong>Clasificación</strong></p>
-<p>En esta tarea buscamos un modelo que retorne una entre <span class="math notranslate nohighlight">\(K\)</span> categorías para una entidad representada por <span class="math notranslate nohighlight">\(m\)</span> variables</p>
-<div class="math notranslate nohighlight">
-\[
-f_{\theta}: \mathbb{R}^m \rightarrow \{1, 2, \ldots, K\}
-\]</div>
-<p>Ejemplos:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/spambase">Identificar si un correo es spam o no en base a su descriptores de su contenido y metadata</a></p></li>
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/breast+cancer">Diagnóstico benigno o maligno en función de descriptores de una biopsia</a></p></li>
-<li><p><a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/australian+sign+language+signs">Identificar letra correspondiente a imagen que representa un gesto de lengua de señas</a></p></li>
-</ul>
-<p>Otros problemas que se pueden resolver con machine learning son</p>
-<ul class="simple">
-<li><p>Machine Translation: Convertir una secuencia de texto de un idioma a otro</p></li>
-<li><p>Imputación: Rellenar valores faltantes en una base de datos</p></li>
-<li><p>Detección de anomalías: Encontrar ejemplos atípicos, es decir que difieren en características al resto de la base de datos</p></li>
-<li><p>Denoising: Retornar una versión de los datos de entrada con menos ruido</p></li>
-<li><p>Síntesis: Generación de ejemplos de texto, audio, imágenes que asemejan datos reales</p></li>
-<li><p>Clustering: Agrupar los ejemplos según criterio de similitud o densidad</p></li>
-</ul>
-<div class="section" id="conceptos-clave-en-aprendizaje-supervisado">
-<h2><span class="section-number">1.1. </span>Conceptos clave en aprendizaje supervisado<a class="headerlink" href="#conceptos-clave-en-aprendizaje-supervisado" title="Enlazar permanentemente con este título">¶</a></h2>
-<p><strong>Entrenamiento</strong></p>
-<p>Los problemas de aprendizaje <strong>supervisado</strong> se resuelven “enseñándole” al modelo en base a ejemplos donde la respuesta correcta se conoce de antemano. Este proceso se denomina <strong>entrenamiento</strong> o ajuste del modelo.</p>
-<p>Para entrenar necesitamos entonces un conjunto de <span class="math notranslate nohighlight">\(N\)</span> ejemplos:</p>
-<div class="math notranslate nohighlight">
-\[
-\{(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)\},
-\]</div>
-<p>donde cada ejemplo es una tupla que contiene</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_i \in \mathcal{X}\)</span>: la entrada para el modelo (datos o atributos)</p></li>
-<li><p><span class="math notranslate nohighlight">\(y_i \in \mathcal{Y}\)</span>: la salida que el modelo debiera retornar (objetivo)</p></li>
-</ul>
+  <div class="tex2jax_ignore mathjax_ignore section" id="machine-learning-engineering-mle">
+<h1><span class="section-number">10. </span>Machine Learning Engineering (MLE)<a class="headerlink" href="#machine-learning-engineering-mle" title="Enlazar permanentemente con este título">¶</a></h1>
+<p><a class="reference external" href="http://mlebook.com/">MLE</a> se refiere al diseño y construcción de software que incluye componentes basados en modelos de Machine Learning (ML). En este sentido, MLE se puede considerar como una extensión de la <a class="reference external" href="https://es.wikipedia.org/wiki/Ingenier%C3%ADa_de_software">ingeniería de software</a> tradicional</p>
+<p>Hasta ahora nos hemos concentrado en presentar los aspectos más científicos de como entrenar y evaluar modelos de ML. MLE concierne no sólo el entrenamiento sino también aspectos relacionados a la colección y corrección de datos y al monitoreo y mantenimiendo de los modelos</p>
+<div class="section" id="ciclo-de-vida-de-un-proyecto-de-ml">
+<h2><span class="section-number">10.1. </span>Ciclo de vida de un proyecto de ML<a class="headerlink" href="#ciclo-de-vida-de-un-proyecto-de-ml" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Las tareas para desarrollar un sofware que utiliza ML pueden dividirse en</p>
+<ol class="simple">
+<li><p>Recolección y preparación de datos</p></li>
+<li><p>Ingeniería de <em>features</em> (atributos)</p></li>
+<li><p>Entrenamiento de modelos</p></li>
+<li><p>Evaluación de modelos</p></li>
+<li><p>Deployment de modelos</p></li>
+<li><p>Servir modelos (<em>on premise</em> o utilizando <em>cloud</em>)</p></li>
+<li><p>Monitoreo de modelos</p></li>
+<li><p>Mantenimiento de modelos</p></li>
+</ol>
+<p>Donde además se asume como “paso 0” la definición de uno o más objetivos, que vienen a ser los requisitos del software</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>El objetivo debe definir las entradas y salidas del modelo. El objetivo también debe definir el criterio o métrica con la que se medirá que tan exitoso es el modelo</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En problemas de clasificación, la variable objetivo suele llamarse <strong>etiqueta</strong>.</p>
+<p>El movimiento entre los pasos anteriores puede ser “hacia atrás”, por ejemplo ante una mala evaluación del modelo o errores detectados en el monitoreo, podríamos retroceder a recolectar nuevos datos y reetrenar el modelo</p>
 </div>
-<p>En modelos parámetricos <span class="math notranslate nohighlight">\(f_\theta\)</span>, entrenar se reduce a encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> con el cual se obtiene “el mejor” mapeo entre entrada y salida</p>
-<p><strong>Función de costo</strong></p>
-<p>La función de costo, también llamada pérdida, mide el error de nuestro modelo sobre un conjunto de datos etiquetados.</p>
-<p>Por ejemplo, para problemas de regresión, se utiliza la suma de errores cuadrados</p>
-<div class="math notranslate nohighlight">
-\[
-L(\theta) = \sum_{i=1}^N (f_\theta(x_i) - y_i)^2
-\]</div>
-<p>Mientras más cerca a cero sea <span class="math notranslate nohighlight">\(L(\theta)\)</span>, mejor es nuestro modelo según este criterio</p>
-<p>Con modelos parámetricos, encontrar el mejor mapeo es equivalente a encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> que minimiza <span class="math notranslate nohighlight">\(L(\theta)\)</span>, es decir el <span class="math notranslate nohighlight">\(\theta\)</span> óptimo</p>
-<p><strong>Optimización</strong></p>
-<p>Para entrenar el modelo tenemos que resolver el siguiente problema</p>
-<div class="math notranslate nohighlight">
-\[
-\min_\theta L(\theta)
-\]</div>
-<p>Las opciones que tenemos son</p>
+<p>Los pasos 3 y 4 han sido revisados en detalle para diversos modelos (regresión logística, SVM, árboles, etc). A continuación revisaremos los demás pasos del flujo anterior. Pero antes respondamos la siguiente pregunta:</p>
+<p><strong>¿Cuándo incorporar ML en mi software?</strong></p>
+<p>ML provee herramientas para aprender modelos de predicción automáticamente a partir de datos. Antes de implementar corresponde preguntar si:</p>
 <ul class="simple">
-<li><p>Evaluar <span class="math notranslate nohighlight">\(L()\)</span> con una estrategia de fuerza bruta: en general infactible</p></li>
-<li><p>Aplicar técnicas analíticas, por ejemplo resolver <span class="math notranslate nohighlight">\(\nabla_\theta L(\theta) = \vec 0\)</span></p></li>
-<li><p>Usar técnicas numéricas iterativas, por ejemplo el método de Newton o gradiente descendente</p></li>
+<li><p>El problema no puede resolverse en base a heurísticas o reglas que puedan programarse “a mano” (o se necesita una cantidad de reglas demasiado grande)</p></li>
+<li><p>El costo (monetario o horas humanas) de obtener y etiquetar los datos necesarios no es demasiado alto</p></li>
+<li><p>El problema tiene un objetivo simple y bien específicado</p></li>
+<li><p>El problema puede admitir algunas respuestas erróneas (accuracy no necesita ser 100%)</p></li>
 </ul>
-<p><strong>Inferencia</strong></p>
-<p>Luego de entrenar y validar el modelo podemos utilizarlo para hacer inferir la variable objetivo en datos nuevos,  es decir fuera de los que se utilizaron para entrenar.</p>
-<div class="math notranslate nohighlight">
-\[
-f_\theta(x^*) = y^*
-\]</div>
-<blockquote>
-<div><p>Este es el objetivo principal de machine learning: Aprender modelos complejos a partir de ejemplos para luego aplicarlos automaticamente sobre nuevos flujos de datos</p>
-</div></blockquote>
-<p>El siguiente diagrama ejemplifica este proceso y además compara machine learning con la programación tradicional</p>
-<a class="reference internal image-reference" href="../../_images/traditional_vs_ml.png"><img alt="../../_images/traditional_vs_ml.png" src="../../_images/traditional_vs_ml.png" style="width: 700px;" /></a>
-<p><strong>Generalización</strong></p>
-<p>Es la capacidad de un modelo de hacer buenas inferencias o predicciones en datos que no ha visto. Para medir la capacidad de generalización se suele “esconder” una parte del conjunto de entrenamiento</p>
-<p><strong>Representatividad</strong></p>
-<p>Es crítico que los datos que utilizemos <strong>representen</strong> adecuadamente el problema que queremos resolver. Idealmente, la distribución de los datos de entrenamiento no debiera diferir demasiado de los datos de prueba</p>
-<p>En caso de que esto ocurriera sería necesario reentrenar el modelo con nuevos datos que reflejen este cambio</p>
-<p><strong>Sesgos</strong></p>
-<p>Un sesgo es una preferencia generalmente indeseada en un modelo. Muchas veces los sesgos del modelo son sesgos de los datos que utilizamos para entrenar. El más típico es el sesgo causado por clases desbalanceadas o exclusión de clases</p>
+<p>Si alguna de las anteriores no se cumple, deberíamos cuestionar el uso de ML en nuestro sofware</p>
+<p>Otro indicio importante es si el problema en cuestion está relacionado a percepción humana, por ejemplo reconocimiento de patrones en imágenes (visión) o sonido (audición). En esos casos ML es en general la mejor solución</p>
+</div>
+<div class="section" id="recoleccion-y-preparacion-de-datos">
+<h2><span class="section-number">10.2. </span>Recolección y preparación de datos<a class="headerlink" href="#recoleccion-y-preparacion-de-datos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Antes de entrenar un modelo se necesitan datos. Antes de iniciar una campaña de recolección de datos que permitan cumplir el objetivo deberíamos investigar si:</p>
+<ul class="simple">
+<li><p>hay datos existentes que pueden utilizarse</p></li>
+<li><p>los datos son suficientes para todas las clases/eventos de interés</p></li>
+<li><p>los datos son relativamente actuales (no están obsoletos)</p></li>
+<li><p>los datos tienen calidad suficiente</p></li>
+</ul>
+<p>Los problemas típicamente encontrados en datasets de baja calidad son:</p>
+<ul class="simple">
+<li><p>Ruido en los datos</p></li>
+<li><p>Ruido en las etiquetas: Etiquetadores inconsistentes</p></li>
+<li><p>Datos faltantes (<em>missing data</em>)</p></li>
+<li><p>Sesgos de selección, muestreo, variables omitidas, etc</p></li>
+<li><p>Presencia de <em>outliers</em>: Ejemplos muy alejados de la distribución que pueden afectar el entrenamiento</p></li>
+<li><p><em>data leakage</em>: La variable objetivo (etiqueta) está oculta en alguna de las variables</p></li>
+</ul>
+<p>Algunos de estos problemas puede resolverse mediante</p>
+<ul class="simple">
+<li><p>Adecuado particionamiento de los datos</p></li>
+<li><p>Inputación: Se refiere a rellenar datos faltantes utilizando reglas simples</p></li>
+<li><p>Balanceo de clases mediante submuestreo (aleatorio o clustering), sobremuestreo (repetición) o aumentación sintética</p></li>
+<li><p>Aumentación: Se refiere a crear sintéticamente nuevos datos basados en los existentes</p></li>
+</ul>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Sin embargo esto puede ser más grave, por ejemplo sesgos raciales y de género, como muestra <a class="reference external" href="https://docs.google.com/presentation/d/1txaRV35N6OOxv4DF4ZIlAFUKty7pBfMu1erLe2k4-Xg/edit#slide=id.g8fcb23695b_1_0">la siguiente breve presentación</a></p>
+<p>Para trabajar con datos desbalanceados utilizando los esquemas mencionados sugiero la librería <a class="reference external" href="https://labelstud.io/">imbalanced-learn</a></p>
 </div>
+<p>De lo contrario puede ser necesario recolectar datos propios o re-etiquetar los datos existentes</p>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p>En caso de necesitar etiquetar datos de series de tiempo, texto, audio, imágenes recomiendo el software <a class="reference external" href="https://labelstud.io/">LabelStudio</a></p>
+</div>
+<p>Si los datos cambian con cierta frecuencia, viven en distintos servidores y/o necesitan ser compartidos y coordinados en un equipo conviene utilizar <strong>versionamiento</strong></p>
+<p>El versionamiento de datos es un concepto reciente, muy similar al versionamiento de código:</p>
+<ul class="simple">
+<li><p>Cada cambio en nuestros datos es anotado mediante un <em>commit</em></p></li>
+<li><p>Los cambios hechos por distintas personas pueden coordinarse de forma centralizada</p></li>
+<li><p>Se puede revisar fácilmente la historia de cambios y retroceder a un cambio anterior si es necesario</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p>Para realizar versionanamiento de datos sugiero la <a class="reference external" href="https://dvc.org/">Data Version Control</a> (DVC), la cual está basada en git</p>
+</div>
+</div>
+<div class="section" id="ingenieria-de-features-atributos">
+<h2><span class="section-number">10.3. </span>Ingeniería de <em>features</em> (atributos)<a class="headerlink" href="#ingenieria-de-features-atributos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Pendiente</p>
+</div>
+<div class="section" id="herramientas-de-mlops">
+<h2><span class="section-number">10.4. </span>Herramientas de MLOps<a class="headerlink" href="#herramientas-de-mlops" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Un concepto que se utiliza bastante hoy en día es <a class="reference external" href="https://docs.microsoft.com/es-es/azure/machine-learning/concept-model-management-and-deployment">Machine Learning Operations</a> (MLOPs). MLOps se refiere a la implementación de prácticas de Development Operations (DevOps) en problemas de Machine Learning, entre ellas</p>
+<ul class="simple">
+<li><p>Integración y Entrega continuas (CI/CD)</p></li>
+<li><p>Flujos automáticos de trabajo (workflows)</p></li>
+<li><p>Control de versiones (códigos, datos y modelos)</p></li>
+<li><p>Empaquetado de soluciones</p></li>
+<li><p>Orquestación de carga</p></li>
+</ul>
+<p>MLOps está relacionado a los últimos 4 pasos del esquema MLE</p>
 </div>
 </div>
 
@@ -432,19 +457,12 @@ f_\theta(x^*) = y^*
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../../README.html" title="anterior página">
+    <a class='left-prev' id="prev-link" href="ensembles2.html" title="anterior página">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">anterior</p>
-            <p class="prev-next-title">Machine Learning Book</p>
+            <p class="prev-next-title"><span class="section-number">9. </span>Ensambles secuenciales</p>
         </div>
-    </a>
-    <a class='right-next' id="next-link" href="linear.html" title="siguiente página">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Regresión Lineal</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             
