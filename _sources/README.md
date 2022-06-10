@@ -18,11 +18,23 @@ A lo largo del libro encontrará ejemplos en base a las librerías [scikit-learn
 
 **Referencias**
 
+Aprendizaje supervisado:
+
 1. [Hastie, Tibshirani, Friedman, "Elements of Statistical Learning", Springer, 2009](http://www.web.stanford.edu/~hastie/ElemStatLearn/)
 1. [A. Burkov, "Machine Learning ENGINEERING", True Positive INC, 2020](http://www.mlebook.com/wiki/doku.php)
+
+Redes Neuronales Artificiales:
+
 1. [I. Goodfellow and Y. Bengio and A. Courville, "Deep Learning", MIT PRESS, 2016](http://www.deeplearningbook.org/)
 1. [A. Zhang, Z.C. Lipton, M. Li, A.J. Smola, "Dive into Deep Learning"](https://www.d2l.ai/)
+
+Aprendizaje Reforzado:
+
+1. [Sutton y Barto, "Reinforcement Learning: An Introduction", MIT Press, 2nd ed, 2018](http://www.incompleteideas.net/book/the-book.html)
 1. [V. Francois-Lavet, et al., "An Introduction to Deep Reinforcement Learning", Foundations and Trends in Machine Learning: Vol. 11, No. 3-4, 2018](https://arxiv.org/abs/1811.12560)
+1. [D. Silver, "Reinforced Learning Course"](https://www.youtube.com/watch?v=2pWv7GOvuf0&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ)
+
+
 
 **Dedicatoria**
 
