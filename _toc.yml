@@ -13,6 +13,7 @@ parts:
   - file: contents/supervised_learning/trees
   - file: contents/supervised_learning/ensembles1
   - file: contents/supervised_learning/ensembles2
+  - file: contents/supervised_learning/features
   - file: contents/supervised_learning/engineering
 - caption: "Redes Neuronales Artificiales"
   numbered: true
