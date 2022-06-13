@@ -1,8 +1,13 @@
-img, table {
+img {
 	display:block;
 	margin-left: auto;
 	margin-right: auto
 }
+
+ table.table {
+    margin-left:auto; 
+    margin-right:auto;
+  }
 
 
 iframe{ 
