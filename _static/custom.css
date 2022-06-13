@@ -4,12 +4,13 @@ img {
 	margin-right: auto
 }
 
- table.table {
-    margin-left:auto; 
-    margin-right:auto;
-  }
+table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: fit-content !important;
+}
 
-
+ 
 iframe{ 
 	display: block;
 	margin: 0 auto;
