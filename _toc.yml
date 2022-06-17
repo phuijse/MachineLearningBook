@@ -20,6 +20,7 @@ parts:
   chapters:
       - file: contents/neural_networks/pytorch1
       - file: contents/neural_networks/pytorch2
+      - file: contents/neural_networks/convolution
 - caption: "Aprendizaje Reforzado"
   numbered: true
   chapters:
