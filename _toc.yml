@@ -21,6 +21,10 @@ parts:
       - file: contents/neural_networks/pytorch1
       - file: contents/neural_networks/pytorch2
       - file: contents/neural_networks/convolution
+      - file: contents/neural_networks/vision
+      - file: contents/neural_networks/data_augmentation
+      - file: contents/neural_networks/transfer_learning
+      - file: contents/neural_networks/tips
 - caption: "Aprendizaje Reforzado"
   numbered: true
   chapters:
