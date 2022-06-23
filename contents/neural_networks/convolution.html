@@ -58,6 +58,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="15. Visión computacional" href="vision.html" />
     <link rel="prev" title="13. Entrenamiento de redes neuronales con PyTorch" href="pytorch2.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="es">
@@ -178,6 +179,36 @@ const thebe_selector_output = ".output, .cell_output"
    14. Procesamiento digital de imágenes
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="vision.html">
+   15. Visión computacional
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cnn.html">
+   16. Red Convolucional en PyTorch
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="data_augmentation.html">
+   17. Aumentación de datos con
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     torchvision
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="transfer_learning.html">
+   18. Utilizando un modelo pre-entrenado
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tips.html">
+   19. Consejos para entrenar redes neuronales
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -292,11 +323,6 @@ const thebe_selector_output = ".output, .cell_output"
    14.2. Filtrado de imágenes con convoluciones
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#vision-computacional">
-   14.3. Visión computacional
-  </a>
- </li>
 </ul>
 
             </nav>
@@ -325,11 +351,6 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#filtrado-de-imagenes-con-convoluciones">
    14.2. Filtrado de imágenes con convoluciones
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#vision-computacional">
-   14.3. Visión computacional
   </a>
  </li>
 </ul>
@@ -476,7 +497,9 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Suaviza, elimina los detalles</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.signal</span>
+
+<span class="n">D</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
 
 <span class="n">display</span><span class="p">(</span><span class="n">filt</span><span class="p">)</span>
@@ -495,18 +518,7 @@ const thebe_selector_output = ".output, .cell_output"
        [1., 1., 1.]])
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">Input In [5],</span> in <span class="ni">&lt;cell line: 5&gt;</span><span class="nt">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">display</span><span class="p">(</span><span class="n">filt</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">img_res</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">correlate2d</span><span class="p">(</span><span class="n">subimg</span><span class="p">,</span> <span class="n">filt</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">filt</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">subimg</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys_r</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;scipy&#39; is not defined
-</pre></div>
-</div>
+<img alt="../../_images/convolution_10_1.png" src="../../_images/convolution_10_1.png" />
 </div>
 </div>
 <p><strong>Filtro pasa-alto</strong></p>
@@ -524,6 +536,13 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1., -1.],
+       [ 1., -1.]])
+</pre></div>
+</div>
+<img alt="../../_images/convolution_12_1.png" src="../../_images/convolution_12_1.png" />
+</div>
 </div>
 <p><strong>¿Detector de patillas?</strong></p>
 <p>Detecta patillas de fotografos mirando al horizonte</p>
@@ -532,6 +551,21 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
 <span class="n">filt</span><span class="p">[:</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">display</span><span class="p">(</span><span class="n">filt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 0., 0., 0., 0., 0., 0., 0., 1., 1.],
+       [1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.],
+       [1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.]])
 </pre></div>
 </div>
 </div>
@@ -549,6 +583,9 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/convolution_15_0.png" src="../../_images/convolution_15_0.png" />
+</div>
 </div>
 <p>En realidad el filtro se activa con cualquier cosa con forma de “U”</p>
 <div class="admonition important">
@@ -556,43 +593,6 @@ const thebe_selector_output = ".output, .cell_output"
 <p>Podríamos aprender filtros para detectar objetos específicos</p>
 </div>
 <p>En tal caso necesitamos aprender los valores de los “píxeles” del kernel</p>
-</div>
-<div class="section" id="vision-computacional">
-<h2><span class="section-number">14.3. </span>Visión computacional<a class="headerlink" href="#vision-computacional" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>La <a class="reference external" href="http://szeliski.org/Book/">visión computacional</a> es un campo de investigación que busca que los computadores sean capaces de “comprender” el contenido presente en imágenes digitales y video, cuyo objetivo es</p>
-<blockquote>
-<div><p>Automatizar tareas realizas por el sistema visual humano</p>
-</div></blockquote>
-<p>Algunos ejemplos de tareas:</p>
-<ul class="simple">
-<li><p>Clasificación y Reconocimiento: ¿A qué categoría corresponde el patrón en la imagen?</p></li>
-<li><p>Detección, Localización y Segmentación: ¿Dónde está el patrón en la imagen?</p></li>
-<li><p><a class="reference external" href="https://modelzoo.co/blog/deep-learning-models-and-code-for-pose-estimation">Estimación de pose</a></p></li>
-<li><p><a class="reference external" href="https://www.youtube.com/watch?v=gg0F5JjKmhA">Reconstrucción</a>, <a class="reference external" href="https://www.extremetech.com/extreme/132950-csi-style-super-resolution-image-enlargment-yeeaaaah">super-resolución</a> y <a class="reference external" href="https://tcwang0509.github.io/pix2pixHD/">síntesis</a></p></li>
-<li><p>…</p></li>
-</ul>
-<p><a href="https://towardsdatascience.com/detection-and-segmentation-through-convnets-47aa42de27ea"><a class="reference internal" href="https://miro.medium.com/max/800/1*SNvD04dEFIDwNAqSXLQC_g.jpeg"><img alt="https://miro.medium.com/max/800/1*SNvD04dEFIDwNAqSXLQC_g.jpeg" src="https://miro.medium.com/max/800/1*SNvD04dEFIDwNAqSXLQC_g.jpeg" style="width: 600px;" /></a></a></p>
-<p><strong>Aplicaciones</strong></p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.rsipvision.com/medical-segmentation/">Medicina</a></p></li>
-<li><p><a class="reference external" href="https://www.youtube.com/watch?v=H7Ym3DMSGms">Navegación autónoma</a></p></li>
-<li><p><a class="reference external" href="https://www.youtube.com/watch?v=jxhAWuImxS8">Sistemas de control de tráfico</a></p></li>
-<li><p><a class="reference external" href="https://www.youtube.com/watch?v=r9hVypi_6TQ">Realidad aumentada</a></p></li>
-<li><p><a class="reference external" href="https://medium.com/&#64;awangenh/mapping-weeds-and-crops-in-precision-agriculture-with-convolutional-neural-networks-138dab87ba00">Agricultura y forestal</a></p></li>
-<li><p><a class="reference external" href="https://www.cs.ubc.ca/~lowe/vision.html">…</a></p></li>
-</ul>
-<p><strong>Herramientas</strong></p>
-<ul class="simple">
-<li><p>Procesamiento digital de imágenes</p></li>
-<li><p>Optimización, Estadística</p></li>
-<li><p>Machine learning y en particular  <strong>Redes Neuronales Convolucionales</strong></p></li>
-</ul>
-<p><strong>Desafíos</strong></p>
-<ul class="simple">
-<li><p>Algoritmos invariantes a los cambios de Iluminación</p></li>
-<li><p>Algoritmos invariantes a los cambios de escala y perspectiva (deformación)</p></li>
-<li><p>Algoritmos robustos contra la oclusión</p></li>
-</ul>
 </div>
 </div>
 
@@ -627,6 +627,13 @@ const thebe_selector_output = ".output, .cell_output"
             <p class="prev-next-subtitle">anterior</p>
             <p class="prev-next-title"><span class="section-number">13. </span>Entrenamiento de redes neuronales con PyTorch</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="vision.html" title="siguiente página">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>Visión computacional</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             
