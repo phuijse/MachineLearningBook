@@ -1,53 +1,63 @@
 
+
 <!DOCTYPE html>
 
-<html lang="es">
+
+<html lang="es" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>8. Ensambles paralelos &#8212; Aprendizaje de Máquinas</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/translations.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -56,334 +66,327 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contents/supervised_learning/ensembles1';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
     <link rel="next" title="9. Ensambles secuenciales" href="ensembles2.html" />
     <link rel="prev" title="7. Árboles de decisión" href="trees.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="es">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Aprendizaje Supervisado
- </span>
-</p>
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aprendizaje Supervisado</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="intro.html">
-   1. Fundamentos de Aprendizaje Supervisado
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="linear.html">
-   2. Regresión Lineal
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="validation.html">
-   3. Sobreajuste, Validación y Regularización
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="logistic.html">
-   4. Regresión Logística
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="metrics.html">
-   5. Evaluación de clasificadores
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="svm.html">
-   6. Máquinas de soporte vectorial
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="trees.html">
-   7. Árboles de decisión
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   8. Ensambles paralelos
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ensembles2.html">
-   9. Ensambles secuenciales
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="features.html">
-   10. Ingeniería de características
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="engineering.html">
-   11. Machine Learning Engineering (MLE)
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Fundamentos de Aprendizaje Supervisado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">2. Regresión Lineal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="validation.html">3. Sobreajuste, Validación y Regularización</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logistic.html">4. Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">5. Evaluación de clasificadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svm.html">6. Máquinas de soporte vectorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trees.html">7. Árboles de decisión</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Ensambles paralelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembles2.html">9. Ensambles secuenciales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">10. Ingeniería de características</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineering.html">11. Machine Learning Engineering (MLE)</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Redes Neuronales Artificiales
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Redes Neuronales Artificiales</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/pytorch1.html">
-   12. Breve tutorial de PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/pytorch2.html">
-   13. Entrenamiento de redes neuronales con PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/convolution.html">
-   14. Procesamiento digital de imágenes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/vision.html">
-   15. Visión computacional
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/cnn.html">
-   16. Red Convolucional en PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/data_augmentation.html">
-   17. Aumentación de datos con
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     torchvision
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/transfer_learning.html">
-   18. Utilizando un modelo pre-entrenado
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/tips.html">
-   19. Consejos para entrenar redes neuronales
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/pytorch1.html">12. Breve tutorial de PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/pytorch2.html">13. Entrenamiento de redes neuronales con PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/convolution.html">14. Procesamiento digital de imágenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/vision.html">15. Visión computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/cnn.html">16. Red Convolucional en PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/data_augmentation.html">17. Aumentación de datos con <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/transfer_learning.html">18. Utilizando un modelo pre-entrenado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/tips.html">19. Consejos para entrenar redes neuronales</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
-                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/ensembles1.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/phuijse/MachineLearningBook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
-                    class="fab fa-github"></i>repositorio</button></a>
-        <a class="issues-button"
-            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/ensembles1.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/phuijse/MachineLearningBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/ensembles1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
-        title="Modo de pantalla completa"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/ensembles1.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contents/supervised_learning/ensembles1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ensambles paralelos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contenido
+            <div>
+                <h2> Contenido </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bagging-bootstrap-aggregating">
-   8.1. Bagging: Bootstrap Aggregating
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#random-forest">
-   8.2. Random Forest
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
-   8.3. Implementación en scikit-learn
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#seleccion-de-caracteristicas-embebida">
-   8.4. Selección de características embebida
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bagging-bootstrap-aggregating">8.1. Bagging: Bootstrap Aggregating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest">8.2. Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-en-scikit-learn">8.3. Implementación en scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-caracteristicas-embebida">8.4. Selección de características embebida</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Ensambles paralelos</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contenido </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#bagging-bootstrap-aggregating">
-   8.1. Bagging: Bootstrap Aggregating
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#random-forest">
-   8.2. Random Forest
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementacion-en-scikit-learn">
-   8.3. Implementación en scikit-learn
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#seleccion-de-caracteristicas-embebida">
-   8.4. Selección de características embebida
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="ensambles-paralelos">
-<h1><span class="section-number">8. </span>Ensambles paralelos<a class="headerlink" href="#ensambles-paralelos" title="Enlazar permanentemente con este título">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ensambles-paralelos">
+<h1><span class="section-number">8. </span>Ensambles paralelos<a class="headerlink" href="#ensambles-paralelos" title="Permalink to this heading">#</a></h1>
 <p>Los métodos de ensambles paralelos entrenan estimadores (clasificador o regresor) débiles de forma independiente y luego combinan sus resultados</p>
 <dl class="simple myst">
 <dt>Estimador débil</dt><dd><p>Algoritmo que produce un resultado (al menos) levemente mejor que el azar</p>
@@ -420,14 +423,14 @@ P(H(x) \neq y) = \sum_{k=0}^{T/2} \binom{T}{k} (1-\epsilon)^k \epsilon^{T-k} \le
 <p>En la práctica no es posible tener clasificadores independientes si están entrenados con el mismo conjunto de datos</p>
 </div>
 <p>A continuación veremos una técnica que busca solucionar este problema</p>
-<div class="section" id="bagging-bootstrap-aggregating">
-<h2><span class="section-number">8.1. </span>Bagging: Bootstrap Aggregating<a class="headerlink" href="#bagging-bootstrap-aggregating" title="Enlazar permanentemente con este título">¶</a></h2>
+<section id="bagging-bootstrap-aggregating">
+<h2><span class="section-number">8.1. </span>Bagging: Bootstrap Aggregating<a class="headerlink" href="#bagging-bootstrap-aggregating" title="Permalink to this heading">#</a></h2>
 <p><em>Bootstrap</em> es una técnica estadística para obtener intervalos de confianza empíricos que se basa en obtener muestras distintas pero representativas del conjunto de datos original</p>
 <p>La técnica más clásica y simple para lograr lo anterior es <strong>muestreo con reemplazo</strong> y se ilustra en la siguiente figura</p>
 <a class="reference internal image-reference" href="../../_images/bootstrap.png"><img alt="../../_images/bootstrap.png" src="../../_images/bootstrap.png" style="width: 700px;" /></a>
 <p>El conjunto de datos original (izquierda) se remuestrea <span class="math notranslate nohighlight">\(T\)</span> veces. En cada muestra se escogen aleatoriamente tantos ejemplos como existían en el conjunto original. Sin embargo algunos ejemplos no se escogen, mientras que otros se escogen más de una vez (reemplazo)</p>
 <p>El algoritmo de <a class="reference external" href="https://link.springer.com/article/10.1007/BF00058655">Bagging</a> consiste en</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Generar <span class="math notranslate nohighlight">\(T\)</span> conjuntos de datos utilizando muestreo con reemplazo</p></li>
 <li><p>Entrenar un clasificador débil en cada conjunto</p></li>
 <li><p>Combinar los clasificadores débiles con:</p></li>
@@ -464,18 +467,18 @@ H(x) = \text{arg} \max_{y \in \mathcal{Y}} \sum_{t=1}^T \mathbb{1} (h_t(x) = y)
 <p class="admonition-title">Nota</p>
 <p>En el caso de los árboles de decisión, mientras más profundo sea mayor inestabilidad se tiene. Adicionalmente, si los árboles no se podan son más inestables</p>
 </div>
-</div>
-<div class="section" id="random-forest">
-<h2><span class="section-number">8.2. </span>Random Forest<a class="headerlink" href="#random-forest" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="random-forest">
+<h2><span class="section-number">8.2. </span>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this heading">#</a></h2>
 <p>En bagging se realiza muestreo con reemplazo de los datos. <a class="reference external" href="https://link.springer.com/article/10.1023/A:1010933404324">Random Forest</a> (RF) extiende esta idea realizando submuestreo de los atributos (features/características)</p>
 <p>En particular, cada split de cada clasificador débil (árbol) tiene acceso a un subconjunto aleatorio <span class="math notranslate nohighlight">\(M\)</span> de los atributos originales. De esta forma se obtienen clasificadores débiles menos correlacionados (más independientes) y además más rápidos de entrenar</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
 <p>La cantidad máxima de atributos por split es un hiperparámetro. Típicamente se utiliza la raiz cuadrada del total de atributos</p>
 </div>
-</div>
-<div class="section" id="implementacion-en-scikit-learn">
-<h2><span class="section-number">8.3. </span>Implementación en scikit-learn<a class="headerlink" href="#implementacion-en-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="implementacion-en-scikit-learn">
+<h2><span class="section-number">8.3. </span>Implementación en scikit-learn<a class="headerlink" href="#implementacion-en-scikit-learn" title="Permalink to this heading">#</a></h2>
 <p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>RandomForest</em> para problemas de clasificación y regresión. Nos enfocaremos en el primero</p>
 <p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html"><code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a> son</p>
 <ul class="simple">
@@ -690,12 +693,12 @@ weighted avg       0.94      0.94      0.94        54
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ensembles1_15_0.png" src="../../_images/ensembles1_15_0.png" />
+<img alt="../../_images/1e20d7cc0527135cb2001dc116e1c89a29ddd0ba7bfc293ecf544795820a073f.png" src="../../_images/1e20d7cc0527135cb2001dc116e1c89a29ddd0ba7bfc293ecf544795820a073f.png" />
 </div>
 </div>
-</div>
-<div class="section" id="seleccion-de-caracteristicas-embebida">
-<h2><span class="section-number">8.4. </span>Selección de características embebida<a class="headerlink" href="#seleccion-de-caracteristicas-embebida" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="seleccion-de-caracteristicas-embebida">
+<h2><span class="section-number">8.4. </span>Selección de características embebida<a class="headerlink" href="#seleccion-de-caracteristicas-embebida" title="Permalink to this heading">#</a></h2>
 <p>En cada split de cada árbol se obtiene una ganancia de información para el atributo seleccionado. Luego, para un atributo en particular, se puede obtener su ganancia de información promedio.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
@@ -718,11 +721,11 @@ weighted avg       0.94      0.94      0.94        54
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ensembles1_17_0.png" src="../../_images/ensembles1_17_0.png" />
+<img alt="../../_images/9670dba63eda93b951539fe557901c053bb94cfffe5d5859d1f3de1faf205128.png" src="../../_images/9670dba63eda93b951539fe557901c053bb94cfffe5d5859d1f3de1faf205128.png" />
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -736,7 +739,7 @@ weighted avg       0.94      0.94      0.94        54
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./contents/supervised_learning"
         },
         predefinedOutput: true
@@ -744,44 +747,108 @@ weighted avg       0.94      0.94      0.94        54
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="trees.html" title="anterior página">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">anterior</p>
-            <p class="prev-next-title"><span class="section-number">7. </span>Árboles de decisión</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="trees.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Árboles de decisión</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="ensembles2.html" title="siguiente página">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="ensembles2.html"
+       title="siguiente página">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
         <p class="prev-next-title"><span class="section-number">9. </span>Ensambles secuenciales</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-            
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      Por Pablo Huijse Heise<br/>
-    
-        &copy; Derechos de autor 2022.<br/>
-  </p>
-</footer>
-</main>
-
-
       </div>
-    </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bagging-bootstrap-aggregating">8.1. Bagging: Bootstrap Aggregating</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest">8.2. Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-en-scikit-learn">8.3. Implementación en scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-caracteristicas-embebida">8.4. Selección de características embebida</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Pablo Huijse Heise
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

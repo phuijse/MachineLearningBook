@@ -1,53 +1,63 @@
 
+
 <!DOCTYPE html>
 
-<html lang="es">
+
+<html lang="es" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>3. Sobreajuste, Validación y Regularización &#8212; Aprendizaje de Máquinas</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/translations.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
@@ -56,345 +66,373 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contents/supervised_learning/validation';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
     <link rel="next" title="4. Regresión Logística" href="logistic.html" />
     <link rel="prev" title="2. Regresión Lineal" href="linear.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="es">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Aprendizaje de Máquinas</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Buscar este libro ..." aria-label="Buscar este libro ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Aprendizaje Supervisado
- </span>
-</p>
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aprendizaje Supervisado</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="intro.html">
-   1. Fundamentos de Aprendizaje Supervisado
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="linear.html">
-   2. Regresión Lineal
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   3. Sobreajuste, Validación y Regularización
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="logistic.html">
-   4. Regresión Logística
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="metrics.html">
-   5. Evaluación de clasificadores
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="svm.html">
-   6. Máquinas de soporte vectorial
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="trees.html">
-   7. Árboles de decisión
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ensembles1.html">
-   8. Ensambles paralelos
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ensembles2.html">
-   9. Ensambles secuenciales
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="features.html">
-   10. Ingeniería de características
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="engineering.html">
-   11. Machine Learning Engineering (MLE)
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Fundamentos de Aprendizaje Supervisado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">2. Regresión Lineal</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Sobreajuste, Validación y Regularización</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logistic.html">4. Regresión Logística</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">5. Evaluación de clasificadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svm.html">6. Máquinas de soporte vectorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trees.html">7. Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembles1.html">8. Ensambles paralelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembles2.html">9. Ensambles secuenciales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">10. Ingeniería de características</a></li>
+<li class="toctree-l1"><a class="reference internal" href="engineering.html">11. Machine Learning Engineering (MLE)</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Redes Neuronales Artificiales
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Redes Neuronales Artificiales</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/pytorch1.html">
-   12. Breve tutorial de PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/pytorch2.html">
-   13. Entrenamiento de redes neuronales con PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/convolution.html">
-   14. Procesamiento digital de imágenes
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/vision.html">
-   15. Visión computacional
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/cnn.html">
-   16. Red Convolucional en PyTorch
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/data_augmentation.html">
-   17. Aumentación de datos con
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     torchvision
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/transfer_learning.html">
-   18. Utilizando un modelo pre-entrenado
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../neural_networks/tips.html">
-   19. Consejos para entrenar redes neuronales
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/pytorch1.html">12. Breve tutorial de PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/pytorch2.html">13. Entrenamiento de redes neuronales con PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/convolution.html">14. Procesamiento digital de imágenes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/vision.html">15. Visión computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/cnn.html">16. Red Convolucional en PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/data_augmentation.html">17. Aumentación de datos con <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/transfer_learning.html">18. Utilizando un modelo pre-entrenado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neural_networks/tips.html">19. Consejos para entrenar redes neuronales</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Navegación de palanca" aria-controls="site-navigation"
-                title="Navegación de palanca" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Descarga esta pagina"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/contents/supervised_learning/validation.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Descargar archivo fuente" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Imprimir en PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/phuijse/MachineLearningBook"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Repositorio de origen"><i
-                    class="fab fa-github"></i>repositorio</button></a>
-        <a class="issues-button"
-            href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/validation.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Abrir un problema"><i class="fas fa-lightbulb"></i>Tema abierto</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/phuijse/MachineLearningBook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/phuijse/MachineLearningBook/issues/new?title=Issue%20on%20page%20%2Fcontents/supervised_learning/validation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Modo de pantalla completa"
-        title="Modo de pantalla completa"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/phuijse/MachineLearningBook/master?urlpath=tree/contents/supervised_learning/validation.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Lanzamiento Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/contents/supervised_learning/validation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="claro/oscuro" aria-label="claro/oscuro" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sobreajuste, Validación y Regularización</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contenido
+            <div>
+                <h2> Contenido </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estrategias-de-validacion">
-   3.1. Estrategias de Validación
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#busqueda-de-hiperparametros-con-scikit-learn">
-   3.2. Búsqueda de hiperparámetros con scikit-learn
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regularizacion">
-   3.3. Regularización
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definiciones">3.1. Definiciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategias-de-validacion">3.2. Estrategias de Validación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#busqueda-de-hiperparametros-automatizada">3.3. Búsqueda de hiperparámetros automatizada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion">3.4. Regularización</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Sobreajuste, Validación y Regularización</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contenido </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#estrategias-de-validacion">
-   3.1. Estrategias de Validación
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#busqueda-de-hiperparametros-con-scikit-learn">
-   3.2. Búsqueda de hiperparámetros con scikit-learn
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#regularizacion">
-   3.3. Regularización
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="sobreajuste-validacion-y-regularizacion">
-<h1><span class="section-number">3. </span>Sobreajuste, Validación y Regularización<a class="headerlink" href="#sobreajuste-validacion-y-regularizacion" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>En el ejemplo del <strong>regresor polinomial</strong> vimos que aumentar el grado del polinomio vuelve más flexible al modelo, es decir que aumenta su capacidad para ajustar los datos</p>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sobreajuste-validacion-y-regularizacion">
+<h1><span class="section-number">3. </span>Sobreajuste, Validación y Regularización<a class="headerlink" href="#sobreajuste-validacion-y-regularizacion" title="Permalink to this heading">#</a></h1>
+<section id="definiciones">
+<h2><span class="section-number">3.1. </span>Definiciones<a class="headerlink" href="#definiciones" title="Permalink to this heading">#</a></h2>
+<p>En el ejemplo del <strong>regresor polinomial</strong> vimos que aumentar el grado del polinomio vuelve más flexible al modelo, es decir que aumenta su capacidad para ajustar los datos.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>La cantidad de parámetros (grados de libertaed) del modelo es un proxy de su complejidad. Un modelo más complejo (más parámetros) es en general más flexible</p>
+<p>La cantidad de parámetros (grados de libertad) del modelo es un <em>proxy</em> de su complejidad. Un modelo más complejo (más parámetros) es en general más flexible.</p>
 </div>
-<p>Sin embargo, si la flexibilidad es excesiva podríamos aproximar ciertos datos con error cero. Esta situación, en que el modelo “memoriza los datos”, se conoce como <strong>sobreajuste</strong></p>
+<p>Sin embargo, si la flexibilidad es excesiva, podríamos aproximar ciertos datos con error cero. Esta situación, en que el modelo ha “memorizado los datos”, se conoce como <strong>sobreajuste</strong>.</p>
+<p>En la siguiente figura las lineas naranja y azul representan dos modelos que buscan separar los círculos verdes de los diamantes rojos</p>
+<a class="reference internal image-reference" href="../../_images/overfitting2.png"><img alt="../../_images/overfitting2.png" src="../../_images/overfitting2.png" style="width: 300px;" /></a>
+<p>El modelo naranjo clasifica mejor pero se ha sobreajustado a los datos.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>Un modelo sobreajustado tiende a predecir muy mal datos “que no ha visto”, es decir que pierde capacidad de <strong>generalización</strong></p>
+<p>Siempre debemos considerar que los datos no son perfectos y que pueden tener ruido. Un modelo sobreajustado se “aprende el ruido” y en consecuencia puede desempeñar muy mal sobre datos nuevos: Pierde capacidad de <strong>generalización</strong>.</p>
 </div>
-<p>La siguiente figura esquematiza la relación la complejidad o capacidad de ajustar del modelo</p>
+<p>La siguiente figura esquematiza de forma general la relación entre la complejidad de un modelo, su capacidad de ajuste (error de entrenamiento) y su capacidad de generalización (error en datos aun no observados):</p>
 <a class="reference internal image-reference" href="../../_images/overfitting.png"><img alt="../../_images/overfitting.png" src="../../_images/overfitting.png" style="width: 400px;" /></a>
 <p>Figura: <a class="reference external" href="https://www.d2l.ai/chapter_multilayer-perceptrons/underfit-overfit.html">https://www.d2l.ai/chapter_multilayer-perceptrons/underfit-overfit.html</a></p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En general, mientras más simple (menos complejo) sea el modelo, menos propenso es a sobreajustarse</p>
+<p>En general, mientras más simple (menos complejo) sea el modelo, menos propenso es a sobreajustarse (generaliza mejor).</p>
 </div>
 <div class="admonition hint">
 <p class="admonition-title">Consejo</p>
-<p>Podemos evitar el escenario sobreajustado en modelos complejos utilizando un conjunto de datos de validación o estrategias de regularización</p>
+<p>Podemos evitar el escenario sobreajustado en modelos complejos utilizando un conjunto de datos de validación o estrategias de regularización.</p>
 </div>
+</section>
+<section id="estrategias-de-validacion">
+<h2><span class="section-number">3.2. </span>Estrategias de Validación<a class="headerlink" href="#estrategias-de-validacion" title="Permalink to this heading">#</a></h2>
+<p>Para combatir el sobreajuste podemos usar <strong>estrategias de validación</strong>, estas se basan en separar el conjunto de datos en dos o más subconjuntos, revisemos dos de ellas.</p>
+<p><em><strong>Hold-out</strong></em></p>
+<p>Consiste en separar los datos en conjuntos de entrenamiento, validación y prueba:</p>
+<ul class="simple">
+<li><p>El primero se ocupa para entrenar o ajustar el modelo</p></li>
+<li><p>El segundo se utiliza para detectar sobreajuste y calibrar los hiperparámetros del modelo</p></li>
+<li><p>El tercero se ocupa para realizar una evaluación final libre de sesgos</p></li>
+</ul>
+<p>La forma más simple de crear estos subconjuntos es permutar aleatoriamente los índices de los elementos y dividir los índices en distintas proporciones. Tipicamente se usa una proporción 60/20/20 o 80/10/10 dependiendo del tamaño de la base de datos original, como muestra el siguiente esquema:</p>
+<a class="reference internal image-reference" href="../../_images/validation1.png"><img alt="../../_images/validation1.png" src="../../_images/validation1.png" style="width: 500px;" /></a>
+<p>El permutar produce un particionamiento aleatorio que busca que cada subconjunto sea <strong>representativo</strong> de la base de datos original. La siguiente figura muestra un esquema iterativo de validación basado en el método <em>hold-out</em>:</p>
+<a class="reference internal image-reference" href="../../_images/validation2.png"><img alt="../../_images/validation2.png" src="../../_images/validation2.png" style="width: 500px;" /></a>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Usando estos esquemas podemos detectar fácilmente un modelo sobreajustado ya que presentará un buen desempeño en entrenamiento pero un desempeño deficiente en validación.</p>
+</div>
+<p>A continuación se muestra como utilizar la función <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"><code class="docutils literal notranslate"><span class="pre">train_test_split</span></code></a> para separar un conjunto de datos en dos subconjuntos aleatorios de tamaño definido por el usuario. Se utilizan los mismos datos de ejemplo de la lección anterior.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -404,32 +442,8 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span><span class="mi">3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="estrategias-de-validacion">
-<h2><span class="section-number">3.1. </span>Estrategias de Validación<a class="headerlink" href="#estrategias-de-validacion" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Para combatir el sobreajuste podemos usar <strong>estrategias de validación</strong>, estas se basan en separar el conjunto de datos en dos o más subconjuntos, revisemos dos de ellas</p>
-<p><strong>Holdout</strong></p>
-<p>Consiste en separar los datos en conjuntos de entrenamiento, validación y prueba:</p>
-<ul class="simple">
-<li><p>El primero se ocupa para entrenar o ajustar el modelo</p></li>
-<li><p>El segundo se utiliza para detectar sobreajuste y calibrar los hiperparámetros del modelo</p></li>
-<li><p>El tercero se ocupa para realizar una evaluación final libre de sesgos</p></li>
-</ul>
-<p>Típicamente, la base de datos se particiona en proporción 80%, 10%, 10% si el dataset es grande o 60%, 20%, 20% si el dataset es pequeño</p>
-<p><strong>K-fold</strong></p>
-<p>La validación cruzada o K-fold consisten en separar el conjunto en <span class="math notranslate nohighlight">\(K\)</span> particiones y utilizarlas alternadamente para entrenar y validar como muestra el siguiente esquema</p>
-<a class="reference internal image-reference" href="../../_images/cv.png"><img alt="../../_images/cv.png" src="../../_images/cv.png" style="width: 400px;" /></a>
-<p>El caso extremo se conoce como Leave-one-out (LOO), en que se entrena con todos los datos menos uno <span class="math notranslate nohighlight">\(N\)</span> veces.</p>
-<blockquote>
-<div><p>Para ambos tipos de validación los conjuntos se seleccionan aleatoriamente. También puede hacerse de forma estratificada, es decir manteniendo la proporción de clases</p>
-</div></blockquote>
-<p>Podemos separar un conjunto en dos con scikit-learn utilizando:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">))</span>
@@ -447,11 +461,25 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30 24 6
 </pre></div>
 </div>
-<img alt="../../_images/validation_5_1.png" src="../../_images/validation_5_1.png" />
+<img alt="../../_images/7056aea4eda5e1b344a8692c4a57c802461bca61dc3f1c263bbe4bade1134300.png" src="../../_images/7056aea4eda5e1b344a8692c4a57c802461bca61dc3f1c263bbe4bade1134300.png" />
 </div>
 </div>
-<p>En el ejemplo del regresor polinomial podemos utilizar <strong>validación cruzada</strong> para seleccionar el grado de polinomio óptimo</p>
-<p>Para esto utilizarmos la función <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code></a>. Los argumentos principales de esta función son</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Podemos volver a utilizar <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> para separar el primer subconjunto en particiones de entrenamiento y validación. A continuación veremos algunas formas más sofisticadas para hacer validación con scikit-learn</p>
+</div>
+<p><strong>K-fold</strong></p>
+<p>La validación cruzada o K-fold consisten en separar el conjunto en <span class="math notranslate nohighlight">\(K\)</span> particiones y utilizarlas alternadamente para entrenar y validar como muestra el siguiente esquema:</p>
+<a class="reference internal image-reference" href="../../_images/cv.png"><img alt="../../_images/cv.png" src="../../_images/cv.png" style="width: 400px;" /></a>
+<p>El caso extremo se conoce como Leave-one-out (LOO), en que se entrena con todos los datos menos uno <span class="math notranslate nohighlight">\(N\)</span> veces.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Las particiones se seleccionan aleatoriamente. También se pueden separar de forma aleatoria estratificada, es decir manteniendo la proporción de clases.</p>
+</div>
+<blockquote>
+<div><p>En el caso del regresor polinomial podemos utilizar <strong>validación cruzada</strong> para seleccionar el grado de polinomio óptimo.</p>
+</div></blockquote>
+<p>Podemos implementar una validación cruzada con la función <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html"><code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code></a> de scikit-learn. Los argumentos principales de esta función son:</p>
 <ul class="simple">
 <li><p>Un modelo de scikit learn</p></li>
 <li><p>Datos</p></li>
@@ -459,17 +487,18 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><code class="docutils literal notranslate"><span class="pre">cv</span></code>: La cantidad de particiones (K)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scoring</span></code>: Un objeto <code class="docutils literal notranslate"><span class="pre">scorer</span></code> que implementa una métrica de evaluación</p></li>
 </ul>
-<p>Podemos crear un objeto <code class="docutils literal notranslate"><span class="pre">scorer</span></code> a partir de una métrica de scikit-learn con</p>
+<p>Podemos crear un objeto <code class="docutils literal notranslate"><span class="pre">scorer</span></code> a partir de una métrica de scikit-learn con:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span><span class="p">,</span> <span class="n">mean_squared_error</span>
+
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Veamos a continuación como se ocupa <code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code> con el <code class="docutils literal notranslate"><span class="pre">scorer</span></code> que acabamos de crear</p>
-<p>Lo utilizaremos para encontrar el mejor grado del polinomio considerando 5 particiones para la validación cruzada</p>
+<p>Lo utilizaremos para encontrar el mejor grado del polinomio considerando 5 particiones para la validación cruzada.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
@@ -516,24 +545,41 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/validation_11_0.png" src="../../_images/validation_11_0.png" />
+<img alt="../../_images/6389bbbf51bda23314bb957bc5b3cc234b36888919ad4d1cacb78d8c1b351419.png" src="../../_images/6389bbbf51bda23314bb957bc5b3cc234b36888919ad4d1cacb78d8c1b351419.png" />
 </div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>El regresor polinomial con menor error de validación es de grado 3</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>El regresor polinomial con menor error de validación es de grado 3. Para grados mayores el error de entrenamiento  sigue bajando pero el error de validación aumenta.</p>
 </div>
-<p>En resumen</p>
-<ul class="simple">
-<li><p>Bajo error de entrenamiento y de validación: <strong>Ideal</strong></p></li>
-<li><p>Bajo error de entrenamiento y alto error de validación: <strong>Modelo sobreajustado</strong></p></li>
-<li><p>Alto error de entrenamiento y de validación: Considera un modelo de mayor complejidad y asegurate que tu código no tenga bugs</p></li>
-</ul>
-</div>
-<div class="section" id="busqueda-de-hiperparametros-con-scikit-learn">
-<h2><span class="section-number">3.2. </span>Búsqueda de hiperparámetros con scikit-learn<a class="headerlink" href="#busqueda-de-hiperparametros-con-scikit-learn" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Podemos automatizar aun más la búsqueda de hiperparámetros utilizando <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a></p>
-<p>Los argumentos principales de esta clase son</p>
+<p>En resumen:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Error de  entrenamiento</p></th>
+<th class="head text-center"><p>Error de validación</p></th>
+<th class="head text-left"><p>Comentario:</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>Bajo</p></td>
+<td class="text-center"><p>Bajo</p></td>
+<td class="text-left"><p>Escenario ideal</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Bajo</p></td>
+<td class="text-center"><p>Alto</p></td>
+<td class="text-left"><p><div style="width:290px">El modelo se ha sobreajustado a los datos de entrenamiento</div></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Alto</p></td>
+<td class="text-center"><p>Alto</p></td>
+<td class="text-left"><p><div style="width:290px">Es posible que el modelo no tenga suficiente capacidad para resolver el problema o que nuestro código tenga <em>bugs</em></div></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="busqueda-de-hiperparametros-automatizada">
+<h2><span class="section-number">3.3. </span>Búsqueda de hiperparámetros automatizada<a class="headerlink" href="#busqueda-de-hiperparametros-automatizada" title="Permalink to this heading">#</a></h2>
+<p>Podemos automatizar la búsqueda de hiper-parámetros utilizando la clase <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html"><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a> de scikit-learn.</p>
+<p>Los argumentos principales de esta clase son:</p>
 <ul class="simple">
 <li><p>Un estimador (regresor o clasificador) de scikit-learn</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">param_grid</span></code>: Un diccionario con los valores de los hiperparámetros que se han de explorar</p></li>
@@ -541,7 +587,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p><code class="docutils literal notranslate"><span class="pre">scoring</span></code>: Una métrica que se utilizará para evaluar los modelos</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>: El número de núcleos de CPU</p></li>
 </ul>
-<p>Para crear el diccionario de parámetros primero necesitamos conocer los nombres de los parámetros de nuestro modelo. Los estimadores de scikit-learn tienen un método <code class="docutils literal notranslate"><span class="pre">get_params()</span></code> que facilita esta tarea</p>
+<p>Para crear el diccionario de parámetros primero necesitamos conocer los nombres de los parámetros de nuestro modelo. Los estimadores de scikit-learn tienen un método <code class="docutils literal notranslate"><span class="pre">get_params()</span></code> que facilita esta tarea.</p>
 <p>Por ejemplo para el regresor polinomial:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -564,14 +610,12 @@ const thebe_selector_output = ".output, .cell_output"
  &#39;linearregression__copy_X&#39;: True,
  &#39;linearregression__fit_intercept&#39;: False,
  &#39;linearregression__n_jobs&#39;: None,
- &#39;linearregression__normalize&#39;: &#39;deprecated&#39;,
  &#39;linearregression__positive&#39;: False}
 </pre></div>
 </div>
 </div>
 </div>
-<p>Para hacer validación cruzada con el grado del polinomio debemos utilizar <code class="docutils literal notranslate"><span class="pre">polynomialfeatures__degree</span></code></p>
-<p>Por ejemplo:</p>
+<p>Para hacer validación cruzada con el grado del polinomio debemos utilizar <code class="docutils literal notranslate"><span class="pre">polynomialfeatures__degree</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polynomialfeatures__degree&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)}</span>
@@ -579,13 +623,15 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>Es decir que probaremos los valores <code class="docutils literal notranslate"><span class="pre">degree</span></code> desde 1 a 19</p>
-<p>El método principal de <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> es <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y)</span></code>. Este método realiza la validación cruzada con todas las combinaciones de hiperparámetros especificadas en <code class="docutils literal notranslate"><span class="pre">param_grid</span></code> y retorna la “mejor” según el <code class="docutils literal notranslate"><span class="pre">scorer</span></code> seleccionado</p>
+<blockquote>
+<div><p>Es decir que probaremos los valores <code class="docutils literal notranslate"><span class="pre">degree</span></code> desde 1 a 19.</p>
+</div></blockquote>
+<p>El método principal de <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> es <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y)</span></code>. Este método realiza la validación cruzada con todas las combinaciones de hiperparámetros especificadas en <code class="docutils literal notranslate"><span class="pre">param_grid</span></code> y retorna la “mejor” según el <code class="docutils literal notranslate"><span class="pre">scorer</span></code> seleccionado.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>Por convención <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> espera un <code class="docutils literal notranslate"><span class="pre">scorer</span></code> donde valores más grandes se consideran mejores que valores pequeños, es decir que maximiza en lugar de minimizar. Esto no es correcto para el error medio cuadrático</p>
+<p>Por convención <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> espera un <code class="docutils literal notranslate"><span class="pre">scorer</span></code> donde valores más grandes se consideran mejores que valores pequeños, es decir que maximiza en lugar de minimizar. Esto no es correcto para el error medio cuadrático.</p>
 </div>
-<p>Utilizando <code class="docutils literal notranslate"><span class="pre">greater_is_better=False</span></code> la métrica se multiplica por <span class="math notranslate nohighlight">\(-1\)</span> y corregimos esa situación</p>
+<p>Utilizando <code class="docutils literal notranslate"><span class="pre">greater_is_better=False</span></code> la métrica se multiplica por <span class="math notranslate nohighlight">\(-1\)</span> y corregimos esa situación:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">greater_is_better</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -593,28 +639,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>Finalmente hacemos el ajuste con los parámetros y <code class="docutils literal notranslate"><span class="pre">scorer</span></code> escogidos</p>
+<p>Finalmente hacemos el ajuste con los parámetros y <code class="docutils literal notranslate"><span class="pre">scorer</span></code> escogidos con</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
 <span class="n">validator</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scorer</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">validator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">validator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 19 candidates, totalling 95 fits
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV(cv=5,
-             estimator=Pipeline(steps=[(&#39;polynomialfeatures&#39;,
-                                        PolynomialFeatures(degree=10)),
-                                       (&#39;linearregression&#39;,
-                                        LinearRegression(fit_intercept=False))]),
-             param_grid={&#39;polynomialfeatures__degree&#39;: range(1, 20)},
-             scoring=make_scorer(mean_squared_error, greater_is_better=False),
-             verbose=True)
 </pre></div>
 </div>
 </div>
@@ -633,14 +669,14 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;polynomialfeatures__degree&#39;: 3}, -1.5070219734256671)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;polynomialfeatures__degree&#39;: 3}, -1.5070219734256587)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> tiene también los métodos <code class="docutils literal notranslate"><span class="pre">predict</span></code> y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> (siempre y cuando estos estén implementados en el estimador utilizado). Se retorna la predicción del mejor modelo según la validación cruzada</p>
+<p><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> tiene también los métodos <code class="docutils literal notranslate"><span class="pre">predict</span></code> y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> (siempre y cuando estos estén implementados en el estimador utilizado). Se retorna la predicción del mejor modelo según la validación cruzada.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -659,12 +695,12 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/validation_28_0.png" src="../../_images/validation_28_0.png" />
+<img alt="../../_images/2e3746094e136ee1897a2d9f56d79b33b498319ee76a4c93596c9c4d5badcf73.png" src="../../_images/2e3746094e136ee1897a2d9f56d79b33b498319ee76a4c93596c9c4d5badcf73.png" />
 </div>
 </div>
-</div>
-<div class="section" id="regularizacion">
-<h2><span class="section-number">3.3. </span>Regularización<a class="headerlink" href="#regularizacion" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="regularizacion">
+<h2><span class="section-number">3.4. </span>Regularización<a class="headerlink" href="#regularizacion" title="Permalink to this heading">#</a></h2>
 <p>Considere las predicciones de los siguientes modelos</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -691,7 +727,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/validation_32_0.png" src="../../_images/validation_32_0.png" />
+<img alt="../../_images/f70479f22b77c0bca86c8fd8542b70645e4889d45c20c40f02adb51880388c50.png" src="../../_images/f70479f22b77c0bca86c8fd8542b70645e4889d45c20c40f02adb51880388c50.png" />
 </div>
 </div>
 <p>Respecto a un escenario similar al anterior, se enunció lo siguiente:</p>
@@ -699,11 +735,9 @@ const thebe_selector_output = ".output, .cell_output"
 <div><p>“en igualdad de condiciones, la explicación más simple suele ser la más probable”
 — <a class="reference external" href="https://es.wikipedia.org/wiki/Guillermo_de_Ockham">William de Ockham</a></p>
 </div></blockquote>
-<p>que se conoce como la navaja de Ockham o el principio de parsimonia.</p>
-<p>Aplicando este principio al regresor polinomial llegaríamos a que ante modelos con error comparable deberíamos seleccionar el más simple (o menos complejo)</p>
-<blockquote>
-<div><p>Esto es la base de la <strong>regularización</strong>, un concepto estadístico que consiste en guiar la optimización de un problema mediante una penalización adicional</p>
-</div></blockquote>
+<p>que se conoce como la <a class="reference external" href="https://es.wikipedia.org/wiki/Navaja_de_Ockham">navaja de Ockham</a> o el principio de parsimonia.</p>
+<p>Aplicando este principio al regresor polinomial llegaríamos a que ante modelos con error comparable deberíamos seleccionar el más simple (o menos complejo).</p>
+<p>Lo anterior es la base de la <strong>regularización</strong>, un concepto estadístico que consiste en guiar la optimización de un problema mediante una penalización adicional.</p>
 <p>En este caso buscamos penalizar la complejidad del modelo. En problemas de regresión y clasificación esto se suele implementar como un término extra en la función de costo.</p>
 <p><strong>Regresor lineal regularizado</strong></p>
 <p>Podemos regularizar el regresor lineal utilizando la siguiente función de costo:</p>
@@ -714,14 +748,14 @@ L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T 
 <p>donde el término de la derecha es la norma euclidiana (L2) del vector de parámetros y <span class="math notranslate nohighlight">\(\alpha\)</span> es un hiperparámetro que controla el peso relativo entre ambos objetivos de optimización.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>Cuando regularizamos el regresor lineal buscamos el <span class="math notranslate nohighlight">\(\theta\)</span> de mínimo error y además de mínima norma. La mínima norma euclidiana se puede interpretar como la solución “más suave”</p>
+<p>Cuando regularizamos el regresor lineal estamos buscando el <span class="math notranslate nohighlight">\(\theta\)</span> de mínimo error y además de mínima norma. La mínima norma euclidiana se puede interpretar como la solución “más suave”.</p>
 </div>
 <p>La solución con la función de costo regularizada es</p>
 <div class="math notranslate nohighlight">
 \[
 \hat \theta = (X^T X + I\alpha)^{-1} X^T Y,
 \]</div>
-<p>que se conoce como regresión contraida o <em>ridge regression</em></p>
+<p>que se conoce como regresión contraida o <em>ridge regression</em>.</p>
 <p>Este modelo está implementado en scikit-learn como <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html">Ridge</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -745,7 +779,7 @@ L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/validation_35_0.png" src="../../_images/validation_35_0.png" />
+<img alt="../../_images/ac48d0195018c6d9e6696e98ab213aab55c07870eff27a95d2e05480f910e195.png" src="../../_images/ac48d0195018c6d9e6696e98ab213aab55c07870eff27a95d2e05480f910e195.png" />
 </div>
 </div>
 <p>Mientras mayor sea <span class="math notranslate nohighlight">\(\alpha\)</span>, más suave es el resultado del regresor</p>
@@ -761,8 +795,8 @@ L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T 
 <p class="admonition-title">Ver también</p>
 <p><a class="reference external" href="https://docs.google.com/presentation/d/1UUpK4zSdzRcS79V7_wU9nXe-sR7qYLEWhbmid-Rfp1k/edit?usp=sharing">Una presentación sobre regresión que incluye métodos que no veremos en este curso</a>. En particular se presenta otro método de regularización popular: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">LASSO</a></p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -776,7 +810,7 @@ L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T 
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./contents/supervised_learning"
         },
         predefinedOutput: true
@@ -784,44 +818,108 @@ L(\theta) = \frac{1}{2} (Y - \Phi \theta)^T (Y - \Phi \theta) + \alpha \theta^T 
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="linear.html" title="anterior página">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">anterior</p>
-            <p class="prev-next-title"><span class="section-number">2. </span>Regresión Lineal</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="linear.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Regresión Lineal</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="logistic.html" title="siguiente página">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="logistic.html"
+       title="siguiente página">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
         <p class="prev-next-title"><span class="section-number">4. </span>Regresión Logística</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-            
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      Por Pablo Huijse Heise<br/>
-    
-        &copy; Derechos de autor 2022.<br/>
-  </p>
-</footer>
-</main>
-
-
       </div>
-    </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definiciones">3.1. Definiciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estrategias-de-validacion">3.2. Estrategias de Validación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#busqueda-de-hiperparametros-automatizada">3.3. Búsqueda de hiperparámetros automatizada</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion">3.4. Regularización</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Pablo Huijse Heise
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
