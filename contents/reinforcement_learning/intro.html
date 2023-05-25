@@ -69,7 +69,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/intro';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="22. Deep Reinforced Learning" href="dqn1.html" />
+    <link rel="next" title="21. Deep Reinforced Learning" href="dqn1.html" />
     <link rel="prev" title="19. Consejos para entrenar redes neuronales" href="../neural_networks/tips.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
@@ -181,21 +181,9 @@ const thebe_selector_output = ".output, .cell_output"
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aprendizaje Reforzado</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">20. Introducción a Aprendizaje Reforzado</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="dqn1.html">22. <em>Deep Reinforced Learning</em></a></li>
-
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="dqn2.html">30. DQN a partir de píxeles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="policygrad.html">31. Limitaciones de DQN</a></li>
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="more.html">35. Starcraft 2:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn1.html">21. <em>Deep Reinforced Learning</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn2.html">22. DQN a partir de píxeles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="policygrad.html">23. Policy gradients</a></li>
 </ul>
 
     </div>
@@ -389,7 +377,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">20. Introducción a Aprendizaje Reforzado</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paradigmas-de-aprendizaje">20.1. Paradigmas de aprendizaje</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes-de-aprendizaje-reforzado">20.2. Componentes de Aprendizaje Reforzado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-agente-en-accion">20.3. El agente en acción</a></li>
@@ -400,42 +387,17 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">20.5.3. Q-Learning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nuestro-primer-agente-rl-en-python">20.6. Nuestro primer agente RL en Python</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-estados">20.6.1. Espacio de estados</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-acciones">20.6.2. Espacio de acciones</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recompensa-y-condicion-de-termino">20.6.3. Recompensa y condición de término</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nuestro-primer-agente-rl-en-python">20.6. Nuestro primer agente RL en Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-con-q-learning">20.7. Entrenamiento con Q-Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-basicos">20.7.1. Diagnósticos básicos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilema-de-exploracion-y-explotacion">20.7.2. Dilema de exploración y explotación</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-de-epsilon-greedy-q-learning">20.7.3. Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-debuggeando-lo-aprendido">20.7.4. Diagnósticos: Debuggeando lo aprendido</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probando-nuestro-agente-en-vivo">20.7.5. Probando nuestro agente en vivo</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#que-ocurre-si-el-ambiente-no-es-estocastico">20.7.5.1. ¿Qué ocurre si el ambiente no es estocástico?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilema-de-exploracion-y-explotacion">20.7.1. Dilema de exploración y explotación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-de-epsilon-greedy-q-learning">20.7.2. Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-debuggeando-lo-aprendido">20.7.3. Diagnósticos: Debuggeando lo aprendido</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carro-con-pendulo">20.8. Carro con péndulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-en-rl">20.9. Desafios en RL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tarea-taxi">20.10. Tarea: Taxi</a></li>
 </ul>
-</li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#carro-con-pendulo">21. Carro con péndulo</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretizacion">21.1. Discretización</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estudiando-la-influencia-de-la-resolucion-de-los-estados">21.2. Estudiando la influencia de la resolución de los estados</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-matriz-q">21.3. Visualización de la matriz Q</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estudiando-la-influencia-de-gamma">21.3.1. Estudiando la influencia de <span class="math notranslate nohighlight">\(\gamma\)</span></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probando-nuestro-agente">21.4. Probando nuestro agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-en-rl">21.5. Desafios en RL</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximamente">21.5.1. Próximamente</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tarea-taxi">21.6. Tarea: Taxi</a></li>
-</ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -912,8 +874,7 @@ Q(s, a) \leftarrow&amp; (1-\alpha)Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a'
 </div>
 </div>
 </div>
-<section id="espacio-de-estados">
-<h3><span class="section-number">20.6.1. </span>Espacio de estados<a class="headerlink" href="#espacio-de-estados" title="Permalink to this heading">#</a></h3>
+<p><strong>Espacio de estados</strong></p>
 <ul class="simple">
 <li><p>El estado tiene 4x4 = 16 espacios que representan la laguna congelada</p>
 <ul>
@@ -938,9 +899,7 @@ Q(s, a) \leftarrow&amp; (1-\alpha)Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a'
 </div>
 </div>
 </div>
-</section>
-<section id="espacio-de-acciones">
-<h3><span class="section-number">20.6.2. </span>Espacio de acciones<a class="headerlink" href="#espacio-de-acciones" title="Permalink to this heading">#</a></h3>
+<p><strong>Espacio de acciones</strong></p>
 <p>Existen cuatro acciones</p>
 <ul class="simple">
 <li><p>0: LEFT</p></li>
@@ -1043,9 +1002,7 @@ Q(s, a) \leftarrow&amp; (1-\alpha)Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a'
 </div>
 </div>
 </div>
-</section>
-<section id="recompensa-y-condicion-de-termino">
-<h3><span class="section-number">20.6.3. </span>Recompensa y condición de término<a class="headerlink" href="#recompensa-y-condicion-de-termino" title="Permalink to this heading">#</a></h3>
+<p><strong>Recompensa y condición de término</strong></p>
 <p>Existen tres condiciones de término de episodio</p>
 <ul class="simple">
 <li><p>Llegar al frisbee: recompensa +1</p></li>
@@ -1077,7 +1034,6 @@ Q(s, a) \leftarrow&amp; (1-\alpha)Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a'
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="entrenamiento-con-q-learning">
 <h2><span class="section-number">20.7. </span>Entrenamiento con Q-Learning<a class="headerlink" href="#entrenamiento-con-q-learning" title="Permalink to this heading">#</a></h2>
@@ -1120,8 +1076,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-<section id="diagnosticos-basicos">
-<h3><span class="section-number">20.7.1. </span>Diagnósticos básicos<a class="headerlink" href="#diagnosticos-basicos" title="Permalink to this heading">#</a></h3>
+<p><strong>Diagnósticos básicos</strong></p>
 <p>Revisamos la tabla Q y las recompensas ganadas</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1134,9 +1089,8 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 <p>¿Qué paso aquí?</p>
 <p>¿Puedes ver el problema de la linea 19?</p>
-</section>
 <section id="dilema-de-exploracion-y-explotacion">
-<h3><span class="section-number">20.7.2. </span>Dilema de exploración y explotación<a class="headerlink" href="#dilema-de-exploracion-y-explotacion" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.7.1. </span>Dilema de exploración y explotación<a class="headerlink" href="#dilema-de-exploracion-y-explotacion" title="Permalink to this heading">#</a></h3>
 <p>Un problema del algoritmo que acabamos de ver es que es demasiado explotador</p>
 <blockquote>
 <div><p>Siempre escoge la acción que maximiza <strong>Q</strong>: es una <em>greedy policy</em></p>
@@ -1153,7 +1107,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div></blockquote>
 </section>
 <section id="parametros-de-epsilon-greedy-q-learning">
-<h3><span class="section-number">20.7.3. </span>Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning<a class="headerlink" href="#parametros-de-epsilon-greedy-q-learning" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.7.2. </span>Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning<a class="headerlink" href="#parametros-de-epsilon-greedy-q-learning" title="Permalink to this heading">#</a></h3>
 <p>Los parámetros de Q-Learning convencional son</p>
 <ul class="simple">
 <li><p>La tasa de aprendizaje <span class="math notranslate nohighlight">\(\alpha\)</span></p>
@@ -1265,7 +1219,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </section>
 <section id="diagnosticos-debuggeando-lo-aprendido">
-<h3><span class="section-number">20.7.4. </span>Diagnósticos: Debuggeando lo aprendido<a class="headerlink" href="#diagnosticos-debuggeando-lo-aprendido" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.7.3. </span>Diagnósticos: Debuggeando lo aprendido<a class="headerlink" href="#diagnosticos-debuggeando-lo-aprendido" title="Permalink to this heading">#</a></h3>
 <p>Se puede verificar el aprendizaje del agente observando la tabla Q</p>
 <p>¿Tiene sentido lo aprendido?</p>
 <div class="cell docutils container">
@@ -1301,9 +1255,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-</section>
-<section id="probando-nuestro-agente-en-vivo">
-<h3><span class="section-number">20.7.5. </span>Probando nuestro agente en vivo<a class="headerlink" href="#probando-nuestro-agente-en-vivo" title="Permalink to this heading">#</a></h3>
+<p><strong>Probando nuestro agente en vivo</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
@@ -1328,8 +1280,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-<section id="que-ocurre-si-el-ambiente-no-es-estocastico">
-<h4><span class="section-number">20.7.5.1. </span>¿Qué ocurre si el ambiente no es estocástico?<a class="headerlink" href="#que-ocurre-si-el-ambiente-no-es-estocastico" title="Permalink to this heading">#</a></h4>
+<p><strong>¿Qué ocurre si el ambiente no es estocástico?</strong></p>
 <p>Use</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>env = gym.make(&quot;FrozenLake-v0&quot;, is_slippery=False)
 </pre></div>
@@ -1337,10 +1288,8 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 <p>para comprobarlo</p>
 </section>
 </section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="carro-con-pendulo">
-<h1><span class="section-number">21. </span><a class="reference external" href="https://gym.openai.com/envs/CartPole-v0/">Carro con péndulo</a><a class="headerlink" href="#carro-con-pendulo" title="Permalink to this heading">#</a></h1>
+<section id="carro-con-pendulo">
+<h2><span class="section-number">20.8. </span><a class="reference external" href="https://gym.openai.com/envs/CartPole-v0/">Carro con péndulo</a><a class="headerlink" href="#carro-con-pendulo" title="Permalink to this heading">#</a></h2>
 <p>En este ambiente existe un carro con un poste que se balancea sobre él</p>
 <p><strong>Objetivo del ambiente</strong></p>
 <blockquote>
@@ -1441,8 +1390,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-<section id="discretizacion">
-<h2><span class="section-number">21.1. </span>Discretización<a class="headerlink" href="#discretizacion" title="Permalink to this heading">#</a></h2>
+<p><strong>Discretización</strong></p>
 <p>¿Es posible utilizar Q-learning si el espacio es continuo?</p>
 <blockquote>
 <div><p>Si, pero necesitamos discretizar el estado para poder construir nuestra tabla Q</p>
@@ -1600,16 +1548,12 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-</section>
-<section id="estudiando-la-influencia-de-la-resolucion-de-los-estados">
-<h2><span class="section-number">21.2. </span>Estudiando la influencia de la resolución de los estados<a class="headerlink" href="#estudiando-la-influencia-de-la-resolucion-de-los-estados" title="Permalink to this heading">#</a></h2>
+<p><strong>Estudiando la influencia de la resolución de los estados</strong></p>
 <ul class="simple">
 <li><p>Vea que pasa usando 10 bines en lugar de 100</p></li>
 <li><p>Vea que pasa cuando se usa 1 sólo bin para la posición y para la velocidad</p></li>
 </ul>
-</section>
-<section id="visualizacion-de-la-matriz-q">
-<h2><span class="section-number">21.3. </span>Visualización de la matriz Q<a class="headerlink" href="#visualizacion-de-la-matriz-q" title="Permalink to this heading">#</a></h2>
+<p><strong>Visualización de la matriz Q</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1633,8 +1577,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </div>
 </div>
-<section id="estudiando-la-influencia-de-gamma">
-<h3><span class="section-number">21.3.1. </span>Estudiando la influencia de <span class="math notranslate nohighlight">\(\gamma\)</span><a class="headerlink" href="#estudiando-la-influencia-de-gamma" title="Permalink to this heading">#</a></h3>
+<p><strong>Estudiando la influencia de <span class="math notranslate nohighlight">\(\gamma\)</span></strong></p>
 <p>En este problema la recompensa es <span class="math notranslate nohighlight">\(+1\)</span> por cada paso que equilibramos el péndulo</p>
 <p>¿Cúanto pasos en el futuro es capaz de ver nuestro agente?</p>
 <p>Es decir que la ganancia total descontada es (progresión geométrica)</p>
@@ -1643,10 +1586,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 \sum_{t=0}^\infty R_t \gamma^t = \sum_{t=0}^\infty \gamma^t = \frac{1}{1-\gamma}
 \]</div>
 <p>¿Cuántos pasos estamos considerando si <span class="math notranslate nohighlight">\(\gamma = 0.9\)</span>? ¿Y <span class="math notranslate nohighlight">\(\gamma = 0.99\)</span>? ¿Y <span class="math notranslate nohighlight">\(\gamma = 0.999\)</span>?</p>
-</section>
-</section>
-<section id="probando-nuestro-agente">
-<h2><span class="section-number">21.4. </span>Probando nuestro agente<a class="headerlink" href="#probando-nuestro-agente" title="Permalink to this heading">#</a></h2>
+<p><strong>Probando nuestro agente</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1700,26 +1640,15 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 </div>
 </section>
 <section id="desafios-en-rl">
-<h2><span class="section-number">21.5. </span>Desafios en RL<a class="headerlink" href="#desafios-en-rl" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.9. </span>Desafios en RL<a class="headerlink" href="#desafios-en-rl" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Formular adecuadamente los estados, acciones y recompesa</p></li>
 <li><p>Controlar el balance entre exploración y explotación</p></li>
 <li><p>Obtener datos que representan nuestra tarea (simulaciones?)</p></li>
 </ul>
-<section id="proximamente">
-<h3><span class="section-number">21.5.1. </span>Próximamente<a class="headerlink" href="#proximamente" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Deep Q-leaning: Aprender Q usando redes neuronales</p></li>
-<li><p>Policy gradients: Aprender la política directamente usando redes neuronales</p>
-<ul>
-<li><p>Veremos también como extender a espacios de acción continuos</p></li>
-</ul>
-</li>
-</ul>
-</section>
 </section>
 <section id="tarea-taxi">
-<h2><span class="section-number">21.6. </span>Tarea: Taxi<a class="headerlink" href="#tarea-taxi" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.10. </span>Tarea: Taxi<a class="headerlink" href="#tarea-taxi" title="Permalink to this heading">#</a></h2>
 <p>En grupos de tres estudiantes resuelvan el ambiente <a class="reference external" href="https://gym.openai.com/envs/Taxi-v3/">“Taxi-v3”</a></p>
 <p>Fecha de entrega: Lunes 30 de Marzo 23:59 al correo <em>phuijse at inf dot uach dot cl</em></p>
 <ul class="simple">
@@ -1779,7 +1708,7 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
        title="siguiente página">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">22. </span><em>Deep Reinforced Learning</em></p>
+        <p class="prev-next-title"><span class="section-number">21. </span><em>Deep Reinforced Learning</em></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1801,7 +1730,6 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">20. Introducción a Aprendizaje Reforzado</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paradigmas-de-aprendizaje">20.1. Paradigmas de aprendizaje</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes-de-aprendizaje-reforzado">20.2. Componentes de Aprendizaje Reforzado</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-agente-en-accion">20.3. El agente en acción</a></li>
@@ -1812,42 +1740,17 @@ Q(s,a) \leftarrow Q(s,a) + \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">20.5.3. Q-Learning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nuestro-primer-agente-rl-en-python">20.6. Nuestro primer agente RL en Python</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-estados">20.6.1. Espacio de estados</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#espacio-de-acciones">20.6.2. Espacio de acciones</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recompensa-y-condicion-de-termino">20.6.3. Recompensa y condición de término</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nuestro-primer-agente-rl-en-python">20.6. Nuestro primer agente RL en Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-con-q-learning">20.7. Entrenamiento con Q-Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-basicos">20.7.1. Diagnósticos básicos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilema-de-exploracion-y-explotacion">20.7.2. Dilema de exploración y explotación</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-de-epsilon-greedy-q-learning">20.7.3. Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-debuggeando-lo-aprendido">20.7.4. Diagnósticos: Debuggeando lo aprendido</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probando-nuestro-agente-en-vivo">20.7.5. Probando nuestro agente en vivo</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#que-ocurre-si-el-ambiente-no-es-estocastico">20.7.5.1. ¿Qué ocurre si el ambiente no es estocástico?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dilema-de-exploracion-y-explotacion">20.7.1. Dilema de exploración y explotación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros-de-epsilon-greedy-q-learning">20.7.2. Parámetros de <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy Q-Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnosticos-debuggeando-lo-aprendido">20.7.3. Diagnósticos: Debuggeando lo aprendido</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carro-con-pendulo">20.8. Carro con péndulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-en-rl">20.9. Desafios en RL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tarea-taxi">20.10. Tarea: Taxi</a></li>
 </ul>
-</li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#carro-con-pendulo">21. Carro con péndulo</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretizacion">21.1. Discretización</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estudiando-la-influencia-de-la-resolucion-de-los-estados">21.2. Estudiando la influencia de la resolución de los estados</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-matriz-q">21.3. Visualización de la matriz Q</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estudiando-la-influencia-de-gamma">21.3.1. Estudiando la influencia de <span class="math notranslate nohighlight">\(\gamma\)</span></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probando-nuestro-agente">21.4. Probando nuestro agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-en-rl">21.5. Desafios en RL</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximamente">21.5.1. Próximamente</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tarea-taxi">21.6. Tarea: Taxi</a></li>
-</ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>

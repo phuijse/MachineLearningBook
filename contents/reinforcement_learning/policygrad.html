@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>31. Limitaciones de DQN &#8212; Aprendizaje de Máquinas</title>
+    <title>23. Policy gradients &#8212; Aprendizaje de Máquinas</title>
   
   
   
@@ -69,8 +69,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/policygrad';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="35. Starcraft 2:" href="more.html" />
-    <link rel="prev" title="30. DQN a partir de píxeles" href="dqn2.html" />
+    <link rel="prev" title="22. DQN a partir de píxeles" href="dqn2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -181,21 +180,9 @@ const thebe_selector_output = ".output, .cell_output"
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aprendizaje Reforzado</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">20. Introducción a Aprendizaje Reforzado</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="dqn1.html">22. <em>Deep Reinforced Learning</em></a></li>
-
-
-
-
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="dqn2.html">30. DQN a partir de píxeles</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">31. Limitaciones de DQN</a></li>
-
-
-
-<li class="toctree-l1"><a class="reference internal" href="more.html">35. Starcraft 2:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn1.html">21. <em>Deep Reinforced Learning</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn2.html">22. DQN a partir de píxeles</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">23. Policy gradients</a></li>
 </ul>
 
     </div>
@@ -379,7 +366,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Limitaciones de DQN</h1>
+    <h1>Policy gradients</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,19 +376,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">31. Limitaciones de DQN</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">32. Policy learning</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo">32.1. Ejemplo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">32.2. Ejemplo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">23.1. Limitaciones de DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">23.2. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">23.3. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">23.4. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">23.5. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">33. Algoritmo de entrenamiento</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">34. AlphaGo</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">34.1. Desafíos de Aprendizaje Reforzado</a></li>
-</ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -414,16 +394,17 @@ document.write(`
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">autosave</span> 0
-<span class="o">%</span><span class="k">matplotlib</span> notebook
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section class="tex2jax_ignore mathjax_ignore" id="limitaciones-de-dqn">
-<h1><span class="section-number">31. </span>Limitaciones de DQN<a class="headerlink" href="#limitaciones-de-dqn" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="policy-gradients">
+<h1><span class="section-number">23. </span>Policy gradients<a class="headerlink" href="#policy-gradients" title="Permalink to this heading">#</a></h1>
+<section id="limitaciones-de-dqn">
+<h2><span class="section-number">23.1. </span>Limitaciones de DQN<a class="headerlink" href="#limitaciones-de-dqn" title="Permalink to this heading">#</a></h2>
 <p>Las Deep Q Networks (y Q-Learning) tienen dos limitaciones importantes</p>
 <ul class="simple">
 <li><p>Espacio de acción discreto (y espacio de estados discreto)</p></li>
@@ -437,8 +418,8 @@ document.write(`
 \]</div>
 <p>Una alternativa es aprender directamente la <em>policy</em>. Veremos como esto puede resolver las limitaciones que mencionamos al principio</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="policy-learning">
-<h1><span class="section-number">32. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h1>
+<section id="policy-learning">
+<h2><span class="section-number">23.2. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h2>
 <p>En lugar de aprender <strong>Q</strong> podemos aprender directamente</p>
 <div class="math notranslate nohighlight">
 \[
@@ -449,8 +430,7 @@ a \sim \pi_\theta (s)
 <li><p>La acción se muestrea de la política: Esto nos da exploración</p></li>
 </ul>
 <p>Podemos usar una red neuronal para modelar los parámetros de la distribución</p>
-<section id="ejemplo">
-<h2><span class="section-number">32.1. </span>Ejemplo<a class="headerlink" href="#ejemplo" title="Permalink to this heading">#</a></h2>
+<p><strong>Ejemplo</strong></p>
 <p>Espacio de acción discreto con 3 opciones</p>
 <p>Usamos una política con distribución categórica</p>
 <p>Usamos una red neuronal con tres salidas correspondientes a <span class="math notranslate nohighlight">\(p(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(p(a_2|s)\)</span>  y <span class="math notranslate nohighlight">\(p(a_3|s)\)</span>, donde cada una está en el rango <span class="math notranslate nohighlight">\([0,1]\)</span>  y además suman uno: <strong>salida softmax</strong></p>
@@ -470,9 +450,7 @@ a \sim \pi_\theta (s)
 </div>
 </div>
 </div>
-</section>
-<section id="id1">
-<h2><span class="section-number">32.2. </span>Ejemplo<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p><strong>Ejemplo</strong></p>
 <p>Espacio de acción con dos acciones continuas</p>
 <p>Usamos una política con distribución Gaussiana</p>
 <p>Usamos una red neuronal con cuatro salidas (dos por acción) correspondientes a <span class="math notranslate nohighlight">\(\mu(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\log \sigma(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\mu(a_2|s)\)</span> y <span class="math notranslate nohighlight">\(\log \sigma(a_2|s)\)</span>, donde cada una está en el rango de los reales: <strong>salida lineal</strong></p>
@@ -494,9 +472,8 @@ a \sim \pi_\theta (s)
 </div>
 </div>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="algoritmo-de-entrenamiento">
-<h1><span class="section-number">33. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h1>
+<section id="algoritmo-de-entrenamiento">
+<h2><span class="section-number">23.3. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h2>
 <p>El algoritmo que usaremos para entrenar busca lo siguiente:</p>
 <ul class="simple">
 <li><p>Correr política hasta el término del episodio, grabando las tuplas de acción/estado/recompensa</p></li>
@@ -699,8 +676,8 @@ a \sim \pi_\theta (s)
 </div>
 </div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="alphago">
-<h1><span class="section-number">34. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h1>
+<section id="alphago">
+<h2><span class="section-number">23.4. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h2>
 <p>Go es un juego de mesa de origen chino con un tablero de 19x19 espacios</p>
 <p>Dos jugadores compiten por cubrir la mayor área en el tablero</p>
 <p>El espacio de estados es tiene <a class="reference external" href="https://en.wikipedia.org/wiki/Go_and_mathematics#Legal_positions">más movimientos legales que átomos en el universe</a></p>
@@ -715,8 +692,9 @@ a \sim \pi_\theta (s)
 <p><a class="reference external" href="https://www.slideshare.net/ckmarkohchang/alphago-in-depth">Presentación autocontenida sobre Alpha Go</a></p>
 <p>Alpha Go Zero no usa pre-entrenamiento con redes supervisadas</p>
 <p>Alpha Zero extiende a otros juegos</p>
+</section>
 <section id="desafios-de-aprendizaje-reforzado">
-<h2><span class="section-number">34.1. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">23.5. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Para entrenar con <em>policy gradient</em> necesitamos correr el agente hasta el término del episodio</p></li>
 <li><p>Esto en muchas cosas significa la muerte del agente</p></li>
@@ -777,17 +755,8 @@ fuerte crítica a RL</a></p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title"><span class="section-number">30. </span>DQN a partir de píxeles</p>
+        <p class="prev-next-title"><span class="section-number">22. </span>DQN a partir de píxeles</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="more.html"
-       title="siguiente página">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">35. </span>Starcraft 2:</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
@@ -807,19 +776,12 @@ fuerte crítica a RL</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">31. Limitaciones de DQN</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">32. Policy learning</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo">32.1. Ejemplo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">32.2. Ejemplo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">23.1. Limitaciones de DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">23.2. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">23.3. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">23.4. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">23.5. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">33. Algoritmo de entrenamiento</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">34. AlphaGo</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">34.1. Desafíos de Aprendizaje Reforzado</a></li>
-</ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>
