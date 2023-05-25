@@ -33,4 +33,3 @@ parts:
       - file: contents/reinforcement_learning/dqn1
       - file: contents/reinforcement_learning/dqn2
       - file: contents/reinforcement_learning/policygrad
-      - file: contents/reinforcement_learning/more
