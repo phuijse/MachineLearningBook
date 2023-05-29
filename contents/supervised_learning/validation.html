@@ -625,7 +625,7 @@ document.write(`
 <p>Para hacer validación cruzada con el grado del polinomio debemos utilizar <code class="docutils literal notranslate"><span class="pre">polynomialfeatures__degree</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polynomialfeatures__degree&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polynomialfeatures__degree&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)}</span>
 </pre></div>
 </div>
 </div>
@@ -657,7 +657,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 19 candidates, totalling 95 fits
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 10 candidates, totalling 50 fits
 </pre></div>
 </div>
 </div>
@@ -667,6 +667,7 @@ document.write(`
 <li><p><code class="docutils literal notranslate"><span class="pre">best_params_</span></code>: Retorna un diccionario que los hiperparámetros del mejor modelo</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">best_score_</span></code>: Retorna el error del mejor modelo</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">best_estimator_</span></code>: Retorna el estimador de mejor desempeño en validación</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cv_results_</span></code>: Retorna un diccionario ccon el <em>score</em> en cada fold para cada valor de los hiperparámetros</p></li>
 </ul>
 <p>El mejor resultado en este caso es:</p>
 <div class="cell docutils container">
@@ -676,7 +677,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;polynomialfeatures__degree&#39;: 3}, -1.5070219734256587)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>({&#39;polynomialfeatures__degree&#39;: 3}, -1.507021973425647)
 </pre></div>
 </div>
 </div>
@@ -703,6 +704,24 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/2e3746094e136ee1897a2d9f56d79b33b498319ee76a4c93596c9c4d5badcf73.png" src="../../_images/2e3746094e136ee1897a2d9f56d79b33b498319ee76a4c93596c9c4d5badcf73.png" />
+</div>
+</div>
+<p>Podemos obtener y visualizar el error de validación a través del atributo <code class="docutils literal notranslate"><span class="pre">cv_results_</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hparam_value</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;param_polynomialfeatures__degree&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">valid_mean</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">validator</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hparam_value</span><span class="p">,</span> <span class="n">valid_mean</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Grado del polinomio&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Error medio cuadrático&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/042e945eb5690cda3e8dbd0bbaae887bdd29d2976d949f5f2251dcbbd78ddf8a.png" src="../../_images/042e945eb5690cda3e8dbd0bbaae887bdd29d2976d949f5f2251dcbbd78ddf8a.png" />
 </div>
 </div>
 </section>

@@ -379,7 +379,6 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-para-clasificadores-binarios">5.1. Métricas para clasificadores binarios</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-de-desempeno">5.2. Curvas de desempeño</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificadores-multi-clase">5.3. Clasificadores multi-clase</a></li>
 </ul>
             </nav>
         </div>
@@ -406,7 +405,7 @@ d_i =
 \end{split}\]</div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En un clasificador binario usar <span class="math notranslate nohighlight">\(\mathcal{T}=0.5\)</span> es equivalente al tomar el argumento máximo de la predicción probabilística</p>
+<p>En un clasificador binario usar <span class="math notranslate nohighlight">\(\mathcal{T}=0.5\)</span> es equivalente al tomar el argumento máximo de la predicción probabilística.</p>
 </div>
 <p>Una vez seleccionado el umbral se puede contar la cantidad de</p>
 <ul class="simple">
@@ -434,7 +433,7 @@ d_i =
 </tr>
 </tbody>
 </table>
-<p>Se puede estimar una matriz de confusión con scikit learn con</p>
+<p>Se puede estimar una matriz de confusión con <em>scikit learn</em> con</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -448,7 +447,7 @@ d_i =
                            <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">T</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]:</span>
@@ -497,11 +496,11 @@ d_i =
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>Utilizar <span class="math notranslate nohighlight">\(\mathcal{T}=0.5\)</span> asume que el costo o riesgo de cometer un error tipo 1 es equivalente al de cometer un error tipo 2</p>
+<p>Utilizar <span class="math notranslate nohighlight">\(\mathcal{T}=0.5\)</span> asume que el costo o riesgo de cometer un error tipo 1 es equivalente al de cometer un error tipo 2.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Modificando el umbral podemos ajustar el trade-off entre error tipo 1 y error tipo 2</p>
+<p>Modificando el umbral podemos ajustar el compromiso (<em>trade-off</em>) entre el error tipo 1 y el error tipo 2.</p>
 </div>
 <p>La matriz de confusión suele resumirse con las siguientes métricas:</p>
 <dl class="simple myst">
@@ -548,7 +547,7 @@ d_i =
 <p class="admonition-title">Truco</p>
 <p>Si las clases son desbalanceadas entonces <em>f1-score</em> es preferible ante <em>accuracy</em></p>
 </div>
-<p>Podemos obtener estas métricas con scikit-learn utilizando</p>
+<p>Podemos obtener estas métricas con <em>scikit-learn</em> utilizando</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
@@ -618,7 +617,7 @@ weighted avg       0.94      0.93      0.93       100
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/235869641bd138bc762da74f42d641f72c0b0e587ba4e7083f9b613be5b08ad4.png" src="../../_images/235869641bd138bc762da74f42d641f72c0b0e587ba4e7083f9b613be5b08ad4.png" />
+<img alt="../../_images/dd05002ac6489bd3f88332806d221340eed82668ac93d5d42af7c70b891633eb.png" src="../../_images/dd05002ac6489bd3f88332806d221340eed82668ac93d5d42af7c70b891633eb.png" />
 </div>
 </div>
 <p>La curva ROC nos muestra el desempeño del modelo medido en función del umbral. Inspeccionado la curva ROC podemos seleccionar un punto de operación (umbral) que sea apropiado para nuestro problema</p>
@@ -650,12 +649,9 @@ weighted avg       0.94      0.93      0.93       100
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/5bf88feb0e50751dfa23525263d8fcc0df1ee02771bc63748e9573523c19361b.png" src="../../_images/5bf88feb0e50751dfa23525263d8fcc0df1ee02771bc63748e9573523c19361b.png" />
+<img alt="../../_images/63d0b493f730fb094698db874d0f3f146796f050b38ba421ed287d03cfd6bffd.png" src="../../_images/63d0b493f730fb094698db874d0f3f146796f050b38ba421ed287d03cfd6bffd.png" />
 </div>
 </div>
-</section>
-<section id="clasificadores-multi-clase">
-<h2><span class="section-number">5.3. </span>Clasificadores multi-clase<a class="headerlink" href="#clasificadores-multi-clase" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -728,7 +724,6 @@ weighted avg       0.94      0.93      0.93       100
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-para-clasificadores-binarios">5.1. Métricas para clasificadores binarios</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-de-desempeno">5.2. Curvas de desempeño</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificadores-multi-clase">5.3. Clasificadores multi-clase</a></li>
 </ul>
   </nav></div>
 

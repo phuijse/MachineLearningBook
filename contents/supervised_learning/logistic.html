@@ -392,52 +392,20 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="regresion-logistica">
 <h1><span class="section-number">4. </span>Regresión Logística<a class="headerlink" href="#regresion-logistica" title="Permalink to this heading">#</a></h1>
-<p>El regresor logístico es un modelo que mapea una o más variables continuas a una variable objetivo binaria</p>
-<p>Matemáticamente el modelo se define como</p>
+<p>Sea un <strong>dataset etiquetado</strong> una colección de <span class="math notranslate nohighlight">\(N\)</span> tuplas:</p>
 <div class="math notranslate nohighlight">
 \[
-f_\theta(\vec x_i) = \mathcal{S} \left(\theta_0 + \sum_{j=1}^M \theta_j x_{ij}\right) 
+D = \{(x_1, y_1), (x_2, y_2), \ldots (x_N, y_N)\}
 \]</div>
-<p>donde <span class="math notranslate nohighlight">\(\theta_0, \theta_1, \ldots, \theta_M\)</span> son los parámetros del modelo y <span class="math notranslate nohighlight">\(\mathcal{S}(z) = \frac{1}{1+\exp(-z)}\)</span> se conoce como función logística o sigmoide</p>
+<p>donde la variable de entrada es <span class="math notranslate nohighlight">\(x_i \in \mathbb{R}^M\)</span> y la variable objetivo (etiqueta) es binaria <span class="math notranslate nohighlight">\(y_i \in \{0, 1\}\)</span>.</p>
+<p>Por ejemplo un dataset con etiqueta binaria y con dos atributos <span class="math notranslate nohighlight">\(M=2\)</span> podría verse como la siguiente figura.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
 
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="n">sigmoid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;S(z)&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/bd1265b8d5558835de2a0f6dd501fb85110ca2f9a2d928d3e9507c5da0c067c6.png" src="../../_images/bd1265b8d5558835de2a0f6dd501fb85110ca2f9a2d928d3e9507c5da0c067c6.png" />
-</div>
-</div>
-<p>Luego</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(f_\theta(\vec x_i)\)</span> puede interpretarse como la probabilidad de que <span class="math notranslate nohighlight">\(x_i\)</span> pertenezca  a la clase “1”</p></li>
-<li><p><span class="math notranslate nohighlight">\(1-f_\theta(\vec x_i)\)</span> puede interpretarse como la probabilidad de que <span class="math notranslate nohighlight">\(x_i\)</span> pertenezca a la clase “0”</p></li>
-</ul>
-<p>El modelo implementado en NumPy:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logistic_regressor</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Consideremos el siguiente conjunto de datos sintético de dos dimensiones:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> 
                            <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -451,7 +419,55 @@ f_\theta(\vec x_i) = \mathcal{S} \left(\theta_0 + \sum_{j=1}^M \theta_j x_{ij}\r
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/868abc976728fda2139a6e8f9bddc036b423d6ed02cb8e7f082a6abce4a4dcfa.png" src="../../_images/868abc976728fda2139a6e8f9bddc036b423d6ed02cb8e7f082a6abce4a4dcfa.png" />
+<img alt="../../_images/8bb66738ec370ebe6f67431bb1dcdf8704d74a58523634bcee92c537938911b7.png" src="../../_images/8bb66738ec370ebe6f67431bb1dcdf8704d74a58523634bcee92c537938911b7.png" />
+</div>
+</div>
+<p>El regresor logístico es un clasificador binario lineal, es decir un modelo que separa el espacio de los datos en dos clases o categorías con un hiperplano.</p>
+<p>El modelo se define matemáticamente como:</p>
+<div class="math notranslate nohighlight">
+\[
+f_\theta(x_i) = \mathcal{S} \left(\theta_0 + \sum_{j=1}^M \theta_j x_{ij}\right) 
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\theta_j\)</span> son los parámetros del modelo, <span class="math notranslate nohighlight">\(x_{ij}\)</span> es el atributo <span class="math notranslate nohighlight">\(j\)</span> del dato <span class="math notranslate nohighlight">\(i\)</span> del dataset y</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{S}(z) = \frac{1}{1+\exp(-z)},
+\]</div>
+<p>se conoce como función logística o sigmoide.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>El regresor logístico es un ejemplo de una clase de modelos llamada regresor lineal generalizado que consisten en aplicar una función a la salida de un regresor lineal.</p>
+</div>
+<p>A continuación se muestra una gráfica de la función logística:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">sigmoid</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;S(z)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/ecd2af490151c3e6e35da886da9e7a8624e6417ae0300232db61a4667893a11b.png" src="../../_images/ecd2af490151c3e6e35da886da9e7a8624e6417ae0300232db61a4667893a11b.png" />
+</div>
+</div>
+<p>Luego</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(f_\theta(x_i)\)</span> puede interpretarse como la probabilidad de que <span class="math notranslate nohighlight">\(x_i\)</span> pertenezca  a la clase “1”</p></li>
+<li><p><span class="math notranslate nohighlight">\(1-f_\theta(x_i)\)</span> puede interpretarse como la probabilidad de que <span class="math notranslate nohighlight">\(x_i\)</span> pertenezca a la clase “0”</p></li>
+</ul>
+<p>Podemos implementar este modelo en NumPy como:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logistic_regressor</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <p>Consideremos un modelo con los siguientes parámetros</p>
@@ -462,7 +478,7 @@ f_\theta(\vec x_i) = \mathcal{S} \left(\theta_0 + \sum_{j=1}^M \theta_j x_{ij}\r
 </div>
 </div>
 </div>
-<p>La predicción del modelo en este espacio sería:</p>
+<p>La predicción del modelo en el dataset mostrado al inicio de esta lección es:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_prediction</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">plot_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -483,18 +499,20 @@ f_\theta(\vec x_i) = \mathcal{S} \left(\theta_0 + \sum_{j=1}^M \theta_j x_{ij}\r
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8f5e3d675b93738484273cb86c6af54bd8389e0a0c645487412d0a82d47f5151.png" src="../../_images/8f5e3d675b93738484273cb86c6af54bd8389e0a0c645487412d0a82d47f5151.png" />
+<img alt="../../_images/5aedfcd7c3117e0e3f9d634fa953bf06bc4a21af355365f938bf5c5662120b72.png" src="../../_images/5aedfcd7c3117e0e3f9d634fa953bf06bc4a21af355365f938bf5c5662120b72.png" />
 </div>
 </div>
+<p>Los datos están bien separados por le clasificador, pero</p>
 <blockquote>
 <div><p>¿Cómo se llega a estos valores para <span class="math notranslate nohighlight">\(\theta\)</span>?</p>
 </div></blockquote>
-<p>Para entrenar este modelo se utiliza la siguiente función de costo</p>
+<p>Para ajustar o entrenar este modelo se utiliza la siguiente función de costo:</p>
 <div class="math notranslate nohighlight">
 \[
-L(\theta) = \sum_{i=1}^N  -y_i \log( f_\theta(\vec x_i) ) - (1-y_i) \log(1 - f_\theta(\vec x_i))
+L(\theta) = \sum_{i=1}^N  -y_i \log( f_\theta(x_i) ) - (1-y_i) \log(1 - f_\theta(x_i))
 \]</div>
-<p>conocida como la <strong>Entropía Cruzada Binaria</strong> (<em>binary cross entropy</em>). En NumPy esto sería:</p>
+<p>conocida como la <strong>Entropía Cruzada Binaria</strong> (<em>binary cross entropy</em>).</p>
+<p>Podemos implementarla en NumPy como:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bce_loss</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
@@ -504,17 +522,17 @@ L(\theta) = \sum_{i=1}^N  -y_i \log( f_\theta(\vec x_i) ) - (1-y_i) \log(1 - f_\
 </div>
 </div>
 </div>
-<p>El gradiente de la función de costo es</p>
+<p>Luego el gradiente de la función de costo es:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{split}
-\frac{d}{d \theta_j} L(\theta) &amp;= \sum_{i=1}^N  \left(-\frac{y_i}{f_\theta(\vec x_i)} + \frac{1-y_i}{1 - f_\theta(\vec x_i)}\right) \frac{f_\theta(\vec x_i)}{d\theta_j}  \\
-&amp;= \begin{cases}-\sum_{i=1}^N (y_i - f_\theta(\vec x_i)) x_{ij} &amp;j&gt;0\\
--\sum_{i=1}^N (y_i - f_\theta(\vec x_i)) &amp; j=0 \\
+\frac{d}{d \theta_j} L(\theta) &amp;= \sum_{i=1}^N  \left(-\frac{y_i}{f_\theta(x_i)} + \frac{1-y_i}{1 - f_\theta( x_i)}\right) \frac{f_\theta( x_i)}{d\theta_j}  \\
+&amp;= \begin{cases}-\sum_{i=1}^N (y_i - f_\theta( x_i)) x_{ij} &amp;j&gt;0\\
+-\sum_{i=1}^N (y_i - f_\theta( x_i)) &amp; j=0 \\
 \end{cases}
 \end{split}
 \end{split}\]</div>
-<p>En NumPy sería:</p>
+<p>Que en NumPy sería:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grad_bce_loss</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -529,9 +547,9 @@ L(\theta) = \sum_{i=1}^N  -y_i \log( f_\theta(\vec x_i) ) - (1-y_i) \log(1 - f_\
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>A diferencia de la regresión lineal no podemos despejar analiticamente <span class="math notranslate nohighlight">\(\theta\)</span> debido a la no linealidad de <span class="math notranslate nohighlight">\(f_\theta(\vec x_i)\)</span></p>
+<p>A diferencia de la regresión lineal, no podemos despejar analiticamente <span class="math notranslate nohighlight">\(\theta\)</span> debido a la no linealidad de <span class="math notranslate nohighlight">\(f_\theta(\vec x_i)\)</span>.</p>
 </div>
-<p>Para entrenar este modelo se utilizan métodos de optimización iterativos, como los que se presentan a continuación</p>
+<p>Para entrenar este modelo se utilizan métodos de optimización iterativos, como los que se presentan a continuación.</p>
 <section id="metodo-de-newton-y-gradiente-descedente">
 <h2><span class="section-number">4.1. </span>Método de Newton y Gradiente descedente<a class="headerlink" href="#metodo-de-newton-y-gradiente-descedente" title="Permalink to this heading">#</a></h2>
 <p>Sea el valor actual del vector de parámetros <span class="math notranslate nohighlight">\(\theta_t\)</span></p>
@@ -608,13 +626,13 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c657ad8e45d56014c0c249788a223a1a5de79b8a5267eaa41b16b0d2bc706b5c.png" src="../../_images/c657ad8e45d56014c0c249788a223a1a5de79b8a5267eaa41b16b0d2bc706b5c.png" />
+<img alt="../../_images/5bc9a35d9a9ebf451bf8c78dc8412bf3ea9b887b427d5fded86521ab7af4d89e.png" src="../../_images/5bc9a35d9a9ebf451bf8c78dc8412bf3ea9b887b427d5fded86521ab7af4d89e.png" />
 </div>
 </div>
 <p>Y en este caso, con datos bidimensionales, podemos visualizar como se ajusta el plano separador época a época</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">ax_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">ravel</span><span class="p">()):</span>
     <span class="n">ax_</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="n">plot_prediction</span><span class="p">(</span><span class="n">ax_</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:])</span>
@@ -623,7 +641,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/69ced769b0362a34f9b8da84ca184abfd3a109489db1407487e9fabd6002bb3d.png" src="../../_images/69ced769b0362a34f9b8da84ca184abfd3a109489db1407487e9fabd6002bb3d.png" />
+<img alt="../../_images/c4e3e623d3755468c02775c014e6b4b4d44f5ff512ee66595c10d72287a4b863.png" src="../../_images/c4e3e623d3755468c02775c014e6b4b4d44f5ff512ee66595c10d72287a4b863.png" />
 </div>
 </div>
 </section>
@@ -632,9 +650,9 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 <p>En scikit-learn el regresor logístico está implementado en <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"><code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.LogisticRegression</span></code></a></p>
 <p>Los principales argumentos son</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">penalty</span></code>: Tipo de regularización, por ejemplo <code class="docutils literal notranslate"><span class="pre">l2</span></code>, <code class="docutils literal notranslate"><span class="pre">l1</span></code> o <code class="docutils literal notranslate"><span class="pre">'none'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">penalty</span></code>: Tipo de regularización, por ejemplo <code class="docutils literal notranslate"><span class="pre">l2</span></code>, <code class="docutils literal notranslate"><span class="pre">l1</span></code> o <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code>: Tolerancia para el criterio de detención</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">solver</span></code>: El algoritmo de optimización a utilizar, por defecto se usa <code class="docutils literal notranslate"><span class="pre">lbfgs</span></code> un método quasi-Newton</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver</span></code>: El algoritmo de optimización a utilizar, por defecto se usa <code class="docutils literal notranslate"><span class="pre">L-BFGS</span></code> un método quasi-Newton</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: Número máximo de épocas</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">n_jobs</span></code>: Núcleos de CPU a utilizar</p></li>
 </ul>
@@ -654,7 +672,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">intercept_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
@@ -667,7 +685,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 </div>
-<p>A continuación se muestra la diferencia entre <code class="docutils literal notranslate"><span class="pre">predict</span></code> y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> para un dato ubicado en [1., 0.]</p>
+<p>A continuación se muestra la diferencia entre <code class="docutils literal notranslate"><span class="pre">predict</span></code> y <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> para un dato ubicado en <code class="docutils literal notranslate"><span class="pre">[1.,</span> <span class="pre">0.]</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])),</span> 
@@ -686,7 +704,7 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>La predicción dura (predict) es equivalente al argumento máximo de la predicción probabilística (predict_proba)</p>
+<p>La predicción dura (<code class="docutils literal notranslate"><span class="pre">predict</span></code>) es equivalente al argumento máximo de la predicción probabilística (<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>).</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -706,8 +724,13 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_soft</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">y_hard</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="p">[</span><span class="n">y_hard</span><span class="p">,</span> <span class="n">y_soft</span><span class="p">]):</span>
     <span class="k">for</span> <span class="n">y_</span><span class="p">,</span> <span class="n">marker</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]):</span>
@@ -719,13 +742,13 @@ f(\theta_{t} + \Delta \theta) \approx f(\theta_t) + \nabla f (\theta_t) \Delta \
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/02a67fb41128c786e9ea319dc31188268bf97abd445c9eeaf4f3f161ba02219b.png" src="../../_images/02a67fb41128c786e9ea319dc31188268bf97abd445c9eeaf4f3f161ba02219b.png" />
+<img alt="../../_images/9585111c24c0716d778d9a03d068e1288ab396ef7784d267bde77cd33298b6ce.png" src="../../_images/9585111c24c0716d778d9a03d068e1288ab396ef7784d267bde77cd33298b6ce.png" />
 </div>
 </div>
-<p>El tipo de símbolo corresponde a la etiqueta real mientras que el color corresponde a la etiqueta predicha</p>
+<p>El tipo de símbolo corresponde a la etiqueta real mientras que el color corresponde a la etiqueta predicha.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En la próxima lección veremos como evaluar cuantitativamente el desempeño de un clasifidor</p>
+<p>En la próxima lección veremos como evaluar cuantitativamente el desempeño de un clasificador.</p>
 </div>
 </section>
 </section>
