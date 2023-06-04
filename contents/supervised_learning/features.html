@@ -393,7 +393,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="ingenieria-de-caracteristicas">
 <h1><span class="section-number">10. </span>Ingeniería de características<a class="headerlink" href="#ingenieria-de-caracteristicas" title="Permalink to this heading">#</a></h1>
-<p>Es muy común que los datos recolectados para resolver un problema de ML no estén originalmente en formato o tipo compatible con el modelo de aprendizaje. Por ejemplo, la mayoría de los métodos que hemos visto en este curso requieren una entrada numérica</p>
+<p>Es muy común que los datos recolectados para resolver un problema de ML no estén originalmente en un formato o tipo compatible con el modelo de aprendizaje. Por ejemplo, la mayoría de los métodos que hemos visto en este curso requieren una entrada numérica.</p>
 <p><strong>Ejemplo</strong> Supongamos que tenemos un dataset de helados y uno de sus atributos es la marca de la empresa que produce el helado: Savory, Bresler, Panda.</p>
 <p>Si queremos utilizar la marca como una entrada a un modelo predictivo podríamos codificar estas categorías como numéros enteros utilizando <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OrdinalEncoder.html"><code class="docutils literal notranslate"><span class="pre">OrdinalEncoder</span></code></a></p>
 <div class="cell docutils container">
@@ -430,18 +430,18 @@ document.write(`
 </div>
 <div class="admonition error">
 <p class="admonition-title">Error</p>
-<p>Esta forma ingenua de codificar las categorías introduce una relación de orden ficticia que el modelo podría aprender</p>
+<p>Esta forma ingenua de codificar las categorías introduce una relación de orden ficticia que el modelo podría aprender.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Si el número de categorías no es grande, podemos codificarlas sin caer en una relación de orden utilizando one-hot encoding</p>
+<p>Si el número de categorías no es grande, podemos codificarlas sin caer en una relación de orden utilizando one-hot encoding.</p>
 </div>
 <p>Podemos implementar esta codificación con <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html#sklearn.preprocessing.OneHotEncoder"><code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code></a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
 
-<span class="n">enc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">enc</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">marcas</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -466,10 +466,10 @@ document.write(`
 </div>
 </div>
 </div>
-<p>donde todas las categorías están a una misma distancia de las demás. Esta secuencia de tres números puede ingresar como entrada al modelo</p>
+<p>donde todas las categorías están a una misma distancia de las demás. Esta secuencia de tres números puede ingresar como entrada al modelo.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En problemas con muchas categorías estaríamos creando vectores de gran tamaño. Un solución típica es agrupar las categorías minoritarias. Esto se puede hacer con <code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> utilizando el argumento <code class="docutils literal notranslate"><span class="pre">max_categories</span></code></p>
+<p>En problemas con muchas categorías estaríamos creando vectores de gran tamaño. Un solución típica es agrupar las categorías minoritarias. Esto se puede hacer con <code class="docutils literal notranslate"><span class="pre">OneHotEncoder</span></code> utilizando el argumento <code class="docutils literal notranslate"><span class="pre">max_categories</span></code>.</p>
 </div>
 <p>Más en general, podemos definir:</p>
 <dl class="simple myst">
@@ -478,16 +478,16 @@ document.write(`
 <dt>Ingeniería de características (feature engineering)</dt><dd><p>Se refiere a los criterios y procesos para diseñar y obtener características a partir de datos crudos</p>
 </dd>
 </dl>
-<p>Una característica “ideal” debería cumplir con lo siguiente</p>
+<p>Una característica “ideal” debería cumplir con lo siguiente:</p>
 <ul class="simple">
-<li><p>Alto poder predictor: La característica debe estar altamente relacionada con la variable a predecir (etiqueta)</p></li>
-<li><p>Baja correlación con otras características: La característica no debe proveer información que esté en otras características</p></li>
-<li><p>Alta confianza: La característica debe calcularse a partir de datos que son confiables y representativos del problema</p></li>
-<li><p>Rápida de calcular: El cálculo de la característica no debería introducir un <em>overhead</em> computacional que vuelva infactible resolver el problema</p></li>
+<li><p>Alto poder predictor: La característica debe estar altamente relacionada con la variable a predecir (etiqueta).</p></li>
+<li><p>Baja correlación con otras características: La característica no debe proveer información que esté en otras características.</p></li>
+<li><p>Alta confianza: La característica debe calcularse a partir de datos que son confiables y representativos del problema.</p></li>
+<li><p>Rápida de calcular: El cálculo de la característica no debería introducir un <em>overhead</em> computacional que vuelva infactible resolver el problema.</p></li>
 </ul>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>La ingeniería de características es un proceso creativo que requiere de un acercamiento importante al problema que se quiere resolver</p>
+<p>La ingeniería de características es un proceso creativo que requiere que nos acerquemos considerablemente al problema que se quiere resolver. En ciertos problemas será necesario colaborar con un experto del dominio específico.</p>
 </div>
 <p><strong>Discusión:</strong> Un médico quiere predecir <a class="reference external" href="https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data">cancer a partir de una biopsia</a>. El médico resuelve esta tarea observando el tamaño de ciertas células que se caracterisan por su color distintivo ¿Qué características diseñar para este problema?</p>
 <p>Si en un problema particular los datos corresponden a los siguientes tipos, podemos considerar las siguientes representaciones para obtener características:</p>
@@ -502,34 +502,34 @@ document.write(`
 <h2><span class="section-number">10.1. </span>Selección de características<a class="headerlink" href="#seleccion-de-caracteristicas" title="Permalink to this heading">#</a></h2>
 <p>Los métodos de selección de características buscan encontrar el subconjunto de características más relevantes para resolver el problema (clasificación o regresión). En el caso más general estos métodos suelen distinguir entre:</p>
 <dl class="simple myst">
-<dt>Características relevante</dt><dd><p>Es una características que tiene alto poder predictivo, es decir una relación (lineal o no lineal) fuerte con la variable a predecir (etiqueta)</p>
+<dt>Características relevante</dt><dd><p>Es una características que tiene alto poder predictivo, es decir una relación (lineal o no lineal) fuerte con la variable a predecir (etiqueta).</p>
 </dd>
-<dt>Características complementarias o sinérgicas</dt><dd><p>Son tuplas de características que por si sola tienen bajo poder predictivo, pero estándo juntas tienen alto poder predictivo</p>
+<dt>Características complementarias o sinérgicas</dt><dd><p>Son tuplas de características que por si sola tienen bajo poder predictivo, pero estándo juntas tienen alto poder predictivo.</p>
 </dd>
-<dt>Característica redundante</dt><dd><p>Es una característica que si se elimina no afecta el desempeño pues su relación con la etiqueta ya está bien representada por otras variables</p>
+<dt>Característica redundante</dt><dd><p>Es una característica que si se elimina no afecta el desempeño pues su relación con la etiqueta ya está bien representada por otras variables.</p>
 </dd>
-<dt>Característica irrelevante</dt><dd><p>Es una característica con relación débil o nula con la etiqueta</p>
+<dt>Característica irrelevante</dt><dd><p>Es una característica con relación débil o nula con la etiqueta.</p>
 </dd>
 </dl>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>Un buen método de selección debería preservar las características relevantes/complementarias y descartar las irrevelante/redundantes</p>
+<p>Un buen método de selección debería preservar las características relevantes/complementarias y descartar las irrevelante/redundantes.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Eliminar características de poco poder predictivo puede mejorar el rendimiento del clasificador, especialmente si tenemos muchas características (la maldición de la dimensionalidad)</p>
+<p>Eliminar características de poco poder predictivo puede mejorar el rendimiento del clasificador, especialmente si tenemos muchas características (la maldición de la dimensionalidad).</p>
 </div>
 <p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_selection"><code class="docutils literal notranslate"><span class="pre">feature_selection</span></code></a> de Scikit-Learn ofrece algunas alternativas para hacer selección de características. Revisemos primero <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html#sklearn.feature_selection.SelectKBest"><code class="docutils literal notranslate"><span class="pre">SelectKBest</span></code></a>. Este objeto espera una función que mida la relevencia de las características y en base a eso retorna las K características más relevantes.</p>
-<p>Una métrica muy utilizada para medir relevancia es la <strong>Información Mutua</strong>, que también está implementada en scikit learn como <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif"><code class="docutils literal notranslate"><span class="pre">mutual_info_classif</span></code></a> y <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_selection"><code class="docutils literal notranslate"><span class="pre">mutual_info_regression</span></code></a></p>
+<p>Una métrica muy utilizada para medir relevancia es la <strong>Información Mutua</strong>, que también está implementada en scikit learn como <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.mutual_info_classif.html#sklearn.feature_selection.mutual_info_classif"><code class="docutils literal notranslate"><span class="pre">mutual_info_classif</span></code></a> y <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.feature_selection"><code class="docutils literal notranslate"><span class="pre">mutual_info_regression</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>La Información Mutua (IM) mide la cantidad de información compartida entre una característica y la etiqueta. A diferencia de la correlación, la IM es sensible a relaciones no lineales</p>
+<p>La Información Mutua (IM) mide la cantidad de información compartida entre una característica y la etiqueta. A diferencia de la correlación, la IM es sensible a relaciones no lineales.</p>
 </div>
-<p>Utilicemos como ejemplo un dataset de clasificación sintético de dos clases con seis características</p>
+<p>Utilicemos como ejemplo un dataset de clasificación sintético de dos clases con seis características:</p>
 <ul class="simple">
-<li><p>Las primeras dos características son relevantes (informativas)</p></li>
-<li><p>Las segundas dos son redundantes con las dos primeras</p></li>
-<li><p>Las dos restantes son irrelevantes</p></li>
+<li><p>Las primeras dos características son relevantes (informativas).</p></li>
+<li><p>Las segundas dos son redundantes con las dos primeras.</p></li>
+<li><p>Las dos restantes son irrelevantes.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -574,8 +574,8 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 27.6 ms, sys: 207 µs, total: 27.8 ms
-Wall time: 27.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 28.4 ms, sys: 660 µs, total: 29.1 ms
+Wall time: 27.7 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((300, 3), array([&#39;x1&#39;, &#39;x2&#39;, &#39;x3&#39;], dtype=object))
@@ -585,11 +585,11 @@ Wall time: 27.2 ms
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>La ventaja de este método para hacer selección de características es que no depende de un modelo de clasificación en particular. Otra ventaja es que es muy eficiente computacionalmente</p>
+<p>La ventaja de este método para hacer selección de características es que no depende de un modelo de clasificación en particular. Otra ventaja es que es muy eficiente computacionalmente.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>La desventaja de este método es que, al medir la relevancia de las características una por una, no es sensible a relaciones de redundancia y complementariedad</p>
+<p>La desventaja de este método es que, al medir la relevancia de las características una por una, no es sensible a relaciones de redundancia y complementariedad.</p>
 </div>
 <p>El problema anterior se puede aliviar utilizando un método de eliminación hacia-atras (<em>backward</em>). Scikit-learn tiene dos objetos para lograr este propósito:</p>
 <ul class="simple">
@@ -605,7 +605,7 @@ Wall time: 27.2 ms
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Este tipo de eliminación <em>greedy</em> descartará características redundates y no perderá características que son complementarias, pero tiene un gran costo en comparación a lo que vimos antes</p>
+<p>Este tipo de eliminación <em>greedy</em> descartará características redundates y no perderá características que son complementarias, pero tiene un gran costo en comparación a lo que vimos antes.</p>
 </div>
 <p>Por ejemplo, si pedimos tres características:</p>
 <div class="cell docutils container">
@@ -624,8 +624,8 @@ Wall time: 27.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 117 ms, sys: 9.59 ms, total: 127 ms
-Wall time: 132 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 149 ms, sys: 5.98 ms, total: 155 ms
+Wall time: 154 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;x0&#39;, &#39;x3&#39;, &#39;x5&#39;], dtype=object)
@@ -633,27 +633,27 @@ Wall time: 132 ms
 </div>
 </div>
 </div>
-<p>El método no entrega características redudantes entre si</p>
+<p>El método no entrega características redudantes entre si.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>Los resultados dependen del estimador. Usar un estimador distinto puede cambiar considerablemente el resultado</p>
+<p>Los resultados dependen del estimador. Usar un estimador distinto puede cambiar considerablemente el resultado.</p>
 </div>
 </section>
 <section id="escalamiento-y-normalizacion-de-caracteristicas">
 <h2><span class="section-number">10.2. </span>Escalamiento y normalización de características<a class="headerlink" href="#escalamiento-y-normalizacion-de-caracteristicas" title="Permalink to this heading">#</a></h2>
-<p>Existen dos razones importantes por las cuales es interesante escalar las características antes de entrenar un modelo</p>
+<p>Existen dos razones importantes por las cuales es interesante escalar las características antes de entrenar un modelo:</p>
 <ol class="arabic simple">
 <li><p>Evitar que una variable domine a las otras sólo por tener valores más grandes</p></li>
 <li><p>Evitar inestabilidad numérica en el modelo o en el proceso de optimización del mismo]</p></li>
 </ol>
-<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing"><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></a> de Scikit Learn proporciona clases y funciones para realizar distintos tipos de escalamiento, entre ellos</p>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing"><code class="docutils literal notranslate"><span class="pre">preprocessing</span></code></a> de Scikit Learn proporciona clases y funciones para realizar distintos tipos de escalamiento, entre ellos:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler"><code class="docutils literal notranslate"><span class="pre">StandardScaler(with_mean=True,</span> <span class="pre">with_std=True)</span></code></a>: Equivalente a restar la media y dividir por la desviación estándar</p></li>
 <li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler"><code class="docutils literal notranslate"><span class="pre">MinMaxScaler()</span></code></a>: Reescala la variable tal que su valor mínimo sea 0 y su valor máximo sea 1</p></li>
 <li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html#sklearn.preprocessing.MaxAbsScaler"><code class="docutils literal notranslate"><span class="pre">MaxAbsScaler()</span></code></a>: Rescala la variable tal que su valor máximo sea 1 (divide por el máximo absoluto)</p></li>
 <li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html#sklearn.preprocessing.RobustScaler"><code class="docutils literal notranslate"><span class="pre">RobustScaler()</span></code></a>: Similar a <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> pero utiliza estadísticos robustos ante los valores fuera de rango (outliers)</p></li>
 </ul>
-<p>Los principales métodos de estas clases son</p>
+<p>Los principales métodos de estas clases son:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fit(X)</span></code>: Calcula los estadísticos de la transformación de escalamiento para <code class="docutils literal notranslate"><span class="pre">X</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">transform(X)</span></code> Aplica la transformación a <code class="docutils literal notranslate"><span class="pre">X</span></code></p></li>
@@ -672,11 +672,11 @@ Wall time: 132 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.7979669 , 0.28337659],
-       [0.21434254, 0.46872703],
-       [0.08130412, 0.94759712],
-       [1.        , 1.        ],
-       [0.        , 0.        ]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.15596611, 0.54159956],
+       [0.        , 0.        ],
+       [0.71403426, 1.        ],
+       [1.        , 0.68908574],
+       [0.48256434, 0.77515863]])
 </pre></div>
 </div>
 </div>
@@ -689,25 +689,25 @@ Wall time: 132 ms
 <section id="reduccion-de-dimensionalidad">
 <h2><span class="section-number">10.3. </span>Reducción de dimensionalidad<a class="headerlink" href="#reduccion-de-dimensionalidad" title="Permalink to this heading">#</a></h2>
 <p>Los métodos de reducción de dimensionalidad transforman un conjunto de características (numéricas) en un nuevo conjunto con un número menor de variables. Las nuevas características suelen involucrar transformaciones y combinaciones de las características originales.</p>
-<p>Existen métodos supervisados y no supervisados para reducir dimensionalidad. En este último caso no se utiliza información de la etiqueta, y se busca minimizar otro tipo de objetivo. Un ejemplo clásico y ampliamente utilizado es Análisis de Componentes Principales (<em>Principal Component Analysis</em>, PCA)</p>
-<p>Como muestra la siguiente figura, PCA aplica una transformación sobre las características originales (izquierda), creando nuevas características que son combinaciones lineales de las originales (derecha)</p>
+<p>Existen métodos supervisados y no supervisados para reducir dimensionalidad. En este último caso no se utiliza información de la etiqueta, y se busca minimizar otro tipo de objetivo. Un ejemplo clásico y ampliamente utilizado es Análisis de Componentes Principales (<em>Principal Component Analysis</em>, PCA).</p>
+<p>Como muestra la siguiente figura, PCA aplica una transformación sobre las características originales (izquierda), creando nuevas características que son combinaciones lineales de las originales (derecha).</p>
 <a class="reference internal image-reference" href="../../_images/pca1.png"><img alt="../../_images/pca1.png" src="../../_images/pca1.png" style="width: 600px;" /></a>
 <p>El objetivo de PCA es <strong>maximizar la varianza de las características</strong> proyectadas en el nuevo espacio.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>PCA produce una cantidad de características equivalente a las que se tenían originalmente</p>
+<p>PCA produce una cantidad de características equivalente a las que se tenían originalmente.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>La reducción de dimensionalidad en PCA es manual, es decir el usuario debe decidir cuantas características preservar. Un criterio muy usado es seleccionar la cantidad de características en base a la varianza acumulada que representan</p>
+<p>La reducción de dimensionalidad en PCA es manual, es decir el usuario debe decidir cuantas características preservar. Un criterio muy usado es seleccionar la cantidad de características en base a la varianza acumulada que representan.</p>
 </div>
-<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.decomposition"><code class="docutils literal notranslate"><span class="pre">decomposition</span></code></a> de scikit-learn tiene clases y objetos para hacer reducción de dimensionalidad, entre ellos <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a></p>
-<p>El argumento principal de <code class="docutils literal notranslate"><span class="pre">PCA</span></code> es <code class="docutils literal notranslate"><span class="pre">n_components</span></code>, el cual puede ser un entero o un flotante en el rango [0, 1]</p>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.decomposition"><code class="docutils literal notranslate"><span class="pre">decomposition</span></code></a> de scikit-learn tiene clases y objetos para hacer reducción de dimensionalidad, entre ellos <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA"><code class="docutils literal notranslate"><span class="pre">PCA</span></code></a>.</p>
+<p>El argumento principal de <code class="docutils literal notranslate"><span class="pre">PCA</span></code> es <code class="docutils literal notranslate"><span class="pre">n_components</span></code>, el cual puede ser un entero o un flotante en el rango [0, 1]:</p>
 <ul class="simple">
 <li><p>Si es un entero <span class="math notranslate nohighlight">\(K\)</span> el método se quedará con las <span class="math notranslate nohighlight">\(K\)</span> variables de mayor varianza</p></li>
 <li><p>Si es un flotante <span class="math notranslate nohighlight">\(p\)</span> el método se quedará con tantas variables como sea necesario con tal de tener un <span class="math notranslate nohighlight">\(100p\%\)</span>  de la varianza</p></li>
 </ul>
-<p>Veamos un ejemplo con el famoso dataset <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/iris">Iris</a>:</p>
+<p>Veamos un ejemplo con el famoso dataset <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/iris">Iris</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
@@ -757,17 +757,17 @@ Wall time: 132 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/90ebf389512896626c4352a4a2423504252bc04210c71df24b0acacf5399e302.png" src="../../_images/90ebf389512896626c4352a4a2423504252bc04210c71df24b0acacf5399e302.png" />
+<img alt="../../_images/07d7b4c49974b12af1027d6fa93d84c10b36ebd75343829754d53124c541a33a.png" src="../../_images/07d7b4c49974b12af1027d6fa93d84c10b36ebd75343829754d53124c541a33a.png" />
 </div>
 </div>
-<p>Estos nuevas características parecen suficiente para separar las tres clases</p>
+<p>Estos nuevas características parecen suficiente para separar las tres clases.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>PCA no utiliza la información de clases para hacer la proyección. No siempre maximizar varianza resultará en mayor separabilidad de clases</p>
+<p>PCA no utiliza la información de clases para hacer la proyección. No siempre maximizar varianza resultará en mayor separabilidad de clases.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>PCA recibe su nombre debido a que las nuevas características y su varianza están relacionadas a los vectores y valores propios de la matriz de correlación de las características originales. Puedes profundizar sobre este tema leyendo <a class="reference external" href="https://docs.google.com/presentation/d/1YqYy5RTB2PJ6C7syMTZCleZqyc2MJVA2APqdBAIhjBw/edit#slide=id.p">esta presentación</a></p>
+<p>PCA recibe su nombre debido a que las nuevas características y su varianza están relacionadas a los vectores y valores propios de la matriz de correlación de las características originales. Puedes profundizar sobre este tema leyendo <a class="reference external" href="https://docs.google.com/presentation/d/1YqYy5RTB2PJ6C7syMTZCleZqyc2MJVA2APqdBAIhjBw/edit#slide=id.p">esta presentación</a>.</p>
 </div>
 </section>
 </section>

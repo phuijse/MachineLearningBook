@@ -394,49 +394,49 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="ensambles-paralelos">
 <h1><span class="section-number">8. </span>Ensambles paralelos<a class="headerlink" href="#ensambles-paralelos" title="Permalink to this heading">#</a></h1>
-<p>Los métodos de ensambles paralelos entrenan estimadores (clasificador o regresor) débiles de forma independiente y luego combinan sus resultados</p>
+<p>Los métodos de ensambles paralelos entrenan estimadores (clasificador o regresor) débiles de forma independiente y luego combinan sus resultados. Algunas definiciones:</p>
 <dl class="simple myst">
 <dt>Estimador débil</dt><dd><p>Algoritmo que produce un resultado (al menos) levemente mejor que el azar</p>
 </dd>
 <dt>Estimador fuerte</dt><dd><p>Algoritmo que produce un resultado correcto en la mayoría de los ejemplos</p>
 </dd>
 </dl>
-<p>Nos enfocaremos principalmente en el caso de clasificación</p>
+<p>Nos enfocaremos principalmente en el caso de clasificación.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>El supuesto principal de los ensambles paralelos es que los clasificadores débiles tienen error de generalización independiente (de lo contrario no habría ganancia al combinarlos)</p>
+<p>El supuesto principal de los ensambles paralelos es que los clasificadores débiles tienen error de generalización independiente. De lo contrario no habría ganancia al combinarlos.</p>
 </div>
 <p>Si definimos el error de generalización de un clasificador débil como</p>
 <div class="math notranslate nohighlight">
 \[
 \epsilon_t = P(h_t(x) \neq y)
 \]</div>
-<p>y asumiendo un clasificador binario fuerte con</p>
+<p>y asumiendo un clasificador binario fuerte construido mediante “voto por mayoría”</p>
 <div class="math notranslate nohighlight">
 \[
 H(x) = \text{signo} \left( \sum_{t=1}^T h_t(x) \right)
 \]</div>
-<p>(voto por mayoría), entonces se puede mostrar que</p>
+<p>entonces se puede mostrar que</p>
 <div class="math notranslate nohighlight">
 \[
 P(H(x) \neq y) = \sum_{k=0}^{T/2} \binom{T}{k} (1-\epsilon)^k \epsilon^{T-k} \leq \exp \left( -\frac{1}{2} T(2\epsilon -1)^2 \right)
 \]</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Si los errores de generalización son independientes, el error del clasificador fuerte se reduce exponencialmente con la cantidad de clasificadores débiles</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>Si los errores de generalización son independientes, el error del clasificador fuerte se reduce exponencialmente con la cantidad de clasificadores débiles.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>En la práctica no es posible tener clasificadores independientes si están entrenados con el mismo conjunto de datos</p>
+<p>En la práctica no es posible tener clasificadores independientes si están entrenados con el mismo conjunto de datos.</p>
 </div>
-<p>A continuación veremos una técnica que busca solucionar este problema</p>
+<p>A continuación veremos una técnica que busca solucionar este problema.</p>
 <section id="bagging-bootstrap-aggregating">
 <h2><span class="section-number">8.1. </span>Bagging: Bootstrap Aggregating<a class="headerlink" href="#bagging-bootstrap-aggregating" title="Permalink to this heading">#</a></h2>
-<p><em>Bootstrap</em> es una técnica estadística para obtener intervalos de confianza empíricos que se basa en obtener muestras distintas pero representativas del conjunto de datos original</p>
-<p>La técnica más clásica y simple para lograr lo anterior es <strong>muestreo con reemplazo</strong> y se ilustra en la siguiente figura</p>
+<p><em>Bootstrap</em> es una técnica estadística para obtener intervalos de confianza empíricos que se basa en obtener muestras distintas pero representativas del conjunto de datos original.</p>
+<p>La técnica más clásica y simple para lograr lo anterior es <strong>muestreo con reemplazo</strong> y se ilustra en la siguiente figura.</p>
 <a class="reference internal image-reference" href="../../_images/bootstrap.png"><img alt="../../_images/bootstrap.png" src="../../_images/bootstrap.png" style="width: 700px;" /></a>
-<p>El conjunto de datos original (izquierda) se remuestrea <span class="math notranslate nohighlight">\(T\)</span> veces. En cada muestra se escogen aleatoriamente tantos ejemplos como existían en el conjunto original. Sin embargo algunos ejemplos no se escogen, mientras que otros se escogen más de una vez (reemplazo)</p>
-<p>El algoritmo de <a class="reference external" href="https://link.springer.com/article/10.1007/BF00058655">Bagging</a> consiste en</p>
+<p>El conjunto de datos original (izquierda) se remuestrea <span class="math notranslate nohighlight">\(T\)</span> veces. En cada muestra se escogen aleatoriamente tantos ejemplos como existían en el conjunto original. Sin embargo algunos ejemplos no se escogen, mientras que otros se escogen más de una vez.</p>
+<p>El algoritmo de <a class="reference external" href="https://link.springer.com/article/10.1007/BF00058655">Bagging</a> consiste en:</p>
 <ol class="arabic simple">
 <li><p>Generar <span class="math notranslate nohighlight">\(T\)</span> conjuntos de datos utilizando muestreo con reemplazo</p></li>
 <li><p>Entrenar un clasificador débil en cada conjunto</p></li>
@@ -446,48 +446,48 @@ P(H(x) \neq y) = \sum_{k=0}^{T/2} \binom{T}{k} (1-\epsilon)^k \epsilon^{T-k} \le
 \[
 H(x) = \text{arg} \max_{y \in \mathcal{Y}} \sum_{t=1}^T \mathbb{1} (h_t(x) = y)
 \]</div>
-<p>donde <span class="math notranslate nohighlight">\(\mathbb{1}(\cdot)\)</span> es la función indicadora, que es 1 si su argumento es cierto y 0 en el caso contrario</p>
-<p>Lo anterior se conoce como “voto por mayoría”, ya que se escoge la etiqueta que fue mayormente seleccionada por los clasificadores débiles</p>
+<p>donde <span class="math notranslate nohighlight">\(\mathbb{1}(\cdot)\)</span> es la función indicadora, que es 1 si su argumento es cierto y 0 en el caso contrario.</p>
+<p>Lo anterior se conoce como “voto por mayoría”, ya que se escoge la etiqueta que fue mayormente seleccionada por los clasificadores débiles.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>El procedimiento anterior es amigable con arquitecturas computacionales de múltiples procesadores pues cada entrenamiento es independiente de los demás</p>
+<p>El procedimiento anterior es amigable con arquitecturas computacionales de múltiples procesadores pues cada entrenamiento es independiente de los demás.</p>
 </div>
 <p><strong>Ejemplos oob</strong></p>
 <p>Cuando se utiliza muestreo con reemplazo la probabilidad de que el ejemplo <span class="math notranslate nohighlight">\(i\)</span> sea incluido al menos una vez es 0.632 (se distribuye Poisson con <span class="math notranslate nohighlight">\(\lambda=1\)</span>)</p>
-<p>Por lo tanto, por cada clasificador, hay un <span class="math notranslate nohighlight">\(36.8 \%\)</span> de ejemplos que no se ocupan. Estos ejemplos se denominan <em>out-of-bag</em> (oob)</p>
+<p>Por lo tanto, por cada clasificador, hay un <span class="math notranslate nohighlight">\(36.8 \%\)</span> de ejemplos que no se ocupan. Estos ejemplos se denominan <em>out-of-bag</em> (oob).</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Una ventaja de bagging es que podemos utilizar los ejemplos oob de cada clasificador débil para medir el error de generalización</p>
+<p>Una ventaja de bagging es que podemos utilizar los ejemplos oob de cada clasificador débil para medir el error de generalización.</p>
 </div>
 <p><strong>Clasificador inestable</strong></p>
-<p>Existe un traslape considerable entre los conjuntos remuestreados (<span class="math notranslate nohighlight">\(63.2 \%\)</span>)</p>
+<p>Existe un traslape considerable entre los conjuntos remuestreados (<span class="math notranslate nohighlight">\(63.2 \%\)</span>).</p>
 <dl class="simple myst">
 <dt>Clasificador estable</dt><dd><p>Se refiere a un clasificador que es insensible a perturbaciones en el dataset</p>
 </dd>
 </dl>
-<p>En el caso de bagging, si los clasificadores débiles son estables, entonces su resultado será muy similar y por ende no habrá ganancia al construir un ensamble</p>
+<p>En el caso de bagging, si los clasificadores débiles son estables, entonces su resultado será muy similar y por ende no habrá ganancia al construir un ensamble.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>Bagging es una técnica que promedia clasificadores débiles, es decir reduce varianza. Por ende funcionará mejor con clasificadores débiles de bajo sesgos (error) pero alta varianza</p>
+<p>Bagging es una técnica que promedia clasificadores débiles, es decir reduce varianza. Por ende funcionará mejor con clasificadores débiles de bajo sesgos (error) pero alta varianza.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En el caso de los árboles de decisión, mientras más profundo sea mayor inestabilidad se tiene. Adicionalmente, si los árboles no se podan son más inestables</p>
+<p>En el caso de los árboles de decisión, mientras más profundo sea mayor inestabilidad se tiene. Adicionalmente, si los árboles no se podan son más inestables.</p>
 </div>
 </section>
 <section id="random-forest">
 <h2><span class="section-number">8.2. </span>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this heading">#</a></h2>
-<p>En bagging se realiza muestreo con reemplazo de los datos. <a class="reference external" href="https://link.springer.com/article/10.1023/A:1010933404324">Random Forest</a> (RF) extiende esta idea realizando submuestreo de los atributos (features/características)</p>
-<p>En particular, cada split de cada clasificador débil (árbol) tiene acceso a un subconjunto aleatorio <span class="math notranslate nohighlight">\(M\)</span> de los atributos originales. De esta forma se obtienen clasificadores débiles menos correlacionados (más independientes) y además más rápidos de entrenar</p>
+<p>En bagging se realiza muestreo con reemplazo de los datos. <a class="reference external" href="https://link.springer.com/article/10.1023/A:1010933404324">Random Forest</a> (RF) extiende esta idea realizando submuestreo de los atributos (features/características).</p>
+<p>En particular, cada split de cada clasificador débil (árbol) tiene acceso a un subconjunto aleatorio <span class="math notranslate nohighlight">\(M\)</span> de los atributos originales. De esta forma se obtienen clasificadores débiles menos correlacionados (más independientes) y además más rápidos de entrenar.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>La cantidad máxima de atributos por split es un hiperparámetro. Típicamente se utiliza la raiz cuadrada del total de atributos</p>
+<p>La cantidad máxima de atributos por <em>split</em> es un hiperparámetro. Típicamente se utiliza la raíz cuadrada del total de atributos.</p>
 </div>
 </section>
 <section id="implementacion-en-scikit-learn">
 <h2><span class="section-number">8.3. </span>Implementación en scikit-learn<a class="headerlink" href="#implementacion-en-scikit-learn" title="Permalink to this heading">#</a></h2>
-<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>RandomForest</em> para problemas de clasificación y regresión. Nos enfocaremos en el primero</p>
-<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html"><code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a> son</p>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>RandomForest</em> para problemas de clasificación y regresión. Nos enfocaremos en el primero.</p>
+<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html"><code class="docutils literal notranslate"><span class="pre">RandomForestClassifier</span></code></a> son:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>: Cantidad de clasificadores débiles (árboles)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">max_features</span></code>: Cantidad máxima de atributos por split</p></li>
@@ -521,7 +521,9 @@ H(x) = \text{arg} \max_{y \in \mathcal{Y}} \sum_{t=1}^T \mathbb{1} (h_t(x) = y)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;criterion&#39;</span><span class="p">:(</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="s1">&#39;gini&#39;</span><span class="p">),</span>
@@ -536,14 +538,19 @@ H(x) = \text{arg} \max_{y \in \mathcal{Y}} \sum_{t=1}^T \mathbb{1} (h_t(x) = y)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV(cv=3, estimator=RandomForestClassifier(n_jobs=4),
-             param_grid={&#39;criterion&#39;: (&#39;entropy&#39;, &#39;gini&#39;),
-                         &#39;max_depth&#39;: [1, 5, 10, 20, None],
-                         &#39;max_features&#39;: [&#39;sqrt&#39;, 5, 10],
-                         &#39;n_estimators&#39;: [1, 10, 20, 50, 100]})
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 21.7 s, sys: 1.52 s, total: 23.2 s
+Wall time: 27.8 s
 </pre></div>
 </div>
-</div>
+<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=3, estimator=RandomForestClassifier(n_jobs=4),
+             param_grid={&#x27;criterion&#x27;: (&#x27;entropy&#x27;, &#x27;gini&#x27;),
+                         &#x27;max_depth&#x27;: [1, 5, 10, 20, None],
+                         &#x27;max_features&#x27;: [&#x27;sqrt&#x27;, 5, 10],
+                         &#x27;n_estimators&#x27;: [1, 10, 20, 50, 100]})</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" ><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">GridSearchCV</label><div class="sk-toggleable__content"><pre>GridSearchCV(cv=3, estimator=RandomForestClassifier(n_jobs=4),
+             param_grid={&#x27;criterion&#x27;: (&#x27;entropy&#x27;, &#x27;gini&#x27;),
+                         &#x27;max_depth&#x27;: [1, 5, 10, 20, None],
+                         &#x27;max_features&#x27;: [&#x27;sqrt&#x27;, 5, 10],
+                         &#x27;n_estimators&#x27;: [1, 10, 20, 50, 100]})</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" ><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">estimator: RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(n_jobs=4)</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" ><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">RandomForestClassifier</label><div class="sk-toggleable__content"><pre>RandomForestClassifier(n_jobs=4)</pre></div></div></div></div></div></div></div></div></div></div></div></div>
 </div>
 <p>Los mejores modelos de acuerdo a la validación cruzada son:</p>
 <div class="cell docutils container">
@@ -657,7 +664,7 @@ H(x) = \text{arg} \max_{y \in \mathcal{Y}} \sum_{t=1}^T \mathbb{1} (h_t(x) = y)
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Random Forest prefiere árboles más profundos. Los árboles profundos tienen con bajo sesgo y alta varianza</p>
+<p>Random Forest prefiere árboles más profundos. Los árboles profundos tienen con bajo sesgo y alta varianza.</p>
 </div>
 <p>El resultado en el conjunto de test es:</p>
 <div class="cell docutils container">
@@ -700,7 +707,7 @@ weighted avg       0.94      0.94      0.94        54
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1e20d7cc0527135cb2001dc116e1c89a29ddd0ba7bfc293ecf544795820a073f.png" src="../../_images/1e20d7cc0527135cb2001dc116e1c89a29ddd0ba7bfc293ecf544795820a073f.png" />
+<img alt="../../_images/21fc60a117ddffde21e0be7c08f0bf8c5f65f014ce93cd231495c200fb976f90.png" src="../../_images/21fc60a117ddffde21e0be7c08f0bf8c5f65f014ce93cd231495c200fb976f90.png" />
 </div>
 </div>
 </section>
@@ -709,12 +716,12 @@ weighted avg       0.94      0.94      0.94        54
 <p>En cada split de cada árbol se obtiene una ganancia de información para el atributo seleccionado. Luego, para un atributo en particular, se puede obtener su ganancia de información promedio.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Un atributo que es más relevante (permite clasificar mejor), será escogido por una mayor cantidad de splits y por ende tendrá ganancia de información promedio mayor</p>
+<p>Un atributo que es más relevante (permite clasificar mejor), será escogido por una mayor cantidad de splits y por ende tendrá ganancia de información promedio mayor.</p>
 </div>
-<p>Se puede utilizar la ganancia de información promedio para hacer selección de características, sin embargo existe una limitación importante: El RF no detecta correlaciones entre atributos</p>
+<p>Se puede utilizar la ganancia de información promedio para hacer selección de características, sin embargo existe una limitación importante: El RF no detecta correlaciones entre atributos.</p>
 <div class="admonition warning">
 <p class="admonition-title">Advertencia</p>
-<p>Si dos atributos están altamente correlacionados el RF no preferirá ninguna de ellas y la ganancia de información promedio de ambos será baja</p>
+<p>Si dos atributos están altamente correlacionados el RF no preferirá ninguna de ellas y la ganancia de información promedio de ambos será baja.</p>
 </div>
 <p>Para el ejemplo anterior se tiene:</p>
 <div class="cell docutils container">
@@ -728,7 +735,7 @@ weighted avg       0.94      0.94      0.94        54
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9670dba63eda93b951539fe557901c053bb94cfffe5d5859d1f3de1faf205128.png" src="../../_images/9670dba63eda93b951539fe557901c053bb94cfffe5d5859d1f3de1faf205128.png" />
+<img alt="../../_images/0c012dbc10c3d3f44a9ede22d0fcd8a9676d198eae9b5ee9200c2da930a63ad2.png" src="../../_images/0c012dbc10c3d3f44a9ede22d0fcd8a9676d198eae9b5ee9200c2da930a63ad2.png" />
 </div>
 </div>
 </section>

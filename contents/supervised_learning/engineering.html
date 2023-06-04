@@ -393,11 +393,11 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="machine-learning-engineering-mle">
 <h1><span class="section-number">11. </span>Machine Learning Engineering (MLE)<a class="headerlink" href="#machine-learning-engineering-mle" title="Permalink to this heading">#</a></h1>
-<p><a class="reference external" href="http://mlebook.com/">MLE</a> se refiere al diseño y construcción de software que incluye componentes basados en modelos de Machine Learning (ML). En este sentido, MLE se puede considerar como una extensión de la <a class="reference external" href="https://es.wikipedia.org/wiki/Ingenier%C3%ADa_de_software">ingeniería de software</a> tradicional</p>
-<p>Hasta ahora nos hemos concentrado en presentar los aspectos más científicos de como entrenar y evaluar modelos de ML. MLE concierne no sólo el entrenamiento sino también aspectos relacionados a la colección y corrección de datos y al monitoreo y mantenimiendo de los modelos</p>
+<p><a class="reference external" href="http://mlebook.com/">MLE</a> se refiere al diseño y construcción de software que incluye componentes basados en modelos de Machine Learning (ML). En este sentido, MLE se puede considerar como una extensión de la <a class="reference external" href="https://es.wikipedia.org/wiki/Ingenier%C3%ADa_de_software">ingeniería de software</a> tradicional.</p>
+<p>Hasta ahora nos hemos concentrado en presentar los aspectos más científicos de como entrenar y evaluar modelos de ML. MLE concierne no sólo el entrenamiento sino también aspectos relacionados a la colección y corrección de datos y al monitoreo y mantenimiendo de los modelos.</p>
 <section id="ciclo-de-vida-de-un-proyecto-de-ml">
 <h2><span class="section-number">11.1. </span>Ciclo de vida de un proyecto de ML<a class="headerlink" href="#ciclo-de-vida-de-un-proyecto-de-ml" title="Permalink to this heading">#</a></h2>
-<p>Las tareas para desarrollar un sofware que utiliza ML pueden dividirse en</p>
+<p>Las tareas para desarrollar un sofware que utiliza ML pueden dividirse en:</p>
 <ol class="arabic simple">
 <li><p>Recolección y preparación de datos</p></li>
 <li><p>Ingeniería de <em>features</em> (características)</p></li>
@@ -408,76 +408,78 @@ document.write(`
 <li><p>Monitoreo de modelos</p></li>
 <li><p>Mantenimiento de modelos</p></li>
 </ol>
-<p>Donde además se asume como “paso 0” la definición de uno o más objetivos, que vienen a ser los requisitos del software</p>
+<p>Donde además se asume como “paso 0” la definición de uno o más objetivos, que vienen a ser los requisitos del software.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>El objetivo debe definir las entradas y salidas del modelo. El objetivo también debe definir el criterio o métrica con la que se medirá que tan exitoso es el modelo</p>
+<p>El objetivo debe definir las entradas y salidas del modelo. El objetivo también debe definir el criterio o métrica con la que se medirá que tan exitoso es el modelo.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>El movimiento entre los pasos anteriores puede ser “hacia atrás”, por ejemplo ante una mala evaluación del modelo o errores detectados en el monitoreo, podríamos retroceder a recolectar nuevos datos y reetrenar el modelo</p>
+<p>El movimiento entre los pasos anteriores puede ser “hacia atrás”, por ejemplo ante una mala evaluación del modelo o errores detectados en el monitoreo, podríamos retroceder a recolectar nuevos datos y reentrenar el modelo.</p>
 </div>
 <p>Los pasos 2, 3 y 4 han sido revisados en capítulos anteriores. A continuación revisaremos los demás pasos del flujo anterior. Pero antes respondamos la siguiente pregunta:</p>
 <p><strong>¿Cuándo incorporar ML en mi software?</strong></p>
 <p>ML provee herramientas para aprender modelos de predicción automáticamente a partir de datos. Antes de implementar corresponde preguntar si:</p>
+<blockquote>
+<div><p>¿Es posible resolver el problema utilizando heurísticas o reglas programadas manualmente?</p>
+</div></blockquote>
+<p>En dicho caso no deberíamos utilizar ML en favor de software tradicional, por las complejidades adicionales que involucra mantener el primero. Otros condiciones que se deben cumplir para poder utilizar ML son:</p>
 <ul class="simple">
-<li><p>El problema no puede resolverse en base a heurísticas o reglas que puedan programarse “a mano” (o se necesita una cantidad de reglas demasiado grande)</p></li>
-<li><p>El costo (monetario o horas humanas) de obtener y etiquetar los datos necesarios no es demasiado alto</p></li>
-<li><p>El problema tiene un objetivo simple y bien específicado</p></li>
-<li><p>El problema puede admitir algunas respuestas erróneas (accuracy no necesita ser 100%)</p></li>
+<li><p>Tener una métrica objetivo bien definida</p></li>
+<li><p>Costos de obtener datos de ejemplo y etiquetarlos manejables</p></li>
+<li><p>Que sea admisible para el software entregar respuestas erróneas en algunas ocasiones (accuracy no 100%)</p></li>
 </ul>
-<p>Si alguna de las anteriores no se cumple, deberíamos cuestionar el uso de ML en nuestro sofware</p>
-<p>Otro indicio importante es si el problema en cuestion está relacionado a percepción humana, por ejemplo reconocimiento de patrones en imágenes (visión) o sonido (audición). En esos casos ML es en general la mejor solución</p>
+<p>Otro indicio importante es si el problema en cuestion está relacionado a percepción humana, por ejemplo reconocimiento de patrones en imágenes (visión) o sonido (audición). En esos casos ML es típicamente la mejor solución.</p>
 </section>
 <section id="recoleccion-y-preparacion-de-datos">
 <h2><span class="section-number">11.2. </span>Recolección y preparación de datos<a class="headerlink" href="#recoleccion-y-preparacion-de-datos" title="Permalink to this heading">#</a></h2>
 <p>Antes de entrenar un modelo se necesitan datos. Antes de iniciar una campaña de recolección de datos que permitan cumplir el objetivo deberíamos investigar si:</p>
 <ul class="simple">
-<li><p>hay datos existentes que pueden utilizarse</p></li>
-<li><p>los datos son suficientes para todas las clases/eventos de interés</p></li>
-<li><p>los datos son relativamente actuales (no están obsoletos)</p></li>
-<li><p>los datos tienen calidad suficiente</p></li>
+<li><p>hay datos existentes que pueden utilizarse.</p></li>
+<li><p>los datos son suficientes para todas las clases/eventos de interés.</p></li>
+<li><p>los datos son relativamente actuales (no están obsoletos).</p></li>
+<li><p>los datos tienen calidad suficiente .</p></li>
 </ul>
 <p>Los problemas típicamente encontrados en datasets de baja calidad son:</p>
 <ul class="simple">
-<li><p>Ruido en los datos</p></li>
-<li><p>Ruido en las etiquetas: Etiquetadores inconsistentes</p></li>
-<li><p>Datos faltantes (<em>missing data</em>)</p></li>
-<li><p>Sesgos de selección, muestreo, variables omitidas, etc</p></li>
-<li><p>Presencia de <em>outliers</em>: Ejemplos muy alejados de la distribución que pueden afectar el entrenamiento</p></li>
-<li><p><em>data leakage</em>: La variable objetivo (etiqueta) está oculta en alguna de las variables</p></li>
+<li><p>Ruido en los datos.</p></li>
+<li><p>Ruido en las etiquetas: Etiquetadores inconsistentes.</p></li>
+<li><p>Datos faltantes (<em>missing data</em>).</p></li>
+<li><p>Sesgos de selección, muestreo, variables omitidas, etc.</p></li>
+<li><p>Presencia de <em>outliers</em>: Ejemplos muy alejados de la distribución que pueden afectar el entrenamiento.</p></li>
+<li><p><em>data leakage</em>: La variable objetivo (etiqueta) está oculta en alguna de las variables.</p></li>
 </ul>
-<p>Algunos de estos problemas puede resolverse mediante</p>
+<p>Algunos de estos problemas puede resolverse mediante:</p>
 <ul class="simple">
-<li><p>Adecuado particionamiento de los datos</p></li>
-<li><p>Inputación: Se refiere a rellenar datos faltantes utilizando reglas simples</p></li>
-<li><p>Balanceo de clases mediante submuestreo (aleatorio o clustering), sobremuestreo (repetición) o aumentación sintética (por ejemplo <a class="reference external" href="https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html">SMOTE</a>)</p></li>
-<li><p>Aumentación: Se refiere a crear sintéticamente nuevos datos basados en los existentes</p></li>
+<li><p>Adecuado particionamiento de los datos.</p></li>
+<li><p>Inputación: Se refiere a rellenar datos faltantes utilizando reglas simples.</p></li>
+<li><p>Balanceo de clases mediante submuestreo (aleatorio o clustering), sobremuestreo (repetición) o aumentación sintética (por ejemplo <a class="reference external" href="https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html">SMOTE</a>).</p></li>
+<li><p>Aumentación: Se refiere a crear sintéticamente nuevos datos basados en los existentes.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Para trabajar con datos desbalanceados utilizando los esquemas mencionados sugiero la librería <a class="reference external" href="https://imbalanced-learn.org/stable/index.html">imbalanced-learn</a></p>
+<p>Para trabajar con datos desbalanceados utilizando los esquemas mencionados sugiero la librería <a class="reference external" href="https://imbalanced-learn.org/stable/index.html">imbalanced-learn</a>.</p>
 </div>
-<p>Si no podemos resolver el problema usando estas técnicas sería necesario recolectar datos propios o re-etiquetar los datos existentes</p>
+<p>Si no podemos resolver el problema usando estas técnicas sería necesario recolectar datos propios o re-etiquetar los datos existentes.</p>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Para etiquetar datos de series de tiempo, texto, audio, imágenes de forma  colaborativa y organizanda recomiendo el software <a class="reference external" href="https://labelstud.io/">LabelStudio</a></p>
+<p>Para etiquetar datos de series de tiempo, texto, audio, imágenes de forma colaborativa y organizanda recomiendo el software <a class="reference external" href="https://labelstud.io/">LabelStudio</a>.</p>
 </div>
-<p>Si los datos cambian con cierta frecuencia, viven en distintos servidores y/o necesitan ser compartidos y coordinados en un equipo conviene utilizar <strong>versionamiento</strong></p>
+<p>Si los datos cambian con cierta frecuencia, viven en distintos servidores y/o necesitan ser compartidos y coordinados en un equipo conviene utilizar <strong>versionamiento</strong>.</p>
 <p>El versionamiento de datos es un concepto reciente, muy similar al versionamiento de código:</p>
 <ul class="simple">
-<li><p>Cada cambio en nuestros datos es anotado mediante un <em>commit</em></p></li>
-<li><p>Los cambios hechos por distintas personas pueden coordinarse de forma centralizada</p></li>
-<li><p>Se puede revisar fácilmente la historia de cambios y retroceder a un cambio anterior si es necesario</p></li>
+<li><p>Cada cambio en nuestros datos es anotado mediante un <em>commit</em>.</p></li>
+<li><p>Los cambios hechos por distintas personas pueden coordinarse de forma centralizada.</p></li>
+<li><p>Se puede revisar fácilmente la historia de cambios y retroceder a un cambio anterior si es necesario.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Para realizar versionanamiento de datos sugiero la <a class="reference external" href="https://dvc.org/">Data Version Control</a> (DVC), la cual está basada en git</p>
+<p>Para realizar versionanamiento de datos sugiero la <a class="reference external" href="https://dvc.org/">Data Version Control</a> (DVC), la cual está basada en <em>git</em>.</p>
 </div>
 </section>
 <section id="herramientas-de-mlops">
 <h2><span class="section-number">11.3. </span>Herramientas de MLOps<a class="headerlink" href="#herramientas-de-mlops" title="Permalink to this heading">#</a></h2>
-<p>Un concepto que se utiliza bastante hoy en día es <a class="reference external" href="https://docs.microsoft.com/es-es/azure/machine-learning/concept-model-management-and-deployment">Machine Learning Operations</a> (MLOPs). MLOps se refiere a la implementación de prácticas de Development Operations (DevOps) en problemas de Machine Learning, entre ellas</p>
+<p>Un concepto que se utiliza bastante hoy en día es <a class="reference external" href="https://docs.microsoft.com/es-es/azure/machine-learning/concept-model-management-and-deployment">Machine Learning Operations</a> (MLOPs). MLOps se refiere a la implementación de prácticas de Development Operations (DevOps) en problemas de Machine Learning, entre ellas:</p>
 <ul class="simple">
 <li><p>Integración y Entrega continuas (<a class="reference external" href="https://www.redhat.com/en/topics/devops/what-is-ci-cd">CI/CD</a>)</p></li>
 <li><p>Flujos automáticos de trabajo (workflows)</p></li>
@@ -487,15 +489,15 @@ document.write(`
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Para hacer CI/CD con modelos de ML recomiendo <a class="reference external" href="https://cml.dev/">CML</a></p>
+<p>Para hacer CI/CD con modelos de ML recomiendo <a class="reference external" href="https://cml.dev/">CML</a>.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>Para administrar experimentos de Machine Learning existen herramientas de linea de comando como <a class="reference external" href="https://dvc.org/doc/command-reference/exp"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span></code></a> o dashboards como <a class="reference external" href="https://neptune.ai/product">Neptune</a>, <a class="reference external" href="https://mlflow.org/">MLFlow</a> o <a class="reference external" href="https://www.comet.ml/site/">Comet</a></p>
+<p>Para administrar experimentos de Machine Learning existen herramientas de linea de comando como <a class="reference external" href="https://dvc.org/doc/command-reference/exp"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span></code></a> o dashboards como <a class="reference external" href="https://neptune.ai/product">Neptune</a>, <a class="reference external" href="https://mlflow.org/">MLFlow</a> o <a class="reference external" href="https://www.comet.ml/site/">Comet</a>.</p>
 </div>
-<p>MLOps está relacionado a los últimos 4 pasos del esquema MLE, estos eran</p>
+<p>MLOps está relacionado a los últimos 4 pasos del esquema MLE, estos eran:</p>
 <p><strong>Entrega y servicio de modelos</strong></p>
-<p>Se refiere a cómo se entrega o sirve el modelo y/o sus predicciones al usuario, por ejemplo</p>
+<p>Se refiere a cómo se entrega o sirve el modelo y/o sus predicciones al usuario, por ejemplo:</p>
 <ul class="simple">
 <li><p>Estático: El modelo es parte de un ejecutable que está instalado en la máquina del usuario</p></li>
 <li><p>Dinámico (on-premise): El usuario tiene un cliente instalado en su máquina el cual solicita actualizaciones periódicas de los parámetros del modelo (cliente y modelo están separados)</p></li>
@@ -503,27 +505,27 @@ document.write(`
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Los modelos de scikit-learn son amigables con <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html">serialización</a>. El modelo serializado puede ser cargado por un servicio web basado en <a class="reference external" href="https://flask.palletsprojects.com/en/2.1.x/">Flask</a> que luego el cliente accede a través de una API Rest</p>
+<p>Los modelos de scikit-learn son amigables con <a class="reference external" href="https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html">serialización</a>. El modelo serializado puede ser cargado por un servicio web basado en <a class="reference external" href="https://flask.palletsprojects.com/en/2.1.x/">Flask</a> que luego el cliente accede a través de una API Rest.</p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">Ver también</p>
-<p>La herramienta <a class="reference external" href="https://mlem.ai/">MLEM</a> de <a class="reference external" href="http://Iterative.ai">Iterative.ai</a> facilita considerablemente el flujo anterior</p>
+<p>La herramienta <a class="reference external" href="https://mlem.ai/">MLEM</a> de <a class="reference external" href="http://Iterative.ai">Iterative.ai</a> facilita considerablemente el flujo anterior.</p>
 </div>
 <p><strong>Monitoreo y mantenimiento de modelos</strong></p>
 <p>Se refiere a la inspección continua del desempeño del modelo en producción. Sea <span class="math notranslate nohighlight">\(X\)</span> los datos de entrada al modelo e <span class="math notranslate nohighlight">\(Y\)</span> la etiqueta a predecir, se define:</p>
 <dl class="simple myst">
 <dt>Data drift</dt><dd><p>Situación en que la distribución <span class="math notranslate nohighlight">\(p(X)\)</span> empieza a alejarse de la distribución original que se utilizó para entrenar el modelo. Esto puede deberse a que el problema es no-estacionario o a que hubo sesgo de muestreo al crear el dataset de entrenamiento</p>
 </dd>
-<dt>Prior probability shift</dt><dd><p>Situación en que la distribución <span class="math notranslate nohighlight">\(p(Y)\)</span> se aleja de la distribución original. Por ejemplo una clase deja de aparecer con tanta frecuencia y otra más originalmente más rara ocurre con mayor frecuencia. En el caso extremo podría aparecer una clase que originalmente no estaba en el dataset de entrenamiento</p>
+<dt>Prior probability shift</dt><dd><p>Situación en que la distribución <span class="math notranslate nohighlight">\(p(Y)\)</span> se aleja de la distribución original. Por ejemplo una clase deja de aparecer con tanta frecuencia y otra más originalmente más rara ocurre con mayor frecuencia. En el caso extremo podría aparecer una clase que originalmente no estaba en el dataset de entrenamiento.</p>
 </dd>
-<dt>Concept drift</dt><dd><p>Situación en que la distribución condicional <span class="math notranslate nohighlight">\(p(Y|X)\)</span> cambia con respecto a la original y por lo tanto nuestro mapeo <span class="math notranslate nohighlight">\(Y=f(X)\)</span> pierde validez. Está relacionada a situaciones externas: cambio en la interpretación de la etiqueta, aparición de una clase que no estaba considerada originalmente, pérdida de poder predictivo</p>
+<dt>Concept drift</dt><dd><p>Situación en que la distribución condicional <span class="math notranslate nohighlight">\(p(Y|X)\)</span> cambia con respecto a la original y por lo tanto nuestro mapeo <span class="math notranslate nohighlight">\(Y=f(X)\)</span> pierde validez. Está relacionada a situaciones externas: cambio en la interpretación de la etiqueta, aparición de una clase que no estaba considerada originalmente, pérdida de poder predictivo.</p>
 </dd>
 </dl>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>Los <em>drift</em> puede identificarse comparando la distribución de los nuevos datos y predicciones con las de entrenamiento en base test estadísticos (por ejemplo Chi cuadrado o Kolmogorov-Smirov). En caso de detectar <em>drift</em>, debemos analizar las predicciones, etiquetar y reentrenar el modelo</p>
+<p>Los <em>drift</em> puede identificarse comparando la distribución de los nuevos datos y predicciones con las de entrenamiento en base test estadísticos (por ejemplo Chi cuadrado o Kolmogorov-Smirov). En caso de detectar <em>drift</em>, debemos analizar las predicciones, etiquetar y reentrenar el modelo.</p>
 </div>
-<p>Adicional al desempeño, también se debe monitorear</p>
+<p>Adicional al desempeño, también se debe monitorear:</p>
 <ul class="simple">
 <li><p>La disponibilidad del modelo</p></li>
 <li><p>La estabilidad numérica del modelo</p></li>

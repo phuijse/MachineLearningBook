@@ -396,7 +396,7 @@ document.write(`
 <h1><span class="section-number">9. </span>Ensambles secuenciales<a class="headerlink" href="#ensambles-secuenciales" title="Permalink to this heading">#</a></h1>
 <section id="boosting">
 <h2><span class="section-number">9.1. </span>Boosting<a class="headerlink" href="#boosting" title="Permalink to this heading">#</a></h2>
-<p>Boosting es una familia de algoritmos que buscan combinar estimadores (clasificadores o regresores) débiles de forma secuencial (cadena) para construir un estimador fuerte</p>
+<p>Boosting es una familia de algoritmos que buscan combinar estimadores (clasificadores o regresores) débiles de forma secuencial (cadena) para construir un estimador fuerte.</p>
 <dl class="simple myst">
 <dt>Estimador débil</dt><dd><p>Algoritmo que produce un resultado (al menos) levemente mejor que el azar</p>
 </dd>
@@ -419,7 +419,7 @@ document.write(`
 <a class="reference internal image-reference" href="../../_images/boosting.png"><img alt="../../_images/boosting.png" src="../../_images/boosting.png" style="width: 700px;" /></a>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>El clasificador <span class="math notranslate nohighlight">\(H_2\)</span> se encarga de corregir los errores de <span class="math notranslate nohighlight">\(H_1\)</span>. La combinación de <span class="math notranslate nohighlight">\(H_1\)</span> y <span class="math notranslate nohighlight">\(H_2\)</span> es el clasificador fuerte</p>
+<p>El clasificador <span class="math notranslate nohighlight">\(H_2\)</span> se encarga de corregir los errores de <span class="math notranslate nohighlight">\(H_1\)</span>. La combinación de <span class="math notranslate nohighlight">\(H_1\)</span> y <span class="math notranslate nohighlight">\(H_2\)</span> es el clasificador fuerte.</p>
 </div>
 <p>Matemáticamente:</p>
 <div class="proof algorithm admonition" id="algorithm-0">
@@ -438,12 +438,12 @@ document.write(`
 <li><p>Combinar las salidas de los estimadores débiles</p></li>
 </ol>
 </section>
-</div><p>En esta lección utilizaremos árboles de decisión como estimador débil. Esto define los pasos de entrenamiento y evaluación del algoritmo anterior. Sólo resta definir como</p>
+</div><p>En esta lección utilizaremos árboles de decisión como estimador débil. Esto define los pasos de entrenamiento y evaluación del algoritmo anterior. Sólo resta definir como:</p>
 <ul class="simple">
 <li><p>Crear <span class="math notranslate nohighlight">\(D_{t+1}\)</span></p></li>
 <li><p>Combinar los estimadores débiles</p></li>
 </ul>
-<p>A continuación veremos como definen estos puntos dos algoritmos particulares de Boosting</p>
+<p>A continuación veremos como definen estos puntos dos algoritmos particulares de Boosting.</p>
 </section>
 <section id="adaptive-boosting-adaboost">
 <h2><span class="section-number">9.2. </span>Adaptive Boosting (Adaboost)<a class="headerlink" href="#adaptive-boosting-adaboost" title="Permalink to this heading">#</a></h2>
@@ -452,7 +452,7 @@ document.write(`
 \[
 H_T(x) = \sum_{t=1}^T \alpha_t h_t(x)
 \]</div>
-<p>donde la clase predicha se obtiene aplicando la función signo sobre <span class="math notranslate nohighlight">\(H_T(x)\)</span></p>
+<p>donde la clase predicha se obtiene aplicando la función signo sobre <span class="math notranslate nohighlight">\(H_T(x)\)</span>.</p>
 <p>El ensamble se entrena minimizando la función de pérdida exponencial</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -464,7 +464,7 @@ H_T(x) = \sum_{t=1}^T \alpha_t h_t(x)
 \end{split}\]</div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Para entrenar el último clasificador de la secuencia <span class="math notranslate nohighlight">\(h_T\)</span> podemos asumir <span class="math notranslate nohighlight">\(w_i^{(T)}\)</span> constante</p>
+<p>Para entrenar el último clasificador de la secuencia <span class="math notranslate nohighlight">\(h_T\)</span> podemos asumir <span class="math notranslate nohighlight">\(w_i^{(T)}\)</span> constante.</p>
 </div>
 <p>Dividiendo la función de costo en los casos bien y mal clasificados</p>
 <div class="math notranslate nohighlight">
@@ -474,7 +474,7 @@ H_T(x) = \sum_{t=1}^T \alpha_t h_t(x)
 &amp;= \sum_{h(x_i)y_i = 1} e^{-\alpha_T} w_i^{(T)} + \sum_{h(x_i)y_i \neq 1} e^{\alpha_T} w_i^{(T)} 
 \end{split}
 \end{split}\]</div>
-<p>Derivando en función de <span class="math notranslate nohighlight">\(\alpha\)</span> se tiene</p>
+<p>y luego derivando en función de <span class="math notranslate nohighlight">\(\alpha\)</span> se tiene</p>
 <div class="math notranslate nohighlight">
 \[
 \alpha_t = \frac{1}{2} \log \left(\frac{1-\epsilon_t}{\epsilon_t} \right),
@@ -501,31 +501,31 @@ H_T(x) = \sum_{t=1}^T \alpha_t h_t(x)
 </li>
 </ol>
 </section>
-</div><p>El clasificador fuerte está totalmente definido por los clasificadores débiles <span class="math notranslate nohighlight">\(h_t\)</span> y los ponderadores <span class="math notranslate nohighlight">\(\alpha_t\)</span></p>
+</div><p>El clasificador fuerte está totalmente definido por los clasificadores débiles <span class="math notranslate nohighlight">\(h_t\)</span> y los ponderadores <span class="math notranslate nohighlight">\(\alpha_t\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Los pesos de los datos se actualizan con los errores del último clasificador</p>
+<p>Los pesos de los datos se actualizan con los errores del último clasificador.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>Los ensambles de tipo boosting reducen progresivamente el sesgo (error) agregando secuencialmente clasificadores débiles</p>
+<p>Los ensambles de tipo boosting reducen progresivamente el sesgo (error) agregando secuencialmente clasificadores débiles.</p>
 </div>
 </section>
 <section id="gradient-boosting">
 <h2><span class="section-number">9.3. </span>Gradient Boosting<a class="headerlink" href="#gradient-boosting" title="Permalink to this heading">#</a></h2>
-<p>El algoritmo de <a class="reference external" href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boostingmachine/10.1214/aos/1013203451.full">gradient boosting</a> combina el método de gradiente descendente con el algoritmo general de boosting. Es capaz de hacer tanto clasificación como regresión y puede usar cualquier función de pérdida que sea derivable</p>
+<p>El algoritmo de <a class="reference external" href="https://projecteuclid.org/journals/annals-of-statistics/volume-29/issue-5/Greedy-function-approximation-A-gradient-boostingmachine/10.1214/aos/1013203451.full">gradient boosting</a> combina el método de gradiente descendente con el algoritmo general de boosting. Es capaz de hacer tanto clasificación como regresión y puede usar cualquier función de pérdida que sea derivable.</p>
 <p>Sea una función de costo sobre un dataset <span class="math notranslate nohighlight">\((x_i, y_i)_{i=1,\ldots,N}\)</span></p>
 <div class="math notranslate nohighlight">
 \[
 \min \sum_{i=1}^N L(y_i, H_T(x_i)),
 \]</div>
-<p>donde <span class="math notranslate nohighlight">\(H_T\)</span> es el estimador fuerte</p>
+<p>donde <span class="math notranslate nohighlight">\(H_T\)</span> es el estimador fuerte.</p>
 <p>Por ejemplo, en un problema de regresión, este se define como</p>
 <div class="math notranslate nohighlight">
 \[
 H_T(x_i) = \sum_{t=1}^T h_t(x_i),
 \]</div>
-<p>es decir una suma de “regresores” débiles</p>
+<p>es decir una suma de “regresores” débiles.</p>
 <p>En un problema de regresión se utiliza típicamente el error cuadrático medio como función de costo</p>
 <div class="math notranslate nohighlight">
 \[
@@ -538,7 +538,7 @@ H_4 = H_3 + h_4
 \]</div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Los estimadores se agregan de uno por uno de forma <em>greedy</em></p>
+<p>Los estimadores se agregan de uno por uno de forma <em>greedy</em>.</p>
 </div>
 <p>Agregar el nuevo estimador debería acercar al estimador fuerte a la etiqueta es decir</p>
 <div class="math notranslate nohighlight">
@@ -550,24 +550,24 @@ H_3 + h_4 \approx y
 \[
 h_4 = \text{arg} \min_{h} \sum_{i=1}^N L(h(x_i), y_i - H_3(x_i))
 \]</div>
-<p>Donde el residuo está relacionado a</p>
+<p>donde el residuo está relacionado a</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{dL(H_3(x_i), y_i)}{dH_3(x_i)} = H_3(x_i) - y_i
 \]</div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Si utilizamos el error cuadrático, entonces los residuos son equivalentes al negativo del gradiente, esta es la razón del nombre del algoritmo</p>
+<p>Si utilizamos el error cuadrático, entonces los residuos son equivalentes al negativo del gradiente, esta es la razón del nombre del algoritmo.</p>
 </div>
-<p>Para reducir el sobreajuste del ensamble (regularización) se agrega tipicamente</p>
+<p>Para reducir el sobreajuste del ensamble (regularización) se agrega típicamente</p>
 <div class="math notranslate nohighlight">
 \[
 H_{t+1} = H_t + \nu h_t
 \]</div>
-<p>una constate <span class="math notranslate nohighlight">\(\nu\)</span> denominada tasa de aprendizaje. Esto disminuye la contribución de cada estimador débil (enlentece el entrenamiento)</p>
+<p>una constate <span class="math notranslate nohighlight">\(\nu\)</span> denominada tasa de aprendizaje. Esto disminuye la contribución de cada estimador débil (enlentece el entrenamiento).</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>En general una tasa de aprendizaje pequeña requerirá una mayor cantidad de clasificadores débiles. La ventaja de una tasa pequeña es que está relacionada a menores errores en el conjunto de test</p>
+<p>En general una tasa de aprendizaje pequeña requerirá una mayor cantidad de clasificadores débiles. La ventaja de una tasa pequeña es que está relacionada a menores errores en el conjunto de test .</p>
 </div>
 <p>Para problemas de clasificación con <span class="math notranslate nohighlight">\(K\)</span> clases se suele utilizar la siguiente función de costo, llamada generalmente <em>logarithmic loss</em> o <em>log loss</em></p>
 <div class="math notranslate nohighlight">
@@ -579,29 +579,29 @@ L(y_i, x_i) = \sum_{k=1}^K y_{ik} \log p_k (x_i)
 \[
 p_k(x) = \frac{e^{H^{(k)}(x)}}{ \sum_{k=1}^K e^{H^{(k)}(x)} }
 \]</div>
-<p>tal que cada componente este en el rango <span class="math notranslate nohighlight">\([0,1]\)</span> y que además los <span class="math notranslate nohighlight">\(K\)</span> sumen uno</p>
+<p>tal que cada componente este en el rango <span class="math notranslate nohighlight">\([0,1]\)</span> y que además los <span class="math notranslate nohighlight">\(K\)</span> sumen uno.</p>
 </section>
 <section id="implementacion-en-scikit-learn">
 <h2><span class="section-number">9.4. </span>Implementación en <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#implementacion-en-scikit-learn" title="Permalink to this heading">#</a></h2>
-<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>Gradient Boosting</em> para problemas de clasificación y regresión. Nos enfocaremos en la primera</p>
-<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html"><code class="docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> son</p>
+<p>El módulo <a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.ensemble"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code></a> de scikit-learn tiene implementaciones de <em>Gradient Boosting</em> para problemas de clasificación y regresión. Nos enfocaremos en la primera.</p>
+<p>Los principales argumentos de <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html"><code class="docutils literal notranslate"><span class="pre">GradientBoostingClassifier</span></code></a> son:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code>: La función de costo. Las opciones son <code class="docutils literal notranslate"><span class="pre">'log_loss'/'deviance'</span></code> (dependiendo de su versión de scikit-learn) o <code class="docutils literal notranslate"><span class="pre">'exponential'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loss</span></code>: La función de costo. Las opciones son <code class="docutils literal notranslate"><span class="pre">'log_loss'</span></code> (dependiendo de su versión de scikit-learn) o <code class="docutils literal notranslate"><span class="pre">'exponential'</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">n_estimators:</span></code> Cantidad de clasificadores débiles</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: Tasa de aprendizaje (no-negativo)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">subsample</span></code>: Booleano que indica si cada clasificador débil utiliza el dataset completo o una submuestra</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Si se utiliza <code class="docutils literal notranslate"><span class="pre">loss='exponential'</span></code> el algoritmo se vuelve equivalent a <em>AdaBoost</em> (sólo para clasificación binaria)</p>
+<p>Si se utiliza <code class="docutils literal notranslate"><span class="pre">loss='exponential'</span></code> el algoritmo se vuelve equivalente a <em>AdaBoost</em> (sólo para clasificación binaria).</p>
 </div>
 <p>También recibe argumentos relacionados a los clasificadores débiles (árboles), entre ellos:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: Profundidad máxima de los árboles</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: Número mínimo de muestras para permitir un <code class="docutils literal notranslate"><span class="pre">split</span></code></p></li>
 </ul>
-<p>El objeto tiene implementados los métodos usuales <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">decision_function</span></code></p>
-<p>Adicionalmente cuenta con <code class="docutils literal notranslate"><span class="pre">staged_predict</span></code>, <code class="docutils literal notranslate"><span class="pre">staged_predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">staged_decision_function</span></code>, que retornan las predicciones de los clasificadores débiles individuales</p>
+<p>El objeto tiene implementados los métodos usuales <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">decision_function</span></code>.</p>
+<p>Adicionalmente cuenta con <code class="docutils literal notranslate"><span class="pre">staged_predict</span></code>, <code class="docutils literal notranslate"><span class="pre">staged_predict_proba</span></code> y <code class="docutils literal notranslate"><span class="pre">staged_decision_function</span></code>, que retornan las predicciones de los clasificadores débiles individuales.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
@@ -610,12 +610,13 @@ p_k(x) = \frac{e^{H^{(k)}(x)}}{ \sum_{k=1}^K e^{H^{(k)}(x)} }
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0.2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2.2
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>Ejemplo</strong> Entrenamiento de ensamble gradient boosting para clasificación de vino</p>
+<p><strong>Ejemplo:</strong></p>
+<p>Entrenamiento de ensamble gradient boosting para clasificación de vino</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -636,27 +637,33 @@ p_k(x) = \frac{e^{H^{(k)}(x)}}{ \sum_{k=1}^K e^{H^{(k)}(x)} }
 <p>Se realiza una validación cruzada buscando los mejores hiperparámetros del modelo:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> 
           <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
           <span class="s1">&#39;n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]}</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;deviance&#39;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log_loss&#39;</span><span class="p">)</span>
 <span class="n">validator</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">validator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GridSearchCV(cv=3, estimator=GradientBoostingClassifier(),
-             param_grid={&#39;learning_rate&#39;: [0.1, 0.2, 0.5],
-                         &#39;max_depth&#39;: [1, 5, 10, 20],
-                         &#39;n_estimators&#39;: [1, 10, 20, 50, 100]})
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 24 s, sys: 6.92 ms, total: 24 s
+Wall time: 24.1 s
 </pre></div>
 </div>
-</div>
+<div class="output text_html"><style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=3, estimator=GradientBoostingClassifier(),
+             param_grid={&#x27;learning_rate&#x27;: [0.1, 0.2, 0.5],
+                         &#x27;max_depth&#x27;: [1, 5, 10, 20],
+                         &#x27;n_estimators&#x27;: [1, 10, 20, 50, 100]})</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" ><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">GridSearchCV</label><div class="sk-toggleable__content"><pre>GridSearchCV(cv=3, estimator=GradientBoostingClassifier(),
+             param_grid={&#x27;learning_rate&#x27;: [0.1, 0.2, 0.5],
+                         &#x27;max_depth&#x27;: [1, 5, 10, 20],
+                         &#x27;n_estimators&#x27;: [1, 10, 20, 50, 100]})</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" ><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">estimator: GradientBoostingClassifier</label><div class="sk-toggleable__content"><pre>GradientBoostingClassifier()</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" ><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">GradientBoostingClassifier</label><div class="sk-toggleable__content"><pre>GradientBoostingClassifier()</pre></div></div></div></div></div></div></div></div></div></div></div></div>
 </div>
 <p>Los mejores modelos de acuerdo a la validación cruzada son:</p>
 <div class="cell docutils container">
@@ -761,9 +768,9 @@ p_k(x) = \frac{e^{H^{(k)}(x)}}{ \sum_{k=1}^K e^{H^{(k)}(x)} }
 </div>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Boosting funciona bien con árboles poco profundos. Los árboles de poca profundidad suelen tener alto sesgo y baja varianza</p>
+<p>Boosting funciona bien con árboles poco profundos. Los árboles de poca profundidad suelen tener alto sesgo y baja varianza.</p>
 </div>
-<p>El resultado de predicción en el conjunto de test es</p>
+<p>El resultado de predicción en el conjunto de test es:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
@@ -804,7 +811,7 @@ weighted avg       0.98      0.98      0.98        54
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e8b4cfd6558f848091b543b993745ae0dabd7bdf742688406b2f4a0bd3661fca.png" src="../../_images/e8b4cfd6558f848091b543b993745ae0dabd7bdf742688406b2f4a0bd3661fca.png" />
+<img alt="../../_images/8fd002770adb9481663f8e517ce8890515c92e777d812f0e6904b229d52a3163.png" src="../../_images/8fd002770adb9481663f8e517ce8890515c92e777d812f0e6904b229d52a3163.png" />
 </div>
 </div>
 <div class="admonition seealso">
@@ -815,7 +822,7 @@ weighted avg       0.98      0.98      0.98        54
 <li><p><a class="reference external" href="http://dmlc.cs.washington.edu/xgboost.html">XGBoost</a></p></li>
 <li><p><a class="reference external" href="https://lightgbm.readthedocs.io/en/latest/index.html">LightGBM</a></p></li>
 </ul>
-<p>Estos implementan estrategias para mejorar la eficiencia y realizar cálculos paralelos/distribuidos</p>
+<p>Estos implementan estrategias para mejorar la eficiencia y realizar cálculos paralelos/distribuidos.</p>
 </div>
 </section>
 </section>
