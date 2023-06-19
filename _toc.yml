@@ -18,8 +18,8 @@ parts:
 - caption: "Redes Neuronales Artificiales"
   numbered: true
   chapters:
-      - file: contents/neural_networks/pytorch1
-      - file: contents/neural_networks/pytorch2
+      - file: contents/neural_networks/torch-tensor
+      - file: contents/neural_networks/torch-training
       - file: contents/neural_networks/convolution
       - file: contents/neural_networks/vision
       - file: contents/neural_networks/cnn
