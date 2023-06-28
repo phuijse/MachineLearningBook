@@ -22,7 +22,7 @@ parts:
       - file: contents/neural_networks/torch-training
       - file: contents/neural_networks/images
       - file: contents/neural_networks/cnn
-      - file: contents/neural_networks/cnn-lightnig
+      - file: contents/neural_networks/cnn-lightning
       - file: contents/neural_networks/data_augmentation
       - file: contents/neural_networks/transfer_learning
       - file: contents/neural_networks/tips
