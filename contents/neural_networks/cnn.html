@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>16. Red Convolucional en PyTorch &#8212; Aprendizaje de Máquinas</title>
+    <title>15. Red Convolucional en PyTorch &#8212; Aprendizaje de Máquinas</title>
   
   
   
@@ -67,8 +67,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/neural_networks/cnn';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="17. Aumentación de datos con torchvision" href="data_augmentation.html" />
-    <link rel="prev" title="15. Visión computacional" href="vision.html" />
+    <link rel="next" title="16. Red Convolucional con Pytorch Lightning" href="cnn-lightning.html" />
+    <link rel="prev" title="14. Introducción al procesamiento digital de imágenes" href="images.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -169,9 +169,9 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="torch-tensor.html">12. Introducción a la librería PyTorch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="torch-training.html">13. Entrenamiento de redes neuronales con PyTorch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="convolution.html">14. Procesamiento digital de imágenes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision.html">15. Visión computacional</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">16. Red Convolucional en PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="images.html">14. Introducción al procesamiento digital de imágenes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. Red Convolucional en PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnn-lightning.html">16. Red Convolucional con Pytorch Lightning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_augmentation.html">17. Aumentación de datos con <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="transfer_learning.html">18. Utilizando un modelo pre-entrenado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tips.html">19. Consejos para entrenar redes neuronales</a></li>
@@ -375,11 +375,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-de-una-red-convolucional">16.1. Capas de una red convolucional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libreria-torchvision">16.2. Librería <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mi-primera-red-convolucional-para-clasificar-en-pytorch">16.3. Mi primera red convolucional para clasificar en pytorch</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-de-la-red-convolucional">16.4. Entrenamiento de la red convolucional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-las-predicciones-del-modelo-convolucional">16.5. Analizando las predicciones del modelo convolucional</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libreria-torchvision">15.1. Librería <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-de-una-red-convolucional">15.2. Capas de una red convolucional</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-lenet5">15.3. Arquitectura Lenet5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-digitos-manuscritos-con-lenet-5">15.4. Clasificación de dígitos manuscritos con Lenet 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-las-predicciones-del-modelo-convolucional">15.5. Analizando las predicciones del modelo convolucional</a></li>
 </ul>
             </nav>
         </div>
@@ -392,72 +392,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="red-convolucional-en-pytorch">
-<h1><span class="section-number">16. </span>Red Convolucional en PyTorch<a class="headerlink" href="#red-convolucional-en-pytorch" title="Permalink to this heading">#</a></h1>
-<p>Las redes neuronales convolucionales utilizan principalmente tres tipos de capas</p>
-<section id="capas-de-una-red-convolucional">
-<h2><span class="section-number">16.1. </span>Capas de una red convolucional<a class="headerlink" href="#capas-de-una-red-convolucional" title="Permalink to this heading">#</a></h2>
-<p>Las capas que le dan su nombre a esta arquitectura son las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#convolution-layers">capas convolucionales</a>. En estas capas:</p>
-<ul class="simple">
-<li><p>Las neuronas de estas capas se organizan en filtros</p></li>
-<li><p>Se realiza la correlación cruzada entre la imagen de entrada y los filtros</p></li>
-<li><p>Existen capas convolucionales 1D, 2D y 3D</p></li>
-</ul>
-<div class="admonition seealso">
-<p class="admonition-title">Ver también</p>
-<p><a class="reference external" href="https://github.com/vdumoulin/conv_arithmetic">Visualización de convoluciones con distintos tamaños, strides, paddings, dilations</a></p>
-</div>
-<p>Los argumentos de la capa convolución de dos dimensiones son:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="c1">#Cantidad de canales de la imagen de entrada</span>
-                <span class="n">out_channels</span><span class="p">,</span> <span class="c1">#Cantidad de bancos de filtro</span>
-                <span class="n">kernel_size</span><span class="p">,</span> <span class="c1">#Tamaño de los filtros (entero o tupla)</span>
-                <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Paso de los filtros</span>
-                <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1">#Cantidad de filas y columnas para agregar a la entrada antes de filtrar</span>
-                <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Espacio entre los pixeles de los filtros</span>
-                <span class="n">groups</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Configuración cruzada entre filtros de entrada y salida</span>
-                <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1">#Utilizar sesgo (b)</span>
-                <span class="n">padding_mode</span><span class="o">=</span><span class="s1">&#39;zeros&#39;</span> <span class="c1">#Especifica como agregar nuevas filas/columnas (ver padding)</span>
-                <span class="p">)</span>
-</pre></div>
-</div>
-<p>Las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#pooling-layers">capas de pooling</a> son capas que reducen la dimensión (tamaño) de su entrada</p>
-<p>Se usa tipicamente luego de una capa de convolución “activada” y realiza una operación no entrenable:</p>
-<p>Por ejemplo:</p>
-<ul>
-<li><p>Promedio de los píxeles en una región (kernel_size=2, stride=2)</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  1 2 1 0
-  2 3 1 2      2.00 1.00
-  0 1 0 1      0.75 0.25
-  2 0 0 0
-</pre></div>
-</div>
-</li>
-<li><p>Máximo de los pixeles en una región (kernel_size=2, stride=2)</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  1 2 1 0
-  2 3 1 2      3 2
-  0 1 0 1      2 1
-  2 0 0 0
-</pre></div>
-</div>
-</li>
-</ul>
-<p>Estas capas ayudan a reducir la complejidad del modelo y también otorgan “invarianza local a la traslación”, es decir que la posición donde estaba el patrón es menos relevante luego de aplicar pooling</p>
-<p>Los argumentos de MaxPooling para entradas de dos dimensiones son:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="c1"># Mismo significado que en Conv2d</span>
-                   <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># Mismo significado que en Conv2d</span>
-                   <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1">#Mismo significado que en Conv2d</span>
-                   <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Mismo significado que en Conv2d</span>
-                   <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1">#Solo necesario para hacer unpooling</span>
-                   <span class="n">ceil_mode</span><span class="o">=</span><span class="kc">False</span> <span class="c1">#Usar ceil en lugar de floor para calcular el tamaño de la salida</span>
-                  <span class="p">)</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Linear">capas completamente conectadas</a> también se utilizan en redes convolucionales</p>
-</div>
-</section>
+<h1><span class="section-number">15. </span>Red Convolucional en PyTorch<a class="headerlink" href="#red-convolucional-en-pytorch" title="Permalink to this heading">#</a></h1>
 <section id="libreria-torchvision">
-<h2><span class="section-number">16.2. </span>Librería <a class="reference external" href="https://pytorch.org/vision/stable/index.html"><code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a><a class="headerlink" href="#libreria-torchvision" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.1. </span>Librería <a class="reference external" href="https://pytorch.org/vision/stable/index.html"><code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a><a class="headerlink" href="#libreria-torchvision" title="Permalink to this heading">#</a></h2>
 <p>Es una librería utilitaria de PyTorch que facilita considerablemente el trabajo con imágenes. Algunas de las funciones y clases que provee:</p>
 <ul class="simple">
 <li><p>Funcionalidad para descargar sets de benchmark: MNIST, CIFAR, IMAGENET, …</p></li>
@@ -515,38 +452,114 @@ document.write(`
 
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">image</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">mnist_train_data</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys_r</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-    
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ad5d929fe3f158558a4bde890d7afe8be3a6ceae763c659a732ae68e3874c9b7.png" src="../../_images/ad5d929fe3f158558a4bde890d7afe8be3a6ceae763c659a732ae68e3874c9b7.png" />
-</div>
-</div>
-<p>Luego creamos dataloaders de entrenamiento y validación como hemos visto anteriormente:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">tdata</span>
-
-<span class="n">mnist_train</span><span class="p">,</span> <span class="n">mnist_valid</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">random_split</span><span class="p">(</span><span class="n">mnist_train_data</span><span class="p">,</span> <span class="p">[</span><span class="mi">50_000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">],</span> 
-                                              <span class="n">generator</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">()</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">))</span>
-<span class="n">train_loader</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
-<span class="n">valid_loader</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_valid</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
-</pre></div>
-</div>
+<img alt="../../_images/1b6151097a158cdec6a6e112d3968c2998be40d407ce9bccdf733c80f5e887bd.png" src="../../_images/1b6151097a158cdec6a6e112d3968c2998be40d407ce9bccdf733c80f5e887bd.png" />
 </div>
 </div>
 </section>
-<section id="mi-primera-red-convolucional-para-clasificar-en-pytorch">
-<h2><span class="section-number">16.3. </span>Mi primera red convolucional para clasificar en pytorch<a class="headerlink" href="#mi-primera-red-convolucional-para-clasificar-en-pytorch" title="Permalink to this heading">#</a></h2>
-<p>Clasificaremos la base de datos MNIST</p>
-<p>Para esto implementaremos la clásica arquitectura Lenet5</p>
+<section id="capas-de-una-red-convolucional">
+<h2><span class="section-number">15.2. </span>Capas de una red convolucional<a class="headerlink" href="#capas-de-una-red-convolucional" title="Permalink to this heading">#</a></h2>
+<p>Las capas que le dan su nombre a esta arquitectura son las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#convolution-layers">capas convolucionales</a>. En estas capas:</p>
+<ul class="simple">
+<li><p>Las neuronas de estas capas se organizan en filtros</p></li>
+<li><p>Se realiza la correlación cruzada entre la imagen de entrada y los filtros</p></li>
+<li><p>Existen capas convolucionales 1D, 2D y 3D</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<p><a class="reference external" href="https://github.com/vdumoulin/conv_arithmetic">Visualización de convoluciones con distintos tamaños, strides, paddings, dilations</a></p>
+</div>
+<p>Los argumentos de la capa convolución de dos dimensiones son:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="p">,</span> <span class="c1">#Cantidad de canales de la imagen de entrada</span>
+                <span class="n">out_channels</span><span class="p">,</span> <span class="c1">#Cantidad de bancos de filtro</span>
+                <span class="n">kernel_size</span><span class="p">,</span> <span class="c1">#Tamaño de los filtros (entero o tupla)</span>
+                <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Paso de los filtros</span>
+                <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1">#Cantidad de filas y columnas para agregar a la entrada antes de filtrar</span>
+                <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Espacio entre los pixeles de los filtros</span>
+                <span class="n">groups</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Configuración cruzada entre filtros de entrada y salida</span>
+                <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1">#Utilizar sesgo (b)</span>
+                <span class="n">padding_mode</span><span class="o">=</span><span class="s1">&#39;zeros&#39;</span> <span class="c1">#Especifica como agregar nuevas filas/columnas (ver padding)</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+<p>En el siguiente ejemplo se crea una capa convolucional con tres filtros de tamaño 3x3. Luego se muestra el resultado de aplicar los filtros a una imagen de ejemplo de MNIST.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="n">conv_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">example_image</span> <span class="o">=</span> <span class="n">mnist_train_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">conv_layer</span><span class="p">(</span><span class="n">example_image</span><span class="p">)</span>
+<span class="n">example_image</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">example_image</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="n">conv_filter</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">conv_layer</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()):</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">conv_filter</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">)</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    
+<span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="n">filtered_image</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">result</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()):</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">filtered_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys</span><span class="p">)</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/3da25600143f40c7cc1f9e5a0d68989c8dc0bbde906bb3588b96e737b784fbbc.png" src="../../_images/3da25600143f40c7cc1f9e5a0d68989c8dc0bbde906bb3588b96e737b784fbbc.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Cada filtro resalta partes distintas de la imagen. Los pesos de los filtros se aprenden junto a la red neuronal.</p>
+</div>
+<p>Las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#pooling-layers">capas de pooling</a> son capas que reducen la dimensión (tamaño) de su entrada</p>
+<p>Se usa tipicamente luego de una capa de convolución “activada” y realiza una operación no entrenable:</p>
+<p>Por ejemplo:</p>
+<ul>
+<li><p>Promedio de los píxeles en una región (kernel_size=2, stride=2)</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  1 2 1 0
+  2 3 1 2      2.00 1.00
+  0 1 0 1      0.75 0.25
+  2 0 0 0
+</pre></div>
+</div>
+</li>
+<li><p>Máximo de los pixeles en una región (kernel_size=2, stride=2)</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>  1 2 1 0
+  2 3 1 2      3 2
+  0 1 0 1      2 1
+  2 0 0 0
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Estas capas ayudan a reducir la complejidad del modelo y también otorgan “invarianza local a la traslación”, es decir que la posición donde estaba el patrón es menos relevante luego de aplicar pooling</p>
+<p>Los argumentos de MaxPooling para entradas de dos dimensiones son:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="p">,</span> <span class="c1"># Mismo significado que en Conv2d</span>
+                   <span class="n">stride</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># Mismo significado que en Conv2d</span>
+                   <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1">#Mismo significado que en Conv2d</span>
+                   <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="c1">#Mismo significado que en Conv2d</span>
+                   <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1">#Solo necesario para hacer unpooling</span>
+                   <span class="n">ceil_mode</span><span class="o">=</span><span class="kc">False</span> <span class="c1">#Usar ceil en lugar de floor para calcular el tamaño de la salida</span>
+                  <span class="p">)</span>
+</pre></div>
+</div>
+<p>Las <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Linear">capas completamente conectadas</a> también se utilizan en redes convolucionales. En general son las que se encargan de clasificar el resultado de los filtros convolucionales. A continuación veremos un esquema típico de arquitectura de red convolucional.</p>
+</section>
+<section id="arquitectura-lenet5">
+<h2><span class="section-number">15.3. </span>Arquitectura Lenet5<a class="headerlink" href="#arquitectura-lenet5" title="Permalink to this heading">#</a></h2>
+<p>La siguiente figura muestra la clásica arquitectura Lenet5.</p>
 <a class="reference internal image-reference" href="../../_images/LeNet5.png"><img alt="../../_images/LeNet5.png" src="../../_images/LeNet5.png" style="width: 800px;" /></a>
-<p>La arquitectura considera</p>
+<p>La arquitectura considera:</p>
 <ul class="simple">
 <li><p>Dos capas convolucionales con 6 y 16 bancos de filtros, respectivamente</p></li>
 <li><p>Las capas convolucionales usan filtros de 5x5 píxeles</p></li>
@@ -556,8 +569,9 @@ document.write(`
 <li><p>Se usan tres capas completamente conectadas con 120, 84 y 10 neuronas, respectivamente</p></li>
 </ul>
 <blockquote>
-<div><p>Podemos usar <code class="docutils literal notranslate"><span class="pre">reshape</span></code> o <code class="docutils literal notranslate"><span class="pre">view</span></code> para convertir un tensor de 4 dimensiones a dos dimensiones.  Esto prepara un tensor que sale de una capa convolucional (o pooling) para ingresarlo a las capas completamente conectadas</p>
+<div><p>Podemos usar <code class="docutils literal notranslate"><span class="pre">reshape</span></code> o <code class="docutils literal notranslate"><span class="pre">view</span></code> para convertir un tensor de 4 dimensiones a dos dimensiones.  Esto prepara un tensor que sale de una capa convolucional (o pooling) para ingresarlo a las capas completamente conectadas.</p>
 </div></blockquote>
+<p>A continuación se muestra una implementación en pytorch:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
@@ -616,123 +630,106 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="entrenamiento-de-la-red-convolucional">
-<h2><span class="section-number">16.4. </span>Entrenamiento de la red convolucional<a class="headerlink" href="#entrenamiento-de-la-red-convolucional" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Si tenemos acceso a una GPU podemos usar el atributo <code class="docutils literal notranslate"><span class="pre">.cuda()</span></code> o <code class="docutils literal notranslate"><span class="pre">.to()</span></code> para enviar el modelo y los datos a la GPU para acelerar los cálculos</p></li>
-<li><p>Actualizamos los parámetros en el conjunto de entrenamiento</p></li>
-<li><p>Medimos la convergencia en el conjunto de validación</p></li>
-<li><p>Guardamos el modelo con mejor error de validación</p></li>
-<li><p>Usaremos <code class="docutils literal notranslate"><span class="pre">ignite</span></code> para entrenar: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">pytorch</span> <span class="pre">ignite</span></code></p></li>
-</ul>
+<section id="clasificacion-de-digitos-manuscritos-con-lenet-5">
+<h2><span class="section-number">15.4. </span>Clasificación de dígitos manuscritos con Lenet 5<a class="headerlink" href="#clasificacion-de-digitos-manuscritos-con-lenet-5" title="Permalink to this heading">#</a></h2>
+<p>Entrenaremos el modelo Lenet5 para clasificar los dígitos de MNIST. En primer lugar creamos dataloaders de entrenamiento y validación como hemos visto anteriormente:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.engine</span> <span class="kn">import</span> <span class="n">Engine</span><span class="p">,</span> <span class="n">Events</span>
-<span class="kn">from</span> <span class="nn">ignite.metrics</span> <span class="kn">import</span> <span class="n">Loss</span><span class="p">,</span> <span class="n">Accuracy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.utils.data</span> <span class="k">as</span> <span class="nn">tdata</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">Lenet5</span><span class="p">()</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
-<span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
-<span class="n">max_epochs</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
-<span class="c1">#device = torch.device(&#39;cuda:0&#39;)</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-
-<span class="c1"># Esto es lo que hace el engine de entrenamiento</span>
-<span class="k">def</span> <span class="nf">train_one_step</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-    <span class="n">yhat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">yhat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1"># Este output puede llamar luego como trainer.state.output</span>
-
-<span class="c1"># Esto es lo que hace el engine de evaluación</span>
-<span class="k">def</span> <span class="nf">evaluate_one_step</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
-        <span class="n">yhat</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="c1">#loss = criterion(yhat, y)</span>
-        <span class="k">return</span> <span class="n">yhat</span><span class="p">,</span> <span class="n">y</span>
-
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">train_one_step</span><span class="p">)</span>
-<span class="n">evaluator</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">evaluate_one_step</span><span class="p">)</span>
-<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Loss&#39;</span><span class="p">:</span> <span class="n">Loss</span><span class="p">(</span><span class="n">criterion</span><span class="p">),</span> <span class="s1">&#39;Acc&#39;</span><span class="p">:</span> <span class="n">Accuracy</span><span class="p">()}</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">metric</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">evaluator</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<span class="n">mnist_train</span><span class="p">,</span> <span class="n">mnist_valid</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">random_split</span><span class="p">(</span><span class="n">mnist_train_data</span><span class="p">,</span> <span class="p">[</span><span class="mi">50_000</span><span class="p">,</span> <span class="mi">10_000</span><span class="p">],</span> 
+                                              <span class="n">generator</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">()</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">))</span>
+<span class="n">train_loader</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+<span class="n">valid_loader</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_valid</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>A modo de ejemplo, entrenaremos por dos épocas:</p>
+<p>Luego creamos una instacia del mdoelo, el optimizador y la función de costo. Se implementan funciones utilitarias para aplicarse sobre los <em>minibatches</em> de entrenamiento y validación.</p>
+<p>Si tenemos acceso a una GPU podemos usar el atributo <code class="docutils literal notranslate"><span class="pre">.cuda()</span></code> o <code class="docutils literal notranslate"><span class="pre">.to()</span></code> para enviar el modelo y los datos a la GPU para acelerar los cálculos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ignite.handlers</span> <span class="kn">import</span> <span class="n">ModelCheckpoint</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_one_step</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> 
 
-<span class="nd">@trainer</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">EPOCH_COMPLETED</span><span class="p">(</span><span class="n">every</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># Cada 1 epocas</span>
-<span class="k">def</span> <span class="nf">log_results</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-    <span class="c1"># Evaluo el conjunto de entrenamiento</span>
-    <span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span> 
-    <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">],</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;Acc&#39;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train epoca: </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> Loss: </span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> Accuracy: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># Evaluo el conjunto de validación</span>
-    <span class="n">evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">valid_loader</span><span class="p">)</span> 
-    <span class="n">loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">],</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;Acc&#39;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Valid epoca: </span><span class="si">{</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> Loss: </span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> Accuracy: </span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">evaluate_one_step</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    
+<span class="k">def</span> <span class="nf">train_one_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>    
+    <span class="n">train_loss</span><span class="p">,</span> <span class="n">valid_loss</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+        <span class="n">train_loss</span> <span class="o">+=</span> <span class="n">train_one_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">valid_loader</span><span class="p">:</span>
+        <span class="n">valid_loss</span> <span class="o">+=</span> <span class="n">evaluate_one_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        
+    <span class="k">global</span> <span class="n">best_valid_loss</span>    
+    <span class="k">if</span> <span class="n">valid_loss</span> <span class="o">&lt;</span> <span class="n">best_valid_loss</span><span class="p">:</span>
+        <span class="n">best_valid_loss</span> <span class="o">=</span> <span class="n">valid_loss</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span><span class="s1">&#39;epoca&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span>
+                    <span class="s1">&#39;model_state_dict&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                    <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                    <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">valid_loss</span><span class="p">},</span> 
+                   <span class="s1">&#39;best_model.pt&#39;</span><span class="p">)</span>
 
-<span class="c1"># Guardo el mejor modelo en validación</span>
-<span class="n">best_model_handler</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">require_empty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filename_prefix</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="n">n_saved</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                                     <span class="n">score_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">engine</span><span class="p">:</span> <span class="o">-</span><span class="n">engine</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">],</span>
-                                     <span class="n">score_name</span><span class="o">=</span><span class="s2">&quot;val_loss&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">train_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">),</span> <span class="n">valid_loss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_loader</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
 
-<span class="c1"># Lo siguiente se ejecuta cada ves que termine el loop de validación</span>
-<span class="n">evaluator</span><span class="o">.</span><span class="n">add_event_handler</span><span class="p">(</span><span class="n">Events</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">,</span> 
-                            <span class="n">best_model_handler</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;lenet5&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">})</span>
 
-<span class="n">trainer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Lenet5</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+<span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="c1">#device = torch.device(&#39;cuda:0&#39;)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">max_epochs</span><span class="p">,</span> <span class="n">best_valid_loss</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+<span class="n">running_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">max_epochs</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">max_epochs</span><span class="p">)):</span>
+    <span class="n">running_loss</span><span class="p">[</span><span class="n">epoch</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_one_epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train epoca: 1 	 Loss: 2.286 	 Accuracy: 0.978
-Valid epoca: 1 	 Loss: 21.313 	 Accuracy: 0.976
-Train epoca: 2 	 Loss: 1.728 	 Accuracy: 0.982
-Valid epoca: 2 	 Loss: 17.580 	 Accuracy: 0.981
-Train epoca: 3 	 Loss: 1.035 	 Accuracy: 0.990
-Valid epoca: 3 	 Loss: 14.006 	 Accuracy: 0.984
-Train epoca: 4 	 Loss: 1.199 	 Accuracy: 0.989
-Valid epoca: 4 	 Loss: 16.315 	 Accuracy: 0.982
-Train epoca: 5 	 Loss: 0.841 	 Accuracy: 0.991
-Valid epoca: 5 	 Loss: 13.923 	 Accuracy: 0.984
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "52a0024251b241a7bd82d4ce6b1e0eb1", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">running_loss</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Entrenamiento&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">running_loss</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Validación&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>State:
-	iteration: 7815
-	epoch: 5
-	epoch_length: 1563
-	max_epochs: 5
-	output: 0.005092719104140997
-	batch: &lt;class &#39;list&#39;&gt;
-	metrics: &lt;class &#39;dict&#39;&gt;
-	dataloader: &lt;class &#39;torch.utils.data.dataloader.DataLoader&#39;&gt;
-	seed: &lt;class &#39;NoneType&#39;&gt;
-	times: &lt;class &#39;dict&#39;&gt;
-</pre></div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d73269a56dbe0b7b637615b64fa5102440af3e711cdbbc0db4c90e21d94d3051.png" src="../../_images/d73269a56dbe0b7b637615b64fa5102440af3e711cdbbc0db4c90e21d94d3051.png" />
 </div>
 </div>
 </section>
 <section id="analizando-las-predicciones-del-modelo-convolucional">
-<h2><span class="section-number">16.5. </span>Analizando las predicciones del modelo convolucional<a class="headerlink" href="#analizando-las-predicciones-del-modelo-convolucional" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">15.5. </span>Analizando las predicciones del modelo convolucional<a class="headerlink" href="#analizando-las-predicciones-del-modelo-convolucional" title="Permalink to this heading">#</a></h2>
 <p>Primero recuperamos la red con menor costo de validación</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">Lenet5</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;best_lenet5_val_loss=-2.7455.pt&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;best_model.pt&#39;</span><span class="p">)[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -746,10 +743,7 @@ Valid epoca: 5 	 Loss: 13.923 	 Accuracy: 0.984
 <p>Iteramos sobre el conjunto y guardamos las predicciones de la red</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
-
-<span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_test_data</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">mnist_test_data</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
 <span class="n">test_targets</span> <span class="o">=</span> <span class="n">mnist_test_data</span><span class="o">.</span><span class="n">targets</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
 <span class="n">prediction_test</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">mbdata</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
@@ -770,7 +764,7 @@ Valid epoca: 5 	 Loss: 13.923 	 Accuracy: 0.984
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dc6992aee6b5186c1e67429c69f6de9d69b3bfb9b8e5f2b53834b0db08d4e5ab.png" src="../../_images/dc6992aee6b5186c1e67429c69f6de9d69b3bfb9b8e5f2b53834b0db08d4e5ab.png" />
+<img alt="../../_images/264da6c762d7a772e66e99a74462f61d0c40010e9f2a7b6b258ec7d2b9b808e0.png" src="../../_images/264da6c762d7a772e66e99a74462f61d0c40010e9f2a7b6b258ec7d2b9b808e0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -782,20 +776,20 @@ Valid epoca: 5 	 Loss: 13.923 	 Accuracy: 0.984
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
 
-           0      0.982     0.982     0.982       980
-           1      0.983     0.995     0.989      1135
-           2      0.979     0.976     0.977      1032
-           3      0.953     0.980     0.966      1010
-           4      0.988     0.981     0.984       982
-           5      0.956     0.991     0.973       892
-           6      0.986     0.984     0.985       958
-           7      0.964     0.976     0.970      1028
-           8      0.967     0.966     0.967       974
-           9      0.986     0.914     0.949      1009
+           0      0.978     0.998     0.988       980
+           1      0.995     0.995     0.995      1135
+           2      0.996     0.986     0.991      1032
+           3      0.993     0.992     0.993      1010
+           4      0.994     0.990     0.992       982
+           5      0.993     0.985     0.989       892
+           6      0.994     0.984     0.989       958
+           7      0.992     0.988     0.990      1028
+           8      0.986     0.989     0.987       974
+           9      0.977     0.989     0.983      1009
 
-    accuracy                          0.974     10000
-   macro avg      0.974     0.974     0.974     10000
-weighted avg      0.975     0.974     0.974     10000
+    accuracy                          0.990     10000
+   macro avg      0.990     0.990     0.990     10000
+weighted avg      0.990     0.990     0.990     10000
 </pre></div>
 </div>
 </div>
@@ -828,10 +822,10 @@ weighted avg      0.975     0.974     0.974     10000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/7d64ef7b0ca3074a96aaec8be032ab165b891bd21a7e2e37bf30789b1c84c0b4.png" src="../../_images/7d64ef7b0ca3074a96aaec8be032ab165b891bd21a7e2e37bf30789b1c84c0b4.png" />
+<img alt="../../_images/3805a4207da4539b97db589be019bd0cd5af6a7b485828188fa4d76184c2c9df.png" src="../../_images/3805a4207da4539b97db589be019bd0cd5af6a7b485828188fa4d76184c2c9df.png" />
 </div>
 </div>
-<p><strong>Actividad</strong> Según la forma de los dígitos ¿tienen sentido estos errores? Discuta con sus compañeros</p>
+<p><strong>Reflexión</strong> Según la forma de los dígitos ¿tienen sentido estos errores? Discuta con sus compañeros.</p>
 </section>
 </section>
 
@@ -867,20 +861,20 @@ weighted avg      0.975     0.974     0.974     10000
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="vision.html"
+       href="images.html"
        title="página anterior">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title"><span class="section-number">15. </span>Visión computacional</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>Introducción al procesamiento digital de imágenes</p>
       </div>
     </a>
     <a class="right-next"
-       href="data_augmentation.html"
+       href="cnn-lightning.html"
        title="siguiente página">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">17. </span>Aumentación de datos con <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Red Convolucional con Pytorch Lightning</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -902,11 +896,11 @@ weighted avg      0.975     0.974     0.974     10000
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-de-una-red-convolucional">16.1. Capas de una red convolucional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libreria-torchvision">16.2. Librería <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mi-primera-red-convolucional-para-clasificar-en-pytorch">16.3. Mi primera red convolucional para clasificar en pytorch</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-de-la-red-convolucional">16.4. Entrenamiento de la red convolucional</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-las-predicciones-del-modelo-convolucional">16.5. Analizando las predicciones del modelo convolucional</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libreria-torchvision">15.1. Librería <code class="docutils literal notranslate"><span class="pre">torchvision</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-de-una-red-convolucional">15.2. Capas de una red convolucional</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura-lenet5">15.3. Arquitectura Lenet5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-digitos-manuscritos-con-lenet-5">15.4. Clasificación de dígitos manuscritos con Lenet 5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-las-predicciones-del-modelo-convolucional">15.5. Analizando las predicciones del modelo convolucional</a></li>
 </ul>
   </nav></div>
 
