@@ -390,21 +390,19 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="aumentacion-de-datos-con-torchvision">
 <h1><span class="section-number">17. </span>Aumentación de datos con <code class="docutils literal notranslate"><span class="pre">torchvision</span></code><a class="headerlink" href="#aumentacion-de-datos-con-torchvision" title="Permalink to this heading">#</a></h1>
-<p>Si tenemos un dataset de imágenes muy pequeño nuestro modelo podría sobreajustarse.</p>
-<p>Podemos intentar incrementar nuestra dataset usando <strong>transformaciones</strong>. Si rotamos, trasladamos o cambiamos el brillo de una imagen obtendremos una nueva imagen “casi siempre” de la misma clase</p>
-<p><code class="docutils literal notranslate"><span class="pre">torchvision</span></code> tiene funciones implementadas para hacer transformaciones en imágenes</p>
+<p>Si tenemos un dataset de imágenes muy pequeño nuestro modelo podría sobreajustarse. Podemos intentar incrementar nuestro dataset usando <strong>transformaciones</strong>.</p>
+<p>Si rotamos, trasladamos o cambiamos el brillo de una imagen obtendremos una nueva imagen “casi siempre” de la misma clase. La librería <code class="docutils literal notranslate"><span class="pre">torchvision</span></code> tiene funciones implementadas para hacer transformaciones en imágenes:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html#torchvision.transforms.RandomRotation">Rotación aleatoria</a></p></li>
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html#torchvision.transforms.RandomHorizontalFlip">Espejamiento aleatorio</a></p></li>
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html#torchvision.transforms.RandomCrop">Cropping aleatorio</a>: Recortar la imagen</p></li>
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html#torchvision.transforms.ColorJitter">Cambios aleatorios de brillo y contraste</a></p></li>
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html">Transformación afin aleatoria</a></p></li>
-<li><p><a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html">entre otros</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.transforms.RandomRotation.html#torchvision.transforms.RandomRotation">Rotación aleatoria</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.transforms.RandomHorizontalFlip.html#torchvision.transforms.RandomHorizontalFlip">Espejamiento aleatorio</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.transforms.RandomCrop.html#torchvision.transforms.RandomCrop">Cropping aleatorio</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.transforms.ColorJitter.html#torchvision.transforms.ColorJitter">Cambios aleatorios de brillo y contraste</a></p></li>
+<li><p><a class="reference external" href="https://pytorch.org/vision/stable/transforms.html">entre otros</a></p></li>
 </ul>
-<p>Cada transformación permite especificar límites, por ejemplo “máximo ángulo de rotación”, “máxima distorsión de brillo”, etc</p>
+<p>Cada transformación permite especificar límites, por ejemplo “máximo ángulo de rotación”, “máxima distorsión de brillo”, etc.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>Las transformaciones también sirven para hacer que la red gane “invarianzas”. Por ejemplo, si entrenamos con copias rotadas de nuestras imágenes, la red se volverá invariante a la rotación</p>
+<p>Las transformaciones también sirven para hacer que la red gane “invarianzas”. Por ejemplo, si entrenamos con copias rotadas de nuestras imágenes, la red se volverá invariante a la rotación.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
@@ -414,22 +412,16 @@ document.write(`
 <li><p>Si cambias demasiado el tono (hue) podrías obtener colores distintos a la realidad (¿perro verde?)</p></li>
 </ul>
 </div>
+<section id="transformaciones-aleatorias">
+<h2><span class="section-number">17.1. </span>Transformaciones aleatorias<a class="headerlink" href="#transformaciones-aleatorias" title="Permalink to this heading">#</a></h2>
+<p>La mayoría de las transformaciones están diseñadas para aplicarse sobre imágenes en <a class="reference external" href="https://pillow.readthedocs.io/en/stable/reference/Image.html">formato PIL</a>.</p>
+<p>Podemos componer varias transformaciones usando <a class="reference external" href="https://pytorch.org/vision/stable/generated/torchvision.transforms.Compose.html#torchvision.transforms.Compose"><code class="docutils literal notranslate"><span class="pre">torchvision.transforms.Compose</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="transformaciones-aleatorias">
-<h2><span class="section-number">17.1. </span>Transformaciones aleatorias<a class="headerlink" href="#transformaciones-aleatorias" title="Permalink to this heading">#</a></h2>
-<p>La mayoría de las transformaciones están diseñadas para aplicarse sobre imágenes en formato PIL</p>
-<p>Podemos componer varias transformaciones usando <a class="reference external" href="https://pytorch.org/docs/stable/torchvision/transforms.html"><code class="docutils literal notranslate"><span class="pre">torchvision.transforms.Compose</span></code></a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;img/dog.jpg&quot;</span><span class="p">)</span>
@@ -448,35 +440,27 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <img alt="../../_images/19fa1e237971d3af977c6417a2439e3f2cccb5a5f64f00cb178c9bc9219bb095.png" src="../../_images/19fa1e237971d3af977c6417a2439e3f2cccb5a5f64f00cb178c9bc9219bb095.png" />
-<img alt="../../_images/7c66209223c15c4a4d22530ebaa10d0ff809961be09b0a27824f795bc39b87f2.png" src="../../_images/7c66209223c15c4a4d22530ebaa10d0ff809961be09b0a27824f795bc39b87f2.png" />
+<img alt="../../_images/4ee13721cfbde5d6af4fad5bb03a7162a0ce6d58c50caffdff65af9938cf2c72.png" src="../../_images/4ee13721cfbde5d6af4fad5bb03a7162a0ce6d58c50caffdff65af9938cf2c72.png" />
 </div>
 </div>
 </section>
 <section id="entrenando-con-datos-aumentados">
 <h2><span class="section-number">17.2. </span>Entrenando con datos aumentados<a class="headerlink" href="#entrenando-con-datos-aumentados" title="Permalink to this heading">#</a></h2>
-<p>Podemos componer una transformación y añadirla a un <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>. Luego cuando usamos el <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> se generarán imágenes con transformaciones aleatorias de forma automática</p>
+<p>Podemos componer una transformación y añadirla a un <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>. Luego cuando usamos el <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> se generarán imágenes con transformaciones aleatorias de forma automática.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>¡Sólo se aumenta el conjunto de entrenamiento! Los conjuntos de validación y prueba no deben tener aumentación sintética</p>
+<p>¡Sólo se aumenta el conjunto de entrenamiento! Los conjuntos de validación y prueba no deben tener aumentación sintética.</p>
 </div>
 <p>A modo de ejemplos aplicaremos una composición de transformaciones al dataset de dígitos manuscritos MNIST. Primero creamos la secuencia de transformaciones para el conjunto de entrenamiento:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">RandomAffine</span><span class="p">(</span><span class="n">degrees</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">translate</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> 
                                                               <span class="n">scale</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">),</span> <span class="n">shear</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
-                                                              <span class="n">interpolation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fillcolor</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                                                              <span class="n">interpolation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
                                       <span class="n">transforms</span><span class="o">.</span><span class="n">ColorJitter</span><span class="p">(</span><span class="n">brightness</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
                                                              <span class="n">saturation</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
                                       <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
                                      <span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phuijse/.conda/envs/info257/lib/python3.9/site-packages/torchvision/transforms/transforms.py:1428: UserWarning: Argument interpolation should be of type InterpolationMode instead of int. Please, use InterpolationMode enum.
-  warnings.warn(
-/home/phuijse/.conda/envs/info257/lib/python3.9/site-packages/torchvision/transforms/transforms.py:1435: UserWarning: The parameter &#39;fillcolor&#39; is deprecated since 0.12 and will be removed in 0.14. Please use &#39;fill&#39; instead.
-  warnings.warn(
 </pre></div>
 </div>
 </div>
@@ -511,7 +495,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c0dfc765db3561d36f81d3f44f69c81dc15a45d1d94ed24a79bde19c429f9709.png" src="../../_images/c0dfc765db3561d36f81d3f44f69c81dc15a45d1d94ed24a79bde19c429f9709.png" />
+<img alt="../../_images/c2b0e8dd5919376d62c5e7db420afc1e56d2bf4337e1cec9ffc708ad88f3a22e.png" src="../../_images/c2b0e8dd5919376d62c5e7db420afc1e56d2bf4337e1cec9ffc708ad88f3a22e.png" />
 </div>
 </div>
 <p>Por ejemplo si volvemos a pedir el primer minibatch obtenemos</p>
@@ -530,14 +514,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/c0dfb948b4d9ef038f1d922d5468310e7eb0661a8fa23d3d0fc6ef0b895f28f9.png" src="../../_images/c0dfb948b4d9ef038f1d922d5468310e7eb0661a8fa23d3d0fc6ef0b895f28f9.png" />
+<img alt="../../_images/916513d12a357e6adc6288d1d9c9369d7c311324d93357875df604e2b982d382.png" src="../../_images/916513d12a357e6adc6288d1d9c9369d7c311324d93357875df604e2b982d382.png" />
 </div>
 </div>
-<p>Notar que en este caso <code class="docutils literal notranslate"><span class="pre">shuffle=False</span></code> por lo que los ejemplos originales son los mismos</p>
-<p>Sin embargo, las imágenes se ven distintas porque las transformaciones son aleatorias</p>
+<p>Notar que en este caso <code class="docutils literal notranslate"><span class="pre">shuffle=False</span></code> por lo que los ejemplos originales son los mismos. Sin embargo, las imágenes se ven distintas porque las transformaciones son aleatorias.</p>
 <div class="admonition important">
 <p class="admonition-title">Importante</p>
-<p>El dataset de entrenamiento es ligeramente distinto en distintas épocas. Es como si tuvieramos un dataset virtualmente más grande</p>
+<p>El dataset de entrenamiento es ligeramente distinto en cada época. Es como si tuvieramos un dataset virtualmente más grande y más variado.</p>
 </div>
 </section>
 </section>

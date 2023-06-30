@@ -391,28 +391,22 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="utilizando-un-modelo-pre-entrenado">
 <h1><span class="section-number">18. </span>Utilizando un modelo pre-entrenado<a class="headerlink" href="#utilizando-un-modelo-pre-entrenado" title="Permalink to this heading">#</a></h1>
-<p><a class="reference external" href="https://pytorch.org/vision/stable/models.html"><code class="docutils literal notranslate"><span class="pre">torchvision.models</span></code></a> ofrece una serie de modelos de la literatura de <em>deep learning</em> que pueden utilizarse de forma simple.</p>
-<p>Por defecto, cuando se carga un modelo de <code class="docutils literal notranslate"><span class="pre">models</span></code>,  los pesos son aleatorios. Es decir que cargamos una arquitectura que no está entrenada</p>
-<p>En cambio si indicamos <code class="docutils literal notranslate"><span class="pre">pretrained=True</span></code> se descarga un modelo entrenado.</p>
-<p>A continuación veremos algunos ejemplos de modelos para clasificar, localizar y segmentar</p>
+<p><a class="reference external" href="https://pytorch.org/vision/stable/models.html"><code class="docutils literal notranslate"><span class="pre">torchvision.models</span></code></a> ofrece una gran cantidad de modelos de la literatura de <em>deep learning</em> que pueden utilizarse de forma directa.</p>
+<p>Por defecto, cuando se carga un modelo de <code class="docutils literal notranslate"><span class="pre">models</span></code>,  los pesos son aleatorios. Es decir que cargamos una arquitectura que no está entrenada. En cambio si indicamos una de las opciones posibles para el argumento <code class="docutils literal notranslate"><span class="pre">weights</span></code> en el constructor del modelo, se descargará un modelo entrenado.</p>
+<p>A continuación veremos algunos ejemplos de modelos para clasificar, localizar y segmentar.</p>
+<section id="modelo-para-clasificar-imagenes">
+<h2><span class="section-number">18.1. </span>Modelo para clasificar imágenes<a class="headerlink" href="#modelo-para-clasificar-imagenes" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">torchvision</span></code> tiene una basta cantidad de modelos para clasificar incluyendo distintas versiones de VGG, ResNet, AlexNet, GoogLeNet, DenseNet, entre otros.</p>
+<p>A continuación se carga un modelo <a class="reference external" href="https://arxiv.org/pdf/1512.03385.pdf">resnet18</a> <a class="reference external" href="https://pytorch.org/vision/stable/models/generated/torchvision.models.resnet18.html#torchvision.models.resnet18">pre-entrenado</a> con el famoso dataset <a class="reference external" href="http://image-net.org/">ImageNet</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="modelo-para-clasificar-imagenes">
-<h2><span class="section-number">18.1. </span>Modelo para clasificar imágenes<a class="headerlink" href="#modelo-para-clasificar-imagenes" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">torchvision</span></code> tiene una basta cantidad de modelos para clasificar incluyendo distintas versiones de VGG, ResNet, AlexNet, GoogLeNet, DenseNet, entre otros</p>
-<p>Cargaremos un modelo <a class="reference external" href="https://arxiv.org/pdf/1512.03385.pdf">resnet18</a> <a class="reference external" href="https://pytorch.org/docs/stable/torchvision/models.html#torchvision.models.resnet18">pre-entrenado</a> en <a class="reference external" href="http://image-net.org/">ImageNet</a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">resnet</span><span class="o">.</span><span class="n">ResNet18_Weights</span><span class="o">.</span><span class="n">IMAGENET1K_V1</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -423,13 +417,13 @@ document.write(`
 <li><p>tres canales (RGB)</p></li>
 <li><p>al menos 224x224 píxeles</p></li>
 <li><p>píxeles entre 0 y 1 (float)</p></li>
-<li><p>normalizadas según:</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">normalize</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
-                                                     <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+<p>Además los canales deben estar normalizados según:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">normalize</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>
+                                             <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Sea la siguiente imagen:</p>
+<p>Preparamos una imagen para inferir su clase con Resnet18.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
@@ -442,7 +436,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0808f6e5bdd00c1067b38d55dca0d1d69ff1c6a6ad4100bd7861c2e19dfc4c0c.png" src="../../_images/0808f6e5bdd00c1067b38d55dca0d1d69ff1c6a6ad4100bd7861c2e19dfc4c0c.png" />
+<img alt="../../_images/0131d39ee255471cbf49e1a1249bef594b0027841f52d2627533dc0b60ca4e27.png" src="../../_images/0131d39ee255471cbf49e1a1249bef594b0027841f52d2627533dc0b60ca4e27.png" />
 </div>
 </div>
 <p>Si la normalizamos según la transformación anterior se obtiene:</p>
@@ -468,7 +462,7 @@ document.write(`
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
 </pre></div>
 </div>
-<img alt="../../_images/12f8e10760cd87d799160b26be1f40dbb5e1dd4e569a066065d8d4ea35ebc5f6.png" src="../../_images/12f8e10760cd87d799160b26be1f40dbb5e1dd4e569a066065d8d4ea35ebc5f6.png" />
+<img alt="../../_images/23a6af4d0a8a5faf438098f128d45842a6dd25c9ce034a0f3adc2fc56788f8db.png" src="../../_images/23a6af4d0a8a5faf438098f128d45842a6dd25c9ce034a0f3adc2fc56788f8db.png" />
 </div>
 </div>
 <p>Luego podemos evaluar el modelo con la nueva imagen:</p>
@@ -481,7 +475,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>El modelo tiene</p>
+<p>Este modelo tiene</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
@@ -497,34 +491,40 @@ document.write(`
 <p>neuronas de salida (clases). Estudiemos las cinco clases más probables según el modelo:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">],</span> 
-        <span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">urllib.request</span><span class="o">,</span> <span class="nn">json</span> 
+<span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s2">&quot;https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">url</span><span class="p">:</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    
+<span class="n">best</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idx prob name&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">entity</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span> <span class="n">labels</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)][</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([263, 151, 259, 273, 260])
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>idx prob name
+263 tensor(0.2759) Pembroke
+151 tensor(0.1574) Chihuahua
+259 tensor(0.1539) Pomeranian
+273 tensor(0.1503) dingo
+260 tensor(0.1461) chow
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([0.2759, 0.1574, 0.1539, 0.1503, 0.1461], grad_fn=&lt;IndexBackward0&gt;)
-</pre></div>
 </div>
 </div>
-</div>
-<p>¿A qué corresponde estas clases?</p>
-<p>Las nombres de las clases de ImageNet son: <a class="reference external" href="https://gist.github.com/ageitgey/4e1342c10a71981d0b491e1b8227328b">https://gist.github.com/ageitgey/4e1342c10a71981d0b491e1b8227328b</a></p>
 </section>
 <section id="modelo-para-detectar-entidades-en-imagenes">
 <h2><span class="section-number">18.2. </span>Modelo para detectar entidades en imágenes<a class="headerlink" href="#modelo-para-detectar-entidades-en-imagenes" title="Permalink to this heading">#</a></h2>
-<p>Adicional a los modelos de clasificación torchvision también tiene modelos para</p>
+<p>Adicional a los modelos de clasificación <code class="docutils literal notranslate"><span class="pre">torchvision</span></code> también tiene modelos de:</p>
 <ul class="simple">
-<li><p>Detectar entidades en una imagen: Faster RCNN</p></li>
-<li><p>Hacer segmentación por instancia: Mask RCNN</p></li>
-<li><p>Hacer segmentación semántica: FCC, DeepLab</p></li>
+<li><p>Detección de objetos/entidades: Faster RCNN, SSD, RetinaNet</p></li>
+<li><p>Segmentación por instancia: Mask RCNN</p></li>
+<li><p>Segmentación semántica: FCC, DeepLab</p></li>
 <li><p>Clasificación de video</p></li>
 </ul>
-<p>A continuación probaremos la <a class="reference external" href="https://arxiv.org/abs/1506.01497">Faster RCNN</a> para hace detección. Este modelo fue pre-entrenado en la base de datos <a class="reference external" href="https://cocodataset.org/">COCO</a></p>
+<p>A continuación probaremos la <a class="reference external" href="https://arxiv.org/abs/1506.01497">Faster RCNN</a> para hace detección. Este modelo fue pre-entrenado en la base de datos <a class="reference external" href="https://cocodataset.org/">COCO</a>.</p>
 <p>El modelo retorna un diccionario con:</p>
 <ul class="simple">
 <li><p>‘boxes’: Los bounding box de las entidades</p></li>
@@ -533,7 +533,7 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">fasterrcnn_resnet50_fpn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">fasterrcnn_resnet50_fpn</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">FasterRCNN_ResNet50_FPN_Weights</span><span class="o">.</span><span class="n">COCO_V1</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 
 <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
@@ -575,17 +575,14 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/451c1d295e21a1e8e236a497c313a42a85ba93adcc67bd1db791ec8db0e8d97c.png" src="../../_images/451c1d295e21a1e8e236a497c313a42a85ba93adcc67bd1db791ec8db0e8d97c.png" />
+<img alt="../../_images/614b3d11081559b0588aa19fd054ca8681e49190bf0292d0f49935591333ef06.png" src="../../_images/614b3d11081559b0588aa19fd054ca8681e49190bf0292d0f49935591333ef06.png" />
 </div>
 </div>
 </section>
 <section id="transferencia-de-aprendizaje">
 <h2><span class="section-number">18.3. </span>Transferencia de Aprendizaje<a class="headerlink" href="#transferencia-de-aprendizaje" title="Permalink to this heading">#</a></h2>
-<p>A continuación usaremos la técnicas de transferencia de aprendizaje para aprender un clasificador de imágenes para un fragmento de la base de datos <em>food 5k</em></p>
-<blockquote>
-<div><p>El objetivo es clasificar si la imagen corresponde a comida o no</p>
-</div></blockquote>
-<p>Guardamos las imagenes con la siguiente estructura de carpetas</p>
+<p>A continuación usaremos la técnica de transferencia de aprendizaje para entrenar un clasificador de imágenes utilizando un fragmento de la base de datos <a class="reference external" href="https://www.kaggle.com/datasets/trolukovich/food5k-image-dataset"><em>Food-5K</em></a>. El objetivo es clasificar si la imagen corresponde a comida o no.</p>
+<p>Guardamos las imagenes con la siguiente estructura de carpetas:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>ls<span class="w"> </span>data/food5k/
@@ -602,9 +599,9 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Dada esta estructura podemos usar <code class="docutils literal notranslate"><span class="pre">torchvision.datasets.ImageFolder</span></code> para crear los dataset de forma muy sencilla.</p>
-<p>Como utilizaremos un modelo preentrenado debemos transformar entregar las imágenes en tamaño 224x224 y con color normalizado</p>
-<p>Adicionalmente se agrega aumentación de datos en el conjunto de entrenamiento</p>
+<p>Dada esta estructura podemos utilizar <code class="docutils literal notranslate"><span class="pre">torchvision.datasets.ImageFolder</span></code> para crear los dataset de forma directa.</p>
+<p>Como utilizaremos un modelo de clasificación preentrenado debemos transformar las imágenes según lo explicado anteriormente.</p>
+<p>Adicionalmente se hará aumentación de datos en el conjunto de entrenamiento.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">datasets</span>
@@ -627,14 +624,13 @@ document.write(`
 <span class="n">train_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">valid_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">image</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
-    <span class="k">break</span>
-    
+<span class="c1"># 6 imágenes de ejemplo:</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">image</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -647,14 +643,13 @@ Clipping input data to the valid range for imshow with RGB data ([0..1] for floa
 Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
 </pre></div>
 </div>
-<img alt="../../_images/10cf6d9f5123c9697064f3f8fb02b7db124513dbe8b9ecfcc2f2909f43bf275d.png" src="../../_images/10cf6d9f5123c9697064f3f8fb02b7db124513dbe8b9ecfcc2f2909f43bf275d.png" />
+<img alt="../../_images/baff871783dc2a56196f20247a410c3144a2936c6431756904f266de8128ab87.png" src="../../_images/baff871783dc2a56196f20247a410c3144a2936c6431756904f266de8128ab87.png" />
 </div>
 </div>
-<p>Usaremos el modelo ResNet18</p>
+<p>Usaremos el modelo ResNet18:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1"># model = models.squeezenet1_1(pretrained=True, progress=True)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">resnet</span><span class="o">.</span><span class="n">ResNet18_Weights</span><span class="o">.</span><span class="n">IMAGENET1K_V1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -756,8 +751,8 @@ Clipping input data to the valid range for imshow with RGB data ([0..1] for floa
 </div>
 </div>
 <p>En este caso re-entrenaremos sólo la última capa, llamada <code class="docutils literal notranslate"><span class="pre">fc</span></code>. Esta es la capa que se encarga de clasificar.</p>
-<p>Las demás capas serán congeladas, es decir, no propagaremos gradiente. De esta forma evitamos sobreajustar el modelo con este conjunto de datos pequeño</p>
-<p>Para congelar una capa simplemente usamos <code class="docutils literal notranslate"><span class="pre">requires_grad=False</span></code> en sus parámetros. Cuando llamemos <code class="docutils literal notranslate"><span class="pre">backward</span></code> no se calculará gradiente para estas capas</p>
+<p>Las demás capas serán congeladas, es decir, no propagaremos gradiente. De esta forma evitamos sobreajustar el modelo con este conjunto de datos pequeño.</p>
+<p>Para congelar una capa simplemente usamos <code class="docutils literal notranslate"><span class="pre">requires_grad=False</span></code> en sus parámetros. Cuando llamemos <code class="docutils literal notranslate"><span class="pre">backward</span></code> no se calculará gradiente para estas capas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span> 
@@ -766,19 +761,14 @@ Clipping input data to the valid range for imshow with RGB data ([0..1] for floa
 </div>
 </div>
 </div>
-<p>Ahora podemos crear una nueva capa de salida que reemplaza a <code class="docutils literal notranslate"><span class="pre">fc</span></code> (por defecto esta tiene <code class="docutils literal notranslate"><span class="pre">requires_grad=True</span></code>)</p>
+<p>Ahora podemos crear una nueva capa de salida que reemplaza a <code class="docutils literal notranslate"><span class="pre">fc</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
-<p>El problema tiene dos clases, por lo tanto configuramos la capa <code class="docutils literal notranslate"><span class="pre">fc</span></code> con dos neuronas de salida</p>
+<p>El problema tiene dos clases, por lo tanto configuramos la capa <code class="docutils literal notranslate"><span class="pre">fc</span></code> con dos neuronas de salida.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span> <span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Para resnet</span>
-
-<span class="c1">#model.classifier = torch.nn.Sequential(torch.nn.Dropout(p=0.5, inplace=False), </span>
-<span class="c1">#                                       torch.nn.Conv2d(512, 2, kernel_size=(1, 1), stride=(1, 1)),</span>
-<span class="c1">#                                       torch.nn.ReLU(inplace=True),</span>
-<span class="c1">#                                       torch.nn.AdaptiveAvgPool2d(output_size=(1, 1))) # Para Squeezenet</span>
 </pre></div>
 </div>
 </div>
@@ -817,26 +807,26 @@ Clipping input data to the valid range for imshow with RGB data ([0..1] for floa
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train 0, Loss: 0.0263, Acc: 0.514
-Valid 0, Loss: 0.0057, Acc: 0.690
-Train 1, Loss: 0.0187, Acc: 0.716
-Valid 1, Loss: 0.0039, Acc: 0.880
-Train 2, Loss: 0.0137, Acc: 0.856
-Valid 2, Loss: 0.0030, Acc: 0.930
-Train 3, Loss: 0.0101, Acc: 0.928
-Valid 3, Loss: 0.0024, Acc: 0.950
-Train 4, Loss: 0.0084, Acc: 0.942
-Valid 4, Loss: 0.0020, Acc: 0.980
-Train 5, Loss: 0.0081, Acc: 0.923
-Valid 5, Loss: 0.0019, Acc: 0.940
-Train 6, Loss: 0.0069, Acc: 0.933
-Valid 6, Loss: 0.0016, Acc: 0.990
-Train 7, Loss: 0.0067, Acc: 0.938
-Valid 7, Loss: 0.0015, Acc: 0.980
-Train 8, Loss: 0.0081, Acc: 0.918
-Valid 8, Loss: 0.0014, Acc: 0.990
-Train 9, Loss: 0.0064, Acc: 0.947
-Valid 9, Loss: 0.0014, Acc: 0.960
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train 0, Loss: 0.0349, Acc: 0.404
+Valid 0, Loss: 0.0079, Acc: 0.530
+Train 1, Loss: 0.0221, Acc: 0.577
+Valid 1, Loss: 0.0059, Acc: 0.670
+Train 2, Loss: 0.0161, Acc: 0.788
+Valid 2, Loss: 0.0040, Acc: 0.860
+Train 3, Loss: 0.0121, Acc: 0.909
+Valid 3, Loss: 0.0032, Acc: 0.910
+Train 4, Loss: 0.0103, Acc: 0.933
+Valid 4, Loss: 0.0026, Acc: 0.930
+Train 5, Loss: 0.0084, Acc: 0.909
+Valid 5, Loss: 0.0023, Acc: 0.950
+Train 6, Loss: 0.0084, Acc: 0.933
+Valid 6, Loss: 0.0021, Acc: 0.940
+Train 7, Loss: 0.0079, Acc: 0.938
+Valid 7, Loss: 0.0019, Acc: 0.950
+Train 8, Loss: 0.0071, Acc: 0.942
+Valid 8, Loss: 0.0018, Acc: 0.970
+Train 9, Loss: 0.0071, Acc: 0.938
+Valid 9, Loss: 0.0017, Acc: 0.940
 </pre></div>
 </div>
 </div>
@@ -864,10 +854,10 @@ Valid 9, Loss: 0.0014, Acc: 0.960
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7f2c0403ed90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7f6c3ee4fbb0&gt;
 </pre></div>
 </div>
-<img alt="../../_images/0993e3eeb207086b32b4c327f2dc386e49601b99d80fb6d740675b1f67f7524b.png" src="../../_images/0993e3eeb207086b32b4c327f2dc386e49601b99d80fb6d740675b1f67f7524b.png" />
+<img alt="../../_images/1de28c12234f5e7adfa4c24f51a67b02d9409d47750ba9a3727d2478da04125d.png" src="../../_images/1de28c12234f5e7adfa4c24f51a67b02d9409d47750ba9a3727d2478da04125d.png" />
 </div>
 </div>
 <p><strong>Actividades propuestas</strong></p>
@@ -875,7 +865,7 @@ Valid 9, Loss: 0.0014, Acc: 0.960
 <li><p>Entrenar el modelo anterior con más épocas</p></li>
 <li><p>Entrenar el modelo anterior sin pre-entrenamiento</p></li>
 <li><p>Entrenar un modelo tipo Lenet5 sobre el dataset anterior</p></li>
-<li><p>Comparar los resultados obtenidos entre los distintos modelos:</p></li>
+<li><p>Comparar los resultados obtenidos entre los distintos modelos.</p></li>
 </ul>
 </section>
 </section>
