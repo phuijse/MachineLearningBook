@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>21. Deep Reinforced Learning &#8212; Aprendizaje de Máquinas</title>
+    <title>22. Deep Reinforced Learning &#8212; Aprendizaje de Máquinas</title>
   
   
   
@@ -69,8 +69,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/dqn1';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="22. DQN a partir de píxeles" href="dqn2.html" />
-    <link rel="prev" title="20. Introducción a Aprendizaje Reforzado" href="intro.html" />
+    <link rel="next" title="23. DQN a partir de píxeles" href="dqn2.html" />
+    <link rel="prev" title="21. Entrenando un agente" href="qlearning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -181,9 +181,10 @@ const thebe_selector_output = ".output, .cell_output"
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Aprendizaje Reforzado</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">20. Introducción a Aprendizaje Reforzado</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">21. <em>Deep Reinforced Learning</em></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dqn2.html">22. DQN a partir de píxeles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="policygrad.html">23. Policy gradients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qlearning.html">21. Entrenando un agente</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">22. <em>Deep Reinforced Learning</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn2.html">23. DQN a partir de píxeles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="policygrad.html">24. Policy gradients</a></li>
 </ul>
 
     </div>
@@ -377,17 +378,17 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">21.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">21.1.1. Ambiente: Space invaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">22.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">22.1.1. Ambiente: Space invaders</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">21.2. Aproximación de funciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">21.3. Deep Q-Network (DQN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">21.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">21.5. Experience Replay y Memory replay</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">21.6. <em>Double DQN</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">21.7. Experimentos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">21.8. Rainbow DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">22.2. Aproximación de funciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">22.3. Deep Q-Network (DQN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">22.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">22.5. Experience Replay y Memory replay</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">22.6. <em>Double DQN</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">22.7. Experimentos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">22.8. Rainbow DQN</a></li>
 </ul>
             </nav>
         </div>
@@ -409,7 +410,7 @@ document.write(`
 </div>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="deep-reinforced-learning">
-<h1><span class="section-number">21. </span><em>Deep Reinforced Learning</em><a class="headerlink" href="#deep-reinforced-learning" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">22. </span><em>Deep Reinforced Learning</em><a class="headerlink" href="#deep-reinforced-learning" title="Permalink to this heading">#</a></h1>
 <p>Hoy en día el estado del arte en el reconocimiento de patrones está dominado por las <strong>redes neuronales profundas</strong></p>
 <ul class="simple">
 <li><p>Visión Computacional: Redes Neuronales Convolucionales, Adversarios generativos</p></li>
@@ -421,7 +422,7 @@ document.write(`
 <div><p>Podemos aprovechar esta capacidad para diseñar mejores algoritmos de aprendizaje reforzado</p>
 </div></blockquote>
 <section id="recuerdo-value-learning">
-<h2><span class="section-number">21.1. </span>Recuerdo: Value Learning<a class="headerlink" href="#recuerdo-value-learning" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.1. </span>Recuerdo: Value Learning<a class="headerlink" href="#recuerdo-value-learning" title="Permalink to this heading">#</a></h2>
 <p>En este tipo de algoritmos usamos un política de máxima utilidad para escoger acciones</p>
 <div class="math notranslate nohighlight">
 \[
@@ -436,7 +437,7 @@ document.write(`
 </ul>
 <p>De hecho el estado no puede ser demasiado grande, como veremos a continuación</p>
 <section id="ambiente-space-invaders">
-<h3><span class="section-number">21.1.1. </span>Ambiente: <a class="reference external" href="https://es.wikipedia.org/wiki/Space_Invaders">Space invaders</a><a class="headerlink" href="#ambiente-space-invaders" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">22.1.1. </span>Ambiente: <a class="reference external" href="https://es.wikipedia.org/wiki/Space_Invaders">Space invaders</a><a class="headerlink" href="#ambiente-space-invaders" title="Permalink to this heading">#</a></h3>
 <p>Originalmente un juego de Arcade lanzando en 1978, en 1980 tuvo una versión para ATARI 2600</p>
 <blockquote>
 <div><p>El objetivo es derrivar a los extraterrestres usando un cañon antes de que desciendan a la Tierra</p>
@@ -491,7 +492,7 @@ document.write(`
 </section>
 </section>
 <section id="aproximacion-de-funciones">
-<h2><span class="section-number">21.2. </span>Aproximación de funciones<a class="headerlink" href="#aproximacion-de-funciones" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.2. </span>Aproximación de funciones<a class="headerlink" href="#aproximacion-de-funciones" title="Permalink to this heading">#</a></h2>
 <p>Claramente, el espacio de estados del ejemplo anterior es imposible de mantener en una tabla Q</p>
 <p>Ojo: este espacio de estados está aun lejos de un problema del mundo real</p>
 <blockquote>
@@ -541,7 +542,7 @@ document.write(`
 </div></blockquote>
 </section>
 <section id="deep-q-network-dqn">
-<h2><span class="section-number">21.3. </span>Deep Q-Network (DQN)<a class="headerlink" href="#deep-q-network-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.3. </span>Deep Q-Network (DQN)<a class="headerlink" href="#deep-q-network-dqn" title="Permalink to this heading">#</a></h2>
 <blockquote>
 <div><p>En <a class="reference external" href="https://arxiv.org/abs/1312.5602">(Minh et al. 2013)</a> se usaron redes neuronales profundas de tipo convolucional para resolver una serie de juegos de ATARI con Aprendizaje Reforzardo obteniendo <a class="reference external" href="https://deepmind.com/blog/article/deep-reinforcement-learning">desempeño sobre-humano en muchos de las pruebas</a>. El modelo, llamado <em>Deep Q-network</em>, utiliza como estado el valor de todos los píxeles de cuatro cuadros consecutivos.</p>
 </div></blockquote>
@@ -582,7 +583,7 @@ document.write(`
 <p>Recordemos: <span class="math notranslate nohighlight">\(s'\)</span> es el estado al que llegamos luego de ejecutar <span class="math notranslate nohighlight">\(a\)</span> sobre <span class="math notranslate nohighlight">\(s\)</span></p>
 </section>
 <section id="dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">
-<h2><span class="section-number">21.4. </span>DQN con estados continuos: El retorno del carro con péndulo<a class="headerlink" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.4. </span>DQN con estados continuos: El retorno del carro con péndulo<a class="headerlink" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo" title="Permalink to this heading">#</a></h2>
 <p>Previamente fue necesario discretizar el estado para construir la matriz Q</p>
 <p>En DQN podemos obviar este paso y sus complicaciones</p>
 <p>Vamos a usar una red neuronal con 3 capas completamente conectadas, 4 entradas y 2 salidas</p>
@@ -608,7 +609,7 @@ document.write(`
 </div>
 </section>
 <section id="experience-replay-y-memory-replay">
-<h2><span class="section-number">21.5. </span>Experience Replay y Memory replay<a class="headerlink" href="#experience-replay-y-memory-replay" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.5. </span>Experience Replay y Memory replay<a class="headerlink" href="#experience-replay-y-memory-replay" title="Permalink to this heading">#</a></h2>
 <p>El entrenamiento usando sólo una instancia es bastante ruidoso (y un poco lento)</p>
 <p>Consideremos también que estamos entrenando con muestras muy correlacionadas (no iid)</p>
 <p>Sabemos que esto puede introducir sesgos el entrenamiento de una red neuronal</p>
@@ -661,7 +662,7 @@ document.write(`
 </div>
 </section>
 <section id="double-dqn">
-<h2><span class="section-number">21.6. </span><em>Double DQN</em><a class="headerlink" href="#double-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.6. </span><em>Double DQN</em><a class="headerlink" href="#double-dqn" title="Permalink to this heading">#</a></h2>
 <p>En <a class="reference external" href="https://arxiv.org/pdf/1509.06461.pdf">(van Hasselt, Guer y Silver, 2015)</a> los autores notaron un problema importante en DQN.</p>
 <blockquote>
 <div><p>Cuando calculamos <span class="math notranslate nohighlight">\(Q(s, a)\)</span> y <span class="math notranslate nohighlight">\(\max Q(s', a')\)</span> usando la misma red es muy posible que sobre-estimemos la calidad de nuestro objetivo. Adicionalmente si el objetivo cambia constantemente el entrenamiento será inestable</p>
@@ -806,7 +807,7 @@ document.write(`
 </div>
 </section>
 <section id="experimentos">
-<h2><span class="section-number">21.7. </span>Experimentos<a class="headerlink" href="#experimentos" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.7. </span>Experimentos<a class="headerlink" href="#experimentos" title="Permalink to this heading">#</a></h2>
 <p>Usemos la clase DeepQNetwork para entrenar una agente que resuelva el problema del carro con péndulo</p>
 <ul class="simple">
 <li><p>Si uso <code class="docutils literal notranslate"><span class="pre">memory_length=1</span></code> es equivalente a no usar <em>replay memory</em>. Mientras más corta es la memoria más ruidoso es el entrenamiento.</p></li>
@@ -930,7 +931,7 @@ document.write(`
 </div>
 </section>
 <section id="rainbow-dqn">
-<h2><span class="section-number">21.8. </span><a class="reference external" href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow DQN</a><a class="headerlink" href="#rainbow-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.8. </span><a class="reference external" href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow DQN</a><a class="headerlink" href="#rainbow-dqn" title="Permalink to this heading">#</a></h2>
 <p>Rainbow DQN es un trabajo que reune todos los avances relacionados a DQN</p>
 <ol class="arabic simple">
 <li><p><em>Double DQN</em>: Usar un modelo separado para calcular los targets</p></li>
@@ -975,12 +976,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="intro.html"
+       href="qlearning.html"
        title="página anterior">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title"><span class="section-number">20. </span>Introducción a Aprendizaje Reforzado</p>
+        <p class="prev-next-title"><span class="section-number">21. </span>Entrenando un agente</p>
       </div>
     </a>
     <a class="right-next"
@@ -988,7 +989,7 @@ document.write(`
        title="siguiente página">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">22. </span>DQN a partir de píxeles</p>
+        <p class="prev-next-title"><span class="section-number">23. </span>DQN a partir de píxeles</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1010,17 +1011,17 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">21.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">21.1.1. Ambiente: Space invaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">22.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">22.1.1. Ambiente: Space invaders</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">21.2. Aproximación de funciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">21.3. Deep Q-Network (DQN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">21.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">21.5. Experience Replay y Memory replay</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">21.6. <em>Double DQN</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">21.7. Experimentos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">21.8. Rainbow DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">22.2. Aproximación de funciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">22.3. Deep Q-Network (DQN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">22.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">22.5. Experience Replay y Memory replay</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">22.6. <em>Double DQN</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">22.7. Experimentos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">22.8. Rainbow DQN</a></li>
 </ul>
   </nav></div>
 
