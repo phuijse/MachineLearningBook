@@ -30,6 +30,7 @@ parts:
   numbered: true
   chapters:
       - file: contents/reinforcement_learning/intro
+      - file: contents/reinforcement_learning/qlearning
       - file: contents/reinforcement_learning/dqn1
       - file: contents/reinforcement_learning/dqn2
       - file: contents/reinforcement_learning/policygrad
