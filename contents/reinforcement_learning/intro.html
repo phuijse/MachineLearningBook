@@ -381,6 +381,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-paradigmas-de-aprendizaje-de-maquinas">20.1. Los paradigmas de aprendizaje de máquinas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes-de-aprendizaje-reforzado">20.2. Componentes de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusiones">20.3. Discusiones</a></li>
 </ul>
             </nav>
         </div>
@@ -400,32 +401,33 @@ document.write(`
 <p class="admonition-title"><strong>Aprendizaje Supervisado</strong></p>
 <p>Tenemos un dataset de <strong>ejemplos etiquetados</strong> <span class="math notranslate nohighlight">\((x, y)\)</span> y buscamos una relación <span class="math notranslate nohighlight">\(f: x \to y\)</span>, es decir predecir <span class="math notranslate nohighlight">\(y\)</span> dado <span class="math notranslate nohighlight">\(x\)</span>.</p>
 </div>
-<p>Los modelos de regresión y clasificación son ejemplos de este paradigma. En regresión la etiqueta es una variable ordinal mientras que en clasificación la etiqueta es una variable categórica. Si el modelo es paramétrico lo ajustamos (aprendemos sus parámetros) minimizando una función de costo. Por ejemplo, el regresor logístico</p>
+<a class="reference internal image-reference" href="../../_images/intro-ml1.png"><img alt="../../_images/intro-ml1.png" src="../../_images/intro-ml1.png" style="width: 600px;" /></a>
+<p>Los modelos de regresión y clasificación son ejemplos de este paradigma. En regresión la etiqueta es una variable ordinal mientras que en clasificación la etiqueta es una variable categórica.</p>
+<p>Si el modelo es paramétrico lo ajustamos (aprendemos sus parámetros) minimizando una función de costo. Por ejemplo, el modelo de regresión logística</p>
 <div class="math notranslate nohighlight">
 \[
 f_\theta = \theta_0 + \sum_{j=1}^D \theta_j x_j
 \]</div>
-<p>se ajusta minimizando la entropía cruzada:</p>
+<p>se ajusta minimizando la entropía cruzada</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\theta} \sum_{i=1}^N y_i \log \left (f_\theta (x_i) \right)
 \]</div>
-<a class="reference internal image-reference" href="../../_images/intro-ml1.png"><img alt="../../_images/intro-ml1.png" src="../../_images/intro-ml1.png" style="width: 600px;" /></a>
-<div class="admonition-aprendizaje-supervisado admonition">
-<p class="admonition-title"><strong>Aprendizaje Supervisado</strong></p>
+<div class="admonition-aprendizaje-no-supervisado admonition">
+<p class="admonition-title"><strong>Aprendizaje No Supervisado</strong></p>
 <p>Tenemos un dataset de <strong>ejemplos sin etiqueta</strong> <span class="math notranslate nohighlight">\((x)\)</span> y buscamos una representación de los datos con ciertas características.</p>
 </div>
+<a class="reference internal image-reference" href="../../_images/intro-ml2.png"><img alt="../../_images/intro-ml2.png" src="../../_images/intro-ml2.png" style="width: 400px;" /></a>
 <p>Los métodos de reducción de dimensionalidad y agrupamiento (clustering) son ejemplos de este paradigma. Por ejemplo, el método de K-Means busca un conjunto de <span class="math notranslate nohighlight">\(K\)</span> representantes (centroides) <span class="math notranslate nohighlight">\(\mu_j\)</span> que resumen el dataset completo en base a la relación de similitud entre los datos:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \min  \sum_{i=1}^N \sum_{k=1}^K w_{ik} \|x_i - \mu_k\|^2 \quad w_{ik} = \begin{cases} 1 &amp; k = \text{arg}\min_j \| x_i - \mu_j\|^2 \\ 0 &amp; \sim \end{cases} 
 \end{split}\]</div>
-<a class="reference internal image-reference" href="../../_images/intro-ml2.png"><img alt="../../_images/intro-ml2.png" src="../../_images/intro-ml2.png" style="width: 400px;" /></a>
-<p><strong>Aprendizaje Reforzado (RL):</strong></p>
-<p>El problema fundamental de RL es</p>
-<blockquote>
-<div><p><strong>aprender</strong> a un sistema que toma la mejor <strong>decisión</strong> en un <strong>ambiente</strong> cambiante</p>
-</div></blockquote>
+<div class="admonition-aprendizaje-por-refuerzo admonition">
+<p class="admonition-title"><strong>Aprendizaje por Refuerzo</strong></p>
+<p>Se busca <strong>aprender</strong> un sistema que toma las mejores <strong>decisiones</strong> para interactuar con un <strong>ambiente</strong> cambiante.</p>
+</div>
+<a class="reference internal image-reference" href="../../_images/intro-ml3.png"><img alt="../../_images/intro-ml3.png" src="../../_images/intro-ml3.png" style="width: 400px;" /></a>
 <p>¿Quién toma las decisiones?</p>
 <blockquote>
 <div><p>El sistema que toma las decisiones e interactua con el ambiente se llama <strong>agente</strong></p>
@@ -434,7 +436,6 @@ f_\theta = \theta_0 + \sum_{j=1}^D \theta_j x_j
 <blockquote>
 <div><p>La mejor decisión es aquella que obtiene mayor <strong>recompensa</strong></p>
 </div></blockquote>
-<a class="reference internal image-reference" href="../../_images/intro-ml3.png"><img alt="../../_images/intro-ml3.png" src="../../_images/intro-ml3.png" style="width: 400px;" /></a>
 <p>Esto supone diferencias importantes con los paradigmas anteriores. A continuación se definen los componentes de RL resaltando estas diferencias.</p>
 </section>
 <section id="componentes-de-aprendizaje-reforzado">
@@ -483,7 +484,9 @@ f_\theta = \theta_0 + \sum_{j=1}^D \theta_j x_j
 \[
 H_t = ((S_0, A_0), (R_1, S_1, A_1), \ldots, (R_{t-1}, S_{t-1}, A_{t-1}), (R_t, S_t, A_t))
 \]</div>
-<p><strong>Discusión</strong></p>
+</section>
+<section id="discusiones">
+<h2><span class="section-number">20.3. </span>Discusiones<a class="headerlink" href="#discusiones" title="Permalink to this heading">#</a></h2>
 <p>¿Puedes reconocer los agentes, las acciones, el ambiente, la recompensa y demás elementos de RL en los siguientes ejemplos?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -639,6 +642,7 @@ H_t = ((S_0, A_0), (R_1, S_1, A_1), \ldots, (R_{t-1}, S_{t-1}, A_{t-1}), (R_t, S
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#los-paradigmas-de-aprendizaje-de-maquinas">20.1. Los paradigmas de aprendizaje de máquinas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#componentes-de-aprendizaje-reforzado">20.2. Componentes de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discusiones">20.3. Discusiones</a></li>
 </ul>
   </nav></div>
 
