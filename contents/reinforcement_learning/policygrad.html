@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>24. Policy gradients &#8212; Aprendizaje de Máquinas</title>
+    <title>25. Policy gradients &#8212; Aprendizaje de Máquinas</title>
   
   
   
@@ -69,7 +69,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/policygrad';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="prev" title="23. DQN a partir de píxeles" href="dqn2.html" />
+    <link rel="prev" title="24. DQN a partir de píxeles" href="dqn2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -181,9 +181,10 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">20. Introducción a Aprendizaje Reforzado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qlearning.html">21. Entrenando un agente</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dqn1.html">22. <em>Deep Reinforced Learning</em></a></li>
-<li class="toctree-l1"><a class="reference internal" href="dqn2.html">23. DQN a partir de píxeles</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">24. Policy gradients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qlearning2.html">22. Q-learning con estado continuo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn1.html">23. <em>Deep Reinforced Learning</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn2.html">24. DQN a partir de píxeles</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">25. Policy gradients</a></li>
 </ul>
 
     </div>
@@ -377,11 +378,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">24.1. Limitaciones de DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">24.2. Policy learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">24.3. Algoritmo de entrenamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">24.4. AlphaGo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">24.5. Desafíos de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">25.1. Limitaciones de DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.2. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.3. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.4. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.5. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
             </nav>
         </div>
@@ -403,9 +404,9 @@ document.write(`
 </div>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="policy-gradients">
-<h1><span class="section-number">24. </span>Policy gradients<a class="headerlink" href="#policy-gradients" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">25. </span>Policy gradients<a class="headerlink" href="#policy-gradients" title="Permalink to this heading">#</a></h1>
 <section id="limitaciones-de-dqn">
-<h2><span class="section-number">24.1. </span>Limitaciones de DQN<a class="headerlink" href="#limitaciones-de-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.1. </span>Limitaciones de DQN<a class="headerlink" href="#limitaciones-de-dqn" title="Permalink to this heading">#</a></h2>
 <p>Las Deep Q Networks (y Q-Learning) tienen dos limitaciones importantes</p>
 <ul class="simple">
 <li><p>Espacio de acción discreto (y espacio de estados discreto)</p></li>
@@ -420,7 +421,7 @@ document.write(`
 <p>Una alternativa es aprender directamente la <em>policy</em>. Veremos como esto puede resolver las limitaciones que mencionamos al principio</p>
 </section>
 <section id="policy-learning">
-<h2><span class="section-number">24.2. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.2. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h2>
 <p>En lugar de aprender <strong>Q</strong> podemos aprender directamente</p>
 <div class="math notranslate nohighlight">
 \[
@@ -474,7 +475,7 @@ a \sim \pi_\theta (s)
 </div>
 </section>
 <section id="algoritmo-de-entrenamiento">
-<h2><span class="section-number">24.3. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.3. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h2>
 <p>El algoritmo que usaremos para entrenar busca lo siguiente:</p>
 <ul class="simple">
 <li><p>Correr política hasta el término del episodio, grabando las tuplas de acción/estado/recompensa</p></li>
@@ -678,7 +679,7 @@ a \sim \pi_\theta (s)
 </div>
 </section>
 <section id="alphago">
-<h2><span class="section-number">24.4. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.4. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h2>
 <p>Go es un juego de mesa de origen chino con un tablero de 19x19 espacios</p>
 <p>Dos jugadores compiten por cubrir la mayor área en el tablero</p>
 <p>El espacio de estados es tiene <a class="reference external" href="https://en.wikipedia.org/wiki/Go_and_mathematics#Legal_positions">más movimientos legales que átomos en el universe</a></p>
@@ -695,7 +696,7 @@ a \sim \pi_\theta (s)
 <p>Alpha Zero extiende a otros juegos</p>
 </section>
 <section id="desafios-de-aprendizaje-reforzado">
-<h2><span class="section-number">24.5. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.5. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Para entrenar con <em>policy gradient</em> necesitamos correr el agente hasta el término del episodio</p></li>
 <li><p>Esto en muchas cosas significa la muerte del agente</p></li>
@@ -756,7 +757,7 @@ fuerte crítica a RL</a></p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title"><span class="section-number">23. </span>DQN a partir de píxeles</p>
+        <p class="prev-next-title"><span class="section-number">24. </span>DQN a partir de píxeles</p>
       </div>
     </a>
 </div></div>
@@ -777,11 +778,11 @@ fuerte crítica a RL</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">24.1. Limitaciones de DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">24.2. Policy learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">24.3. Algoritmo de entrenamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">24.4. AlphaGo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">24.5. Desafíos de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">25.1. Limitaciones de DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.2. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.3. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.4. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.5. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
   </nav></div>
 

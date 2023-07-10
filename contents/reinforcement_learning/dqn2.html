@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>23. DQN a partir de píxeles &#8212; Aprendizaje de Máquinas</title>
+    <title>24. DQN a partir de píxeles &#8212; Aprendizaje de Máquinas</title>
   
   
   
@@ -69,8 +69,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/dqn2';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
-    <link rel="next" title="24. Policy gradients" href="policygrad.html" />
-    <link rel="prev" title="22. Deep Reinforced Learning" href="dqn1.html" />
+    <link rel="next" title="25. Policy gradients" href="policygrad.html" />
+    <link rel="prev" title="23. Deep Reinforced Learning" href="dqn1.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="es"/>
   </head>
@@ -182,9 +182,10 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">20. Introducción a Aprendizaje Reforzado</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qlearning.html">21. Entrenando un agente</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dqn1.html">22. <em>Deep Reinforced Learning</em></a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">23. DQN a partir de píxeles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="policygrad.html">24. Policy gradients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qlearning2.html">22. Q-learning con estado continuo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn1.html">23. <em>Deep Reinforced Learning</em></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">24. DQN a partir de píxeles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="policygrad.html">25. Policy gradients</a></li>
 </ul>
 
     </div>
@@ -378,11 +379,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">23.1. Agente DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">23.2. Gráficas de aprendizaje</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">23.3. Entrenamiento del agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">23.4. Guardar el agente para futura referencia y evaluar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">23.5. Agentes artesanales pre-entrenados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">24.1. Agente DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">24.2. Gráficas de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">24.3. Entrenamiento del agente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">24.4. Guardar el agente para futura referencia y evaluar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">24.5. Agentes artesanales pre-entrenados</a></li>
 </ul>
             </nav>
         </div>
@@ -405,7 +406,7 @@ document.write(`
 </div>
 </div>
 <section class="tex2jax_ignore mathjax_ignore" id="dqn-a-partir-de-pixeles">
-<h1><span class="section-number">23. </span>DQN a partir de píxeles<a class="headerlink" href="#dqn-a-partir-de-pixeles" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">24. </span>DQN a partir de píxeles<a class="headerlink" href="#dqn-a-partir-de-pixeles" title="Permalink to this heading">#</a></h1>
 <p>El <em>gym</em> de OpenAI tiene una colección de juegos de ATARI 2600 que pueden usarse como benchmark</p>
 <p>La mayoría tiene una versión normal y una versión RAM</p>
 <ul class="simple">
@@ -559,7 +560,7 @@ document.write(`
 </div>
 </div>
 <section id="agente-dqn">
-<h2><span class="section-number">23.1. </span>Agente DQN<a class="headerlink" href="#agente-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">24.1. </span>Agente DQN<a class="headerlink" href="#agente-dqn" title="Permalink to this heading">#</a></h2>
 <p>Detalles prácticos a considerar</p>
 <ul class="simple">
 <li><p><strong>Huber Loss:</strong> Combinación del error cuadrático y el error absoluto. Se usa el error cuadrático para errores pequeños y el error absoluto para errores grandes. Mejora la estabilidad numérica del algoritmo</p></li>
@@ -650,7 +651,7 @@ document.write(`
 </div>
 </section>
 <section id="graficas-de-aprendizaje">
-<h2><span class="section-number">23.2. </span>Gráficas de aprendizaje<a class="headerlink" href="#graficas-de-aprendizaje" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">24.2. </span>Gráficas de aprendizaje<a class="headerlink" href="#graficas-de-aprendizaje" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> notebook
@@ -688,7 +689,7 @@ document.write(`
 </div>
 </section>
 <section id="entrenamiento-del-agente">
-<h2><span class="section-number">23.3. </span>Entrenamiento del agente<a class="headerlink" href="#entrenamiento-del-agente" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">24.3. </span>Entrenamiento del agente<a class="headerlink" href="#entrenamiento-del-agente" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -758,7 +759,7 @@ document.write(`
 </div>
 </section>
 <section id="guardar-el-agente-para-futura-referencia-y-evaluar">
-<h2><span class="section-number">23.4. </span>Guardar el agente para futura referencia y evaluar<a class="headerlink" href="#guardar-el-agente-para-futura-referencia-y-evaluar" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">24.4. </span>Guardar el agente para futura referencia y evaluar<a class="headerlink" href="#guardar-el-agente-para-futura-referencia-y-evaluar" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -790,7 +791,7 @@ document.write(`
 </div>
 </section>
 <section id="agentes-artesanales-pre-entrenados">
-<h2><span class="section-number">23.5. </span>Agentes artesanales pre-entrenados<a class="headerlink" href="#agentes-artesanales-pre-entrenados" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">24.5. </span>Agentes artesanales pre-entrenados<a class="headerlink" href="#agentes-artesanales-pre-entrenados" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
@@ -880,7 +881,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">anterior</p>
-        <p class="prev-next-title"><span class="section-number">22. </span><em>Deep Reinforced Learning</em></p>
+        <p class="prev-next-title"><span class="section-number">23. </span><em>Deep Reinforced Learning</em></p>
       </div>
     </a>
     <a class="right-next"
@@ -888,7 +889,7 @@ document.write(`
        title="siguiente página">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">siguiente</p>
-        <p class="prev-next-title"><span class="section-number">24. </span>Policy gradients</p>
+        <p class="prev-next-title"><span class="section-number">25. </span>Policy gradients</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -910,11 +911,11 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">23.1. Agente DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">23.2. Gráficas de aprendizaje</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">23.3. Entrenamiento del agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">23.4. Guardar el agente para futura referencia y evaluar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">23.5. Agentes artesanales pre-entrenados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">24.1. Agente DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">24.2. Gráficas de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">24.3. Entrenamiento del agente</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">24.4. Guardar el agente para futura referencia y evaluar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">24.5. Agentes artesanales pre-entrenados</a></li>
 </ul>
   </nav></div>
 
