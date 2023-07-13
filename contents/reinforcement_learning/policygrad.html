@@ -378,11 +378,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">25.1. Limitaciones de DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.2. Policy learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.3. Algoritmo de entrenamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.4. AlphaGo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.5. Desafíos de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.1. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.2. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.3. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.4. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
             </nav>
         </div>
@@ -394,72 +393,65 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="policy-gradients">
+  <section class="tex2jax_ignore mathjax_ignore" id="policy-gradients">
 <h1><span class="section-number">25. </span>Policy gradients<a class="headerlink" href="#policy-gradients" title="Permalink to this heading">#</a></h1>
-<section id="limitaciones-de-dqn">
-<h2><span class="section-number">25.1. </span>Limitaciones de DQN<a class="headerlink" href="#limitaciones-de-dqn" title="Permalink to this heading">#</a></h2>
-<p>Las Deep Q Networks (y Q-Learning) tienen dos limitaciones importantes</p>
+<section id="policy-learning">
+<h2><span class="section-number">25.1. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h2>
+<p><strong>Limitaciones de DQN:</strong> Las Deep Q Networks (y Q-Learning) tienen dos limitaciones importantes:</p>
 <ul class="simple">
 <li><p>Espacio de acción discreto (y espacio de estados discreto)</p></li>
 <li><p>Requieren heurísticas para que haya exploración</p></li>
 </ul>
-<p>Estos métodos se basaban en estimar la función <strong>Q</strong></p>
-<p>Luego se usa una política determinista de máximas utilidades</p>
+<p>Estos métodos se basan en estimar la función <strong>Q</strong> y uego se usa una política determinista de máximas utilidades</p>
 <div class="math notranslate nohighlight">
 \[
 \pi(s) = \text{arg}\max_a' Q(s, a')
 \]</div>
-<p>Una alternativa es aprender directamente la <em>policy</em>. Veremos como esto puede resolver las limitaciones que mencionamos al principio</p>
-</section>
-<section id="policy-learning">
-<h2><span class="section-number">25.2. </span>Policy learning<a class="headerlink" href="#policy-learning" title="Permalink to this heading">#</a></h2>
+<p>Una alternativa a lo anterior es aprender directamente la <em>policy</em>. Veremos como esto puede resolver las limitaciones antes mencionadas.</p>
 <p>En lugar de aprender <strong>Q</strong> podemos aprender directamente</p>
 <div class="math notranslate nohighlight">
 \[
-a \sim \pi_\theta (s)
+a \sim \pi_\theta (A|S=s)
 \]</div>
 <ul class="simple">
 <li><p>La política es estocástica, es decir sigue una distribución de probabilidad</p></li>
 <li><p>La acción se muestrea de la política: Esto nos da exploración</p></li>
 </ul>
-<p>Podemos usar una red neuronal para modelar los parámetros de la distribución</p>
-<p><strong>Ejemplo</strong></p>
-<p>Espacio de acción discreto con 3 opciones</p>
-<p>Usamos una política con distribución categórica</p>
-<p>Usamos una red neuronal con tres salidas correspondientes a <span class="math notranslate nohighlight">\(p(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(p(a_2|s)\)</span>  y <span class="math notranslate nohighlight">\(p(a_3|s)\)</span>, donde cada una está en el rango <span class="math notranslate nohighlight">\([0,1]\)</span>  y además suman uno: <strong>salida softmax</strong></p>
+<p>Podemos usar una red neuronal para modelar los parámetros de la distribución.</p>
+<p><strong>Ejemplo: Espacio de acción discreto</strong></p>
+<p>Para un espacio de acción discreto con 3 opciones podemos asumir una política con <strong>distribución categórica</strong>.</p>
+<p>En este caso se utilizaría una red neuronal con tres salidas correspondientes a <span class="math notranslate nohighlight">\(p(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(p(a_2|s)\)</span>  y <span class="math notranslate nohighlight">\(p(a_3|s)\)</span>, donde cada una está en el rango <span class="math notranslate nohighlight">\([0,1]\)</span>  y además suman uno (función de activación de salida softmax).</p>
 <p>Luego muestreamos de la distribución categórica usando los parámetros entregados por la red</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multinomial</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multinomial</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 
-<span class="n">neural_net_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
-<span class="c1">#neural_net_output = np.array([0.7, 0.1, 0.2])</span>
+<span class="n">neural_net_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">multinomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">neural_net_output</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">samples</span> <span class="o">=</span> <span class="n">multinomial</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">neural_net_output</span><span class="p">)</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">));</span>
+<span class="n">Counter</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counter({0: 7111, 2: 1904, 1: 985})
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>Ejemplo</strong></p>
-<p>Espacio de acción con dos acciones continuas</p>
-<p>Usamos una política con distribución Gaussiana</p>
-<p>Usamos una red neuronal con cuatro salidas (dos por acción) correspondientes a <span class="math notranslate nohighlight">\(\mu(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\log \sigma(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\mu(a_2|s)\)</span> y <span class="math notranslate nohighlight">\(\log \sigma(a_2|s)\)</span>, donde cada una está en el rango de los reales: <strong>salida lineal</strong></p>
+<p><strong>Ejemplo: Espacio de acción continuo</strong></p>
+<p>Para un espacio de acción con dos acciones continuas podemos asumiar una política con distribución Gaussiana.</p>
+<p>Usamos una red neuronal con cuatro salidas (dos por acción) correspondientes a <span class="math notranslate nohighlight">\(\mu(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\log \sigma(a_1|s)\)</span>, <span class="math notranslate nohighlight">\(\mu(a_2|s)\)</span> y <span class="math notranslate nohighlight">\(\log \sigma(a_2|s)\)</span>, donde cada una está en el rango de los reales (función de activación de salida identidad).</p>
 <p>Luego muestreamos de la distribución Gaussiana usando los parámetros entregados por la red</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multinomial</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
 
 <span class="n">neural_net_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">3.</span><span class="p">)])</span>
 
@@ -472,32 +464,36 @@ a \sim \pi_\theta (s)
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0549bed5e983d37c5e5ea2740cdf702060021d46a5fa4e1fc38a862cfdd1a3a9.png" src="../../_images/0549bed5e983d37c5e5ea2740cdf702060021d46a5fa4e1fc38a862cfdd1a3a9.png" />
+</div>
 </div>
 </section>
 <section id="algoritmo-de-entrenamiento">
-<h2><span class="section-number">25.3. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.2. </span>Algoritmo de entrenamiento<a class="headerlink" href="#algoritmo-de-entrenamiento" title="Permalink to this heading">#</a></h2>
 <p>El algoritmo que usaremos para entrenar busca lo siguiente:</p>
 <ul class="simple">
-<li><p>Correr política hasta el término del episodio, grabando las tuplas de acción/estado/recompensa</p></li>
+<li><p>Ejecutar la política hasta el término del episodio, grabando las tuplas de acción/estado/recompensa</p></li>
 <li><p>Disminuir la probabilidad de las acciones que terminaron en recompensa baja</p></li>
 <li><p>Aumentar la probabilidad de las acciones que terminaron en recompensa alta</p></li>
 </ul>
-<p>Esto se peude resumir con la siguiente loss:</p>
+<p>Esto se puede resumir con la siguiente loss:</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}(s_t, a_t, r_t, \mathcal{H}) = - \log P(a_t|s_t) G_t
 \]</div>
-<p>donde</p>
+<p>donde:</p>
 <ul class="simple">
 <li><p>Log verosimilitud <span class="math notranslate nohighlight">\(\log P(a_t|s_t)\)</span>: mide que tan posible es haber seleccionado <span class="math notranslate nohighlight">\(a_t\)</span></p></li>
 <li><p>Ganancia total descontada <span class="math notranslate nohighlight">\(G_t\)</span>: La ganacia recibida por seleccionar <span class="math notranslate nohighlight">\(a_t\)</span></p></li>
 </ul>
-<p>Si entrenamos usando gradiente descedente entonces</p>
+<p>Si entrenamos usando gradiente descendente entonces:</p>
 <div class="math notranslate nohighlight">
 \[
 \theta \leftarrow \theta + \eta \nabla \log P(a_t|s_t) G_t
 \]</div>
 <p>De donde sale el nombre de este algoritmo: <em>policy gradient</em></p>
+<p>Veamos un ejemplo en acción. Primero implementarmos una red neuronal simple y una memoría para los episodios:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
@@ -536,84 +532,45 @@ a \sim \pi_\theta (s)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> notebook
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">smooth_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window_length</span><span class="p">)</span><span class="o">/</span><span class="n">window_length</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">update_plot</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">smooth_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">195</span><span class="p">,</span> <span class="n">target_update</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">ax_</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-        <span class="n">ax_</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
-    <span class="n">episodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="n">episode</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">episodes</span><span class="p">[:</span><span class="n">episode</span><span class="p">],</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">][:</span><span class="n">episode</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      
-    <span class="k">if</span> <span class="n">episode</span> <span class="o">&gt;</span> <span class="n">smooth_window</span><span class="p">:</span>
-        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">[:</span><span class="o">-</span><span class="n">smooth_window</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-                   <span class="n">smooth_data</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">][:</span><span class="n">episode</span><span class="p">]),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
-        <span class="c1">#ax[1].plot(episodes[:-smooth_window+1], </span>
-        <span class="c1">#           smooth_data(diagnostics[&#39;loss&#39;][:episode]))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">][:</span><span class="n">episode</span><span class="p">])</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">episodes</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Recompensa&#39;</span><span class="p">);</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episodios&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Paso </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">gym</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 <span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">)</span>
 <span class="n">n_state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Número de estados</span>
 <span class="n">n_action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span> <span class="c1"># Número de acciones</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">MultilayerPerceptron</span><span class="p">(</span><span class="n">n_state</span><span class="p">,</span> <span class="n">n_action</span><span class="p">)</span>
-
 <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.999</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">MultilayerPerceptron</span><span class="p">(</span><span class="n">n_state</span><span class="p">,</span> <span class="n">n_action</span><span class="p">)</span>
 <span class="n">loglikelihood</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 
 <span class="n">memory</span> <span class="o">=</span> <span class="n">Memory</span><span class="p">()</span>
 
 <span class="n">num_episodes</span> <span class="o">=</span> <span class="mi">3000</span>
-<span class="n">diagnostics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">,)),</span> 
-               <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">,)),</span>
-               <span class="s1">&#39;target_updates&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+<span class="n">diagnostics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Rewards&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">,)),</span> 
+               <span class="s1">&#39;Loss&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">,))</span>
+               <span class="p">}</span>
 
-<span class="n">global_step_counter</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">)):</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
     
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>        
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">terminated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">truncated</span><span class="p">:</span>       
         <span class="c1"># Escoger acción</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>  
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
             <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
             <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n_action</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">probs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># Ejecutar acción</span>
-        <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="c1"># Guardar en memoria</span>
         <span class="n">memory</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
         <span class="c1"># Preparar para próximo paso</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">][</span><span class="n">episode</span><span class="p">]</span> <span class="o">+=</span> <span class="n">r</span>
+        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;Rewards&#39;</span><span class="p">][</span><span class="n">episode</span><span class="p">]</span> <span class="o">+=</span> <span class="n">r</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="n">global_step_counter</span> <span class="o">+=</span><span class="mi">1</span>
-        
     <span class="c1"># Una vez completado el episodio actualizamos el modelo</span>
-    
     <span class="c1"># Primero calculamos la recompensa total descontada</span>
     <span class="n">Gt</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="n">gamma</span><span class="o">**</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">r</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="c1"># Luego la normalizamos (mejora la estabilidad del entrenamiento)</span>
@@ -621,36 +578,42 @@ a \sim \pi_\theta (s)
     <span class="c1"># Predicción (sin normalizar) de la probabilidad de acción</span>
     <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
     <span class="c1"># Cálculo de la loss</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">loglikelihood</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">a</span><span class="p">))</span><span class="o">*</span><span class="n">Gt</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">loglikelihood</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">memory</span><span class="o">.</span><span class="n">a</span><span class="p">))</span><span class="o">*</span><span class="n">Gt</span><span class="p">)</span>
     <span class="c1"># Calculamos los gradientes y actualizamos los parámetros</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>     
-    <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">][</span><span class="n">episode</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loss</span>
+    <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;Loss&#39;</span><span class="p">][</span><span class="n">episode</span><span class="p">]</span> <span class="o">+=</span> <span class="n">loss</span>
     <span class="c1"># Borramos la memoria</span>
-    <span class="n">memory</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-                
-    <span class="k">if</span> <span class="n">episode</span> <span class="o">%</span> <span class="mi">25</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">update_plot</span><span class="p">(</span><span class="n">global_step_counter</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+    <span class="n">memory</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> 
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "63ffcf335cdd48fcaff313918c5e6f02", "version_major": 2, "version_minor": 0}</script></div>
 </div>
-<p>Agente en acción</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">gym</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">savgol_filter</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">diagnostics</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">ax_</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episode&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../_images/59939fed3e9e8376d2d27f744f65708cfdebbafb1742cf9229f20713b675e3ef.png" src="../../_images/59939fed3e9e8376d2d27f744f65708cfdebbafb1742cf9229f20713b675e3ef.png" />
 </div>
+</div>
+<p>El siguiente bloque muestra el agente desarrollando la tarea según la política aprendida en una nueva ventana.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
     <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
@@ -659,64 +622,107 @@ a \sim \pi_\theta (s)
         <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="n">probs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Softmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)(</span><span class="n">logits</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">probs</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">s_future</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="c1">#if end:</span>
-    <span class="c1">#    break</span>
-    <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">display</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
         <span class="k">break</span>
-<span class="n">display</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">error</span><span class="g g-Whitespace">                                     </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/time_limit.py:75,</span> in <span class="ni">TimeLimit.reset</span><span class="nt">(self, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Resets the environment with :param:`**kwargs` and sets the number of steps elapsed to zero.</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">68</span><span class="sd"> Args:</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span><span class="sd">     The reset environment</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elapsed_steps</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="ne">---&gt; </span><span class="mi">75</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/order_enforcing.py:61,</span> in <span class="ni">OrderEnforcing.reset</span><span class="nt">(self, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Resets the environment with `kwargs`.&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_reset</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="ne">---&gt; </span><span class="mi">61</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/env_checker.py:55,</span> in <span class="ni">PassiveEnvChecker.reset</span><span class="nt">(self, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checked_reset</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="bp">self</span><span class="o">.</span><span class="n">checked_reset</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="ne">---&gt; </span><span class="mi">55</span>     <span class="k">return</span> <span class="n">env_reset_passive_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/utils/passive_env_checker.py:215,</span> in <span class="ni">env_reset_passive_checker</span><span class="nt">(env, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">210</span>     <span class="n">logger</span><span class="o">.</span><span class="n">deprecation</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">211</span>         <span class="s2">&quot;Current gymnasium version requires that `Env.reset` can be passed `options` to allow the environment initialisation to be passed additional information.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">212</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">214</span> <span class="c1"># Checks the result of env.reset with kwargs</span>
+<span class="ne">--&gt; </span><span class="mi">215</span> <span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span>         <span class="sa">f</span><span class="s2">&quot;The result returned by `env.reset()` was not a tuple of the form `(obs, info)`, where `obs` is a observation and `info` is a dictionary containing additional information. Actual type: `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">`&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/envs/classic_control/cartpole.py:209,</span> in <span class="ni">CartPoleEnv.reset</span><span class="nt">(self, seed, options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">206</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">209</span>     <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">210</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="p">{}</span>
+
+<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/envs/classic_control/cartpole.py:233,</span> in <span class="ni">CartPoleEnv.render</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span> <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">232</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">233</span>     <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span>     <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">235</span>         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">236</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">237</span> <span class="k">else</span><span class="p">:</span>  <span class="c1"># mode == &quot;rgb_array&quot;</span>
+
+<span class="ne">error</span>: wayland not available
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="alphago">
-<h2><span class="section-number">25.4. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h2>
-<p>Go es un juego de mesa de origen chino con un tablero de 19x19 espacios</p>
-<p>Dos jugadores compiten por cubrir la mayor área en el tablero</p>
-<p>El espacio de estados es tiene <a class="reference external" href="https://en.wikipedia.org/wiki/Go_and_mathematics#Legal_positions">más movimientos legales que átomos en el universe</a></p>
-<p>El equipo de DeepMind ha utilizado Go como benchmark para proponer nuevos modelos de RL profundo</p>
-<p>El primero de ellos es Alpha Go (2016) el cual combinó bastantes técnicas</p>
+<h2><span class="section-number">25.3. </span>AlphaGo<a class="headerlink" href="#alphago" title="Permalink to this heading">#</a></h2>
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorGoban.JPG/619px-FloorGoban.JPG"><img alt="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorGoban.JPG/619px-FloorGoban.JPG" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/FloorGoban.JPG/619px-FloorGoban.JPG" style="width: 300px;" /></a>
+<p>El <a class="reference external" href="https://en.wikipedia.org/wiki/Go_%28game%29">Go</a> es un juego de mesa de origen chino con un tablero de 19x19 espacios donde dos jugadores compiten por cubrir la mayor área en el tablero. El espacio de estados tiene <a class="reference external" href="https://en.wikipedia.org/wiki/Go_and_mathematics#Legal_positions">más movimientos legales que átomos en el universe</a>.</p>
+<p>El equipo de DeepMind ha utilizado Go como benchmark para proponer nuevos modelos de RL profundo. El primero de ellos es <a class="reference external" href="https://www.deepmind.com/research/highlighted-research/alphago">Alpha Go</a> (2016) el cual combina bastantes técnicas:</p>
 <ol class="arabic simple">
 <li><p>Se entrena una red neuronal supervisada con movimientos de humanos expertos: Imitar a los humanos</p></li>
 <li><p>Se entrena un agente basado en política que compite contra el modelo entrenado: Aprender nuevos movimientos</p></li>
 <li><p>Una vez que el agente supera al modelo supervisado se sigue entrenando contra si mismo</p></li>
 <li><p>Adicionalmente se ocupa un modelo basado en valor para evaluar los movimientos del agente</p></li>
 </ol>
-<p><a class="reference external" href="https://www.slideshare.net/ckmarkohchang/alphago-in-depth">Presentación autocontenida sobre Alpha Go</a></p>
-<p>Alpha Go Zero no usa pre-entrenamiento con redes supervisadas</p>
-<p>Alpha Zero extiende a otros juegos</p>
+<div class="admonition seealso">
+<p class="admonition-title">Ver también</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.slideshare.net/ckmarkohchang/alphago-in-depth">Presentación autocontenida sobre Alpha Go</a></p></li>
+<li><p>Modelo <a class="reference external" href="https://www.deepmind.com/blog/alphago-zero-starting-from-scratch">Alpha Go Zero</a> que no usa pre-entrenamiento con redes supervisadas. En su lugar juego contra si mismo partiendo desde un comportamiento aleatorio.</p></li>
+</ul>
+</div>
 </section>
 <section id="desafios-de-aprendizaje-reforzado">
-<h2><span class="section-number">25.5. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">25.4. </span>Desafíos de Aprendizaje Reforzado<a class="headerlink" href="#desafios-de-aprendizaje-reforzado" title="Permalink to this heading">#</a></h2>
+<p>Para entrenar con <em>policy gradient</em> necesitamos correr el agente hasta el término del episodio. Sin embargo en muchas situaciones esto significa la muerte del agente ¿Cómo podemos desarrollar un agente en el mundo real?</p>
+<p>Una alternativa es usar simuladores:</p>
 <ul class="simple">
-<li><p>Para entrenar con <em>policy gradient</em> necesitamos correr el agente hasta el término del episodio</p></li>
-<li><p>Esto en muchas cosas significa la muerte del agente</p></li>
-<li><p>¿Cómo podemos desarrollar un agente en el mundo real?</p></li>
-</ul>
-<p>Una alternativa es usar simuladores</p>
-<ul class="simple">
-<li><p>Usar un simulación realista del ambiente para entrenar, e.g. <a class="reference external" href="http://www.mit.edu/~amini/vista/">VISTA</a></p></li>
+<li><p>Usar un simulación realista del ambiente para entrenar, e.g. <a class="reference external" href="https://vista.csail.mit.edu/">VISTA</a></p></li>
 <li><p>Hacer transferencia de aprendizaje desde el simulador al mundo real (por las imperfecciones del simulador)</p></li>
 </ul>
-<p>Otra alternativa es one-shot learning</p>
-<ul class="simple">
-<li><p><a class="reference external" href="http://rll.berkeley.edu/iros2016onlinecontrol/online_control.pdf">One-shot learning of manipulation skills with online dynamics adaptation and neural network priors</a></p></li>
-</ul>
-<p>Y otra alternativa más es usar apoyo humano</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://arxiv.org/abs/1707.05173">Trial without Error: Towards Safe Reinforcement Learning via Human Intervention</a> y <a class="reference external" href="https://owainevans.github.io/blog/hirl_blog.html">blog post</a></p></li>
-</ul>
-<p>Otro desafío general de RL es el proponer buenas funciones de recompensa. Este y otros desafios abiertos se discuten en esta <a class="reference external" href="https://www.alexirpan.com/2018/02/14/rl-hard.html">
-fuerte crítica a RL</a></p>
+<p>Otra alternativa es one-shot learning: <a class="reference external" href="http://rll.berkeley.edu/iros2016onlinecontrol/online_control.pdf">One-shot learning of manipulation skills with online dynamics adaptation and neural network priors</a></p>
+<p>Y otra alternativa más es usar apoyo humano: <a class="reference external" href="https://arxiv.org/abs/1707.05173">Trial without Error: Towards Safe Reinforcement Learning via Human Intervention</a> y <a class="reference external" href="https://owainevans.github.io/blog/hirl_blog.html">blog post</a></p>
+<p>Otro desafío general de RL es el proponer buenas funciones de recompensa. Este y otros desafíos abiertos se discuten en esta <a class="reference external" href="https://www.alexirpan.com/2018/02/14/rl-hard.html">fuerte crítica a RL</a></p>
 </section>
 </section>
 
@@ -778,11 +784,10 @@ fuerte crítica a RL</a></p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-de-dqn">25.1. Limitaciones de DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.2. Policy learning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.3. Algoritmo de entrenamiento</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.4. AlphaGo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.5. Desafíos de Aprendizaje Reforzado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-learning">25.1. Policy learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algoritmo-de-entrenamiento">25.2. Algoritmo de entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alphago">25.3. AlphaGo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#desafios-de-aprendizaje-reforzado">25.4. Desafíos de Aprendizaje Reforzado</a></li>
 </ul>
   </nav></div>
 

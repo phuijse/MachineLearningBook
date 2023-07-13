@@ -379,17 +379,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">23.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">23.1.1. Ambiente: Space invaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">23.1. Aproximación de funciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">23.2. Deep Q-Network (DQN)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">23.2.1. Experience Replay y Memory replay</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">23.2.2. <em>Double DQN</em></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">23.2. Aproximación de funciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">23.3. Deep Q-Network (DQN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">23.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">23.5. Experience Replay y Memory replay</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">23.6. <em>Double DQN</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">23.7. Experimentos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">23.8. Rainbow DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn-en-ambiente-con-estado-continuo">23.3. Double-DQN en ambiente con estado continuo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">23.4. Rainbow DQN</a></li>
 </ul>
             </nav>
         </div>
@@ -401,16 +398,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section class="tex2jax_ignore mathjax_ignore" id="deep-reinforced-learning">
+  <section class="tex2jax_ignore mathjax_ignore" id="deep-reinforced-learning">
 <h1><span class="section-number">23. </span><em>Deep Reinforced Learning</em><a class="headerlink" href="#deep-reinforced-learning" title="Permalink to this heading">#</a></h1>
 <p>Hoy en día el estado del arte en el reconocimiento de patrones está dominado por las <strong>redes neuronales profundas</strong></p>
 <ul class="simple">
@@ -422,9 +410,7 @@ document.write(`
 <blockquote>
 <div><p>Podemos aprovechar esta capacidad para diseñar mejores algoritmos de aprendizaje reforzado</p>
 </div></blockquote>
-<section id="recuerdo-value-learning">
-<h2><span class="section-number">23.1. </span>Recuerdo: Value Learning<a class="headerlink" href="#recuerdo-value-learning" title="Permalink to this heading">#</a></h2>
-<p>En este tipo de algoritmos usamos un política de máxima utilidad para escoger acciones</p>
+<p><strong>Value Learning:</strong> En este tipo de algoritmos usamos un política de máxima utilidad para escoger acciones</p>
 <div class="math notranslate nohighlight">
 \[
 \pi^*(s) = \text{arg} \max_{a\in \mathcal{A}} Q(s, a)
@@ -436,66 +422,64 @@ document.write(`
 <li><p>espacio de acciones debe ser discreto</p></li>
 <li><p>espacio de estados debe ser discreto</p></li>
 </ul>
-<p>De hecho el estado no puede ser demasiado grande, como veremos a continuación</p>
-<section id="ambiente-space-invaders">
-<h3><span class="section-number">23.1.1. </span>Ambiente: <a class="reference external" href="https://es.wikipedia.org/wiki/Space_Invaders">Space invaders</a><a class="headerlink" href="#ambiente-space-invaders" title="Permalink to this heading">#</a></h3>
-<p>Originalmente un juego de Arcade lanzando en 1978, en 1980 tuvo una versión para ATARI 2600</p>
-<blockquote>
-<div><p>El objetivo es derrivar a los extraterrestres usando un cañon antes de que desciendan a la Tierra</p>
-</div></blockquote>
-<ul class="simple">
-<li><p>El cañon puede moverse a la izquierda, a la derecha y disparar</p></li>
-<li><p>Hay cuatro escudos con los que el cañon puede protegerse de los disparos enemigos</p></li>
-<li><p>Mientras menos enemigos más rápido se mueven</p></li>
-</ul>
+<p><strong>Instalación recomendada</strong></p>
+<p>Utilice conda y pip</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda create -n RL python=3.9 pip matplotlib scipy scikit-learn cython jupyter ipykernel tornado==6.1 -c conda-forge
+conda activate RL
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+pip install stable-baselines3[extra]
+</pre></div>
+</div>
+<p>El siguiente ambiente utiliza un ROM del clásico juego <a class="reference external" href="https://en.wikipedia.org/wiki/Pong">Pong</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;SpaceInvaders-v0&quot;</span><span class="p">)</span> 
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;PongNoFrameskip-v4&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">)</span> 
 <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
 
-<span class="k">while</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-    <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> 
-    <span class="n">sleep</span><span class="p">(</span><span class="mf">.02</span><span class="p">)</span>     
+<span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> 
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phuijse/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/utils/passive_env_checker.py:364: UserWarning: <span class=" -Color -Color-Yellow">WARN: No render fps was declared in the environment (env.metadata[&#39;render_fps&#39;] is None or not defined), rendering may occur at inconsistent fps.</span>
+  logger.warn(
+</pre></div>
 </div>
+<img alt="../../_images/52d4d1ea8c4001b6baf2044f92635ea76fd656ef28974f63985b6a84fc1ed39f.png" src="../../_images/52d4d1ea8c4001b6baf2044f92635ea76fd656ef28974f63985b6a84fc1ed39f.png" />
+</div>
+</div>
+<p>¿Cuáles son las dimensiones del estado?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Box(0, 255, (210, 160, 3), uint8)
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Espacio de estados</span>
-<span class="n">display</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="p">)</span>
-<span class="c1"># Espacio de acciones</span>
-<span class="n">display</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">get_action_meanings</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Por ejemplo si usamos como estado un stack de 4 imágenes consecutivas y asumimos que cada pixel tiene 255 niveles:</p>
+<p>Es decir una imagen a color de 210x160 con píxeles entre 0 y 255. Significaría una cantidad de filas en la tabla Q de:</p>
 <div class="math notranslate nohighlight">
 \[
-255^{210\cdot160\cdot3\cdot4}
+255^{210\cdot160\cdot3}
 \]</div>
-</section>
-</section>
 <section id="aproximacion-de-funciones">
-<h2><span class="section-number">23.2. </span>Aproximación de funciones<a class="headerlink" href="#aproximacion-de-funciones" title="Permalink to this heading">#</a></h2>
-<p>Claramente, el espacio de estados del ejemplo anterior es imposible de mantener en una tabla Q</p>
-<p>Ojo: este espacio de estados está aun lejos de un problema del mundo real</p>
+<h2><span class="section-number">23.1. </span>Aproximación de funciones<a class="headerlink" href="#aproximacion-de-funciones" title="Permalink to this heading">#</a></h2>
+<p>El espacio de estados del ejemplo anterior es imposible de mantener en una tabla Q. Cabe destacar que este espacio de estados está aun lejos de un problema del mundo real.</p>
 <blockquote>
 <div><p>Nos va a faltar memoría para guardar la tabla y datos para poder entrenar nuestro agente</p>
 </div></blockquote>
@@ -503,30 +487,26 @@ document.write(`
 <blockquote>
 <div><p>Usar una representación más compacta para Q</p>
 </div></blockquote>
-<p>En lugar de tener una tabla con todos las combinaciones estado/acción podemos</p>
-<blockquote>
-<div><p>Aproximar <strong>Q</strong> usando un <strong>modelo paramétrico</strong></p>
-</div></blockquote>
-<p>Esta es la idea principal tras <em>Value function approximation</em> (VFA) y <em>Q function approximation</em></p>
+<p>En lugar de tener una tabla con todos las combinaciones estado/acción podemos aproximar <strong>Q</strong> usando un <strong>modelo paramétrico</strong>. Esta es la idea principal tras <em>Value function approximation</em> (VFA) y <em>Q function approximation</em></p>
 <p>El caso más sencillo es usar un <strong>modelo lineal en sus parámetros</strong></p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{align}
-\hat Q_\theta(s,a) &amp;= \theta_0 \phi_0(s, a) + \theta_1 \phi_1(s, a) + \theta_2 \phi_2(s, a) + \ldots + \theta_M \phi_M (s,a) \nonumber \\
-&amp;= \sum_{j=0}^M \theta_j \phi_j (s,a) \nonumber
-\end{align}
+\begin{split}
+\hat Q_\theta(s,a) &amp;= \theta_0 \phi_0(s, a) + \theta_1 \phi_1(s, a) + \theta_2 \phi_2(s, a) + \ldots + \theta_M \phi_M (s,a) \\
+&amp;= \sum_{j=0}^M \theta_j \phi_j (s,a) 
+\end{split}
 \end{split}\]</div>
-<p>donde</p>
+<p>donde:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\{ \theta\}\)</span> es un vector de parámetros con <span class="math notranslate nohighlight">\(M+1\)</span> componentes</p></li>
 <li><p><span class="math notranslate nohighlight">\(\{\phi\}\)</span> es un conjunto de funciones base, <em>e.g.</em> polinomios, Fourier, árbol de decisión, kernels</p></li>
 </ul>
-<p>En lugar de aprender <span class="math notranslate nohighlight">\(Q\)</span> explicitamente el objetivo es aprender <span class="math notranslate nohighlight">\(\theta\)</span></p>
-<blockquote>
-<div><p>La cantidad de parámetros es ahora independiente de la dimensionalidad del estado</p>
-</div></blockquote>
-<p>Al igual que antes nuestro objetivo es acercanos a la solución de la Ecuación de Bellman</p>
-<p>Podemos escribir esto como el siguiente problema de optimización</p>
+<p>En lugar de aprender <span class="math notranslate nohighlight">\(Q\)</span> explicitamente el objetivo es aprender <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<div class="admonition important">
+<p class="admonition-title">Importante</p>
+<p>La cantidad de parámetros es ahora independiente de la dimensionalidad del estado</p>
+</div>
+<p>Al igual que antes nuestro objetivo es acercanos a la solución de la Ecuación de Bellman. Podemos escribir esto como el siguiente problema de optimización</p>
 <div class="math notranslate nohighlight">
 \[
 \min_\theta \| R(s,a) + \gamma \max_{a' \in \mathcal{A}} \hat Q_\theta( s',a') - \hat Q_\theta(s,a)\|^2
@@ -536,17 +516,11 @@ document.write(`
 \[
 \theta_j \leftarrow \theta_j + 2 \alpha \left(R(s,a) + \gamma \max_{a' \in \mathcal{A}} \hat Q_\theta (s',a') - \hat Q_\theta(s,a) \right) \phi_j(s,a)
 \]</div>
-<p>Sin embargo, un modelo lineal podría ser muy limitado</p>
-<p>En la unidad 1 estudiamos el estado del arte en aproximación de funciones: <strong>redes neuronales artificiales</strong></p>
-<blockquote>
-<div><p>A continuación veremos como usar redes profundas para aproximar la función Q</p>
-</div></blockquote>
+<p>Sin embargo, un modelo lineal podría ser muy limitado. A continuación veremos como usar redes profundas para aproximar la función Q</p>
 </section>
 <section id="deep-q-network-dqn">
-<h2><span class="section-number">23.3. </span>Deep Q-Network (DQN)<a class="headerlink" href="#deep-q-network-dqn" title="Permalink to this heading">#</a></h2>
-<blockquote>
-<div><p>En <a class="reference external" href="https://arxiv.org/abs/1312.5602">(Minh et al. 2013)</a> se usaron redes neuronales profundas de tipo convolucional para resolver una serie de juegos de ATARI con Aprendizaje Reforzardo obteniendo <a class="reference external" href="https://deepmind.com/blog/article/deep-reinforcement-learning">desempeño sobre-humano en muchos de las pruebas</a>. El modelo, llamado <em>Deep Q-network</em>, utiliza como estado el valor de todos los píxeles de cuatro cuadros consecutivos.</p>
-</div></blockquote>
+<h2><span class="section-number">23.2. </span>Deep Q-Network (DQN)<a class="headerlink" href="#deep-q-network-dqn" title="Permalink to this heading">#</a></h2>
+<p>En <a class="reference external" href="https://arxiv.org/abs/1312.5602">(Minh et al. 2013)</a> se usaron redes neuronales profundas de tipo convolucional para resolver una serie de juegos de ATARI con Aprendizaje Reforzardo obteniendo <a class="reference external" href="https://deepmind.com/blog/article/deep-reinforcement-learning">desempeño sobre-humano en muchos de las pruebas</a>. El modelo, llamado <em>Deep Q-network</em>, utiliza como estado el valor de todos los píxeles de cuatro cuadros consecutivos.</p>
 <p>La idea clave es</p>
 <blockquote>
 <div><p>Aprovechar la capacidad de las redes neuronales profundas para representar datos complejos, e.g. imágenes</p>
@@ -555,18 +529,14 @@ document.write(`
 <blockquote>
 <div><p>Aproximar la función Q usando una red convolucional entrenada directamente sobre los píxeles</p>
 </div></blockquote>
-<p>Veremos primero una formulación general y luego su aplicación al caso de imágenes</p>
+<p>Veremos primero una formulación general y luego su aplicación al caso de imágenes.</p>
 <p><strong>Modelo</strong></p>
 <ul class="simple">
-<li><p>La entrada de la red es el estado <span class="math notranslate nohighlight">\(s\)</span>.</p>
-<ul>
-<li><p>El vector de estado puede tener valores continuos o discretos</p></li>
-</ul>
-</li>
+<li><p>La entrada de la red es el estado <span class="math notranslate nohighlight">\(s\)</span>. El vector de estado puede tener valores continuos o discretos</p></li>
 <li><p>La salida de la red neuronal son los valores <span class="math notranslate nohighlight">\(Q(s, a_1), Q(s, a_2), \ldots, Q(s, a_N)\)</span></p>
 <ul>
 <li><p>Se considera un espacio de acciones discreto</p></li>
-<li><p>Esto es más eficiente que considerar <span class="math notranslate nohighlight">\(a'\)</span> como una entrada y retornar <span class="math notranslate nohighlight">\(Q(s,a')\)</span></p></li>
+<li><p>Esto es más eficiente que considerar <span class="math notranslate nohighlight">\(a'\)</span> como una entrada y retornar <span class="math notranslate nohighlight">\(Q(s, a')\)</span></p></li>
 </ul>
 </li>
 <li><p>La cantidad y tipo de las capas intermedias es decisión del usuario</p>
@@ -582,88 +552,20 @@ document.write(`
 \mathcal{L}(\theta) = \mathbb{E}\left[\left \| R(s,a) + \gamma \max_{a' \in \mathcal{A}} Q_\theta(s', a') - Q_\theta(s, a)\right \|^2\right]
 \]</div>
 <p>Recordemos: <span class="math notranslate nohighlight">\(s'\)</span> es el estado al que llegamos luego de ejecutar <span class="math notranslate nohighlight">\(a\)</span> sobre <span class="math notranslate nohighlight">\(s\)</span></p>
-</section>
-<section id="dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">
-<h2><span class="section-number">23.4. </span>DQN con estados continuos: El retorno del carro con péndulo<a class="headerlink" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo" title="Permalink to this heading">#</a></h2>
-<p>Previamente fue necesario discretizar el estado para construir la matriz Q</p>
-<p>En DQN podemos obviar este paso y sus complicaciones</p>
-<p>Vamos a usar una red neuronal con 3 capas completamente conectadas, 4 entradas y 2 salidas</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-
-<span class="k">class</span> <span class="nc">MultilayerPerceptron</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_input</span><span class="p">,</span> <span class="n">n_output</span><span class="p">,</span> <span class="n">n_hidden</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hidden1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_input</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hidden2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
-        
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hidden2</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-        <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 <section id="experience-replay-y-memory-replay">
-<h2><span class="section-number">23.5. </span>Experience Replay y Memory replay<a class="headerlink" href="#experience-replay-y-memory-replay" title="Permalink to this heading">#</a></h2>
-<p>El entrenamiento usando sólo una instancia es bastante ruidoso (y un poco lento)</p>
-<p>Consideremos también que estamos entrenando con muestras muy correlacionadas (no iid)</p>
-<p>Sabemos que esto puede introducir sesgos el entrenamiento de una red neuronal</p>
+<h3><span class="section-number">23.2.1. </span>Experience Replay y Memory replay<a class="headerlink" href="#experience-replay-y-memory-replay" title="Permalink to this heading">#</a></h3>
+<p>El entrenamiento usando sólo una instancia es bastante ruidoso (y un poco lento). Se debe considerar también que estamos entrenando con muestras muy correlacionadas (no iid) y esto puede introducir sesgos el entrenamiento de una red neuronal.</p>
 <blockquote>
 <div><p>Para entrenar la DQN adecuadamente  (Minh et al 2013) propone un astuto “truco” llamado <em>Experience replay</em></p>
 </div></blockquote>
-<p>Esto consiste en almacenar la historia del agente en una memoria: <em>replay memory</em></p>
-<p>Cada elemento en la memoria es una tupla <span class="math notranslate nohighlight">\((s_t, a_t, r_{t+1}, s_{t+1})\)</span></p>
-<p>Con esto se crean mini-batches en orden aleatorio para entrenar</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReplayMemory</span><span class="p">:</span>
-    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dim</span><span class="p">,</span> <span class="n">memory_length</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">memory_length</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="c1"># Tensores vacíos para la historia</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">memory_length</span><span class="p">,)</span> <span class="o">+</span> <span class="n">state_dim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">memory_length</span><span class="p">,)</span> <span class="o">+</span> <span class="n">state_dim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># Adicionalmente guardaremos la condición de término</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s_current</span><span class="p">,</span> <span class="n">s_future</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="c1"># Agregamos una tupla en la memoria</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_current</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_future</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">end</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
-        
-    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>        
-        <span class="c1"># Extraemos una muestra aleatoria de la memoria</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>        
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>    
-    
-</pre></div>
-</div>
-</div>
-</div>
+<p>Esto consiste en almacenar la historia del agente en una memoria llamada <em>replay memory</em></p>
+<blockquote>
+<div><p>Cada elemento en la memoria es una tupla <span class="math notranslate nohighlight">\((s_t, a_t, r_{t+1}, s_{t+1})\)</span></p>
+</div></blockquote>
+<p>Con esto se crean mini-batches en orden aleatorio para entrenar.</p>
 </section>
 <section id="double-dqn">
-<h2><span class="section-number">23.6. </span><em>Double DQN</em><a class="headerlink" href="#double-dqn" title="Permalink to this heading">#</a></h2>
+<h3><span class="section-number">23.2.2. </span><em>Double DQN</em><a class="headerlink" href="#double-dqn" title="Permalink to this heading">#</a></h3>
 <p>En <a class="reference external" href="https://arxiv.org/pdf/1509.06461.pdf">(van Hasselt, Guer y Silver, 2015)</a> los autores notaron un problema importante en DQN.</p>
 <blockquote>
 <div><p>Cuando calculamos <span class="math notranslate nohighlight">\(Q(s, a)\)</span> y <span class="math notranslate nohighlight">\(\max Q(s', a')\)</span> usando la misma red es muy posible que sobre-estimemos la calidad de nuestro objetivo. Adicionalmente si el objetivo cambia constantemente el entrenamiento será inestable</p>
@@ -673,266 +575,194 @@ document.write(`
 \[
 \mathcal{L}(\theta, \phi) = \mathbb{E}\left[\left \| R(s,a) + \gamma Q_\phi\left(s', \text{arg}\max_{a' \in \mathcal{A}} Q_\theta(s', a')\right) - Q_\theta(s, a)\right\|^2\right]
 \]</div>
-<p>Usamos <span class="math notranslate nohighlight">\(Q_\theta\)</span> con parámetros <span class="math notranslate nohighlight">\(\theta\)</span> para escoger la acción: <em>policy network</em></p>
-<p>Usamos <span class="math notranslate nohighlight">\(Q_\phi\)</span> con parámetros <span class="math notranslate nohighlight">\(\phi\)</span> para construir el objetivo: <em>target network</em></p>
+<p>Se utiliza</p>
 <ul class="simple">
-<li><p>Ambas redes comparten arquitectura y cantidad de neuronas</p></li>
-<li><p>Sólo se optimiza la <em>policy network</em></p></li>
-<li><p>Después de un cierto número de épocas los parametros de la policy network “se copian” en la <em>target network</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(Q_\theta\)</span> con parámetros <span class="math notranslate nohighlight">\(\theta\)</span> para escoger la acción: <em>policy network</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(Q_\phi\)</span> con parámetros <span class="math notranslate nohighlight">\(\phi\)</span> para construir el objetivo: <em>target network</em></p></li>
 </ul>
-<p>¿Cada cuantas épocas actualizo la <em>target network</em>? Otro hyperparámetro para el algoritmo…</p>
-<p><strong>Otras consideraciones</strong></p>
-<ul class="simple">
-<li><p>El optimizador a usar es ADAM: Gradiente descendente con tasa de aprendizaje adaptiva</p></li>
-<li><p>Se usa la heurística <span class="math notranslate nohighlight">\(\epsilon\)</span> greedy para favorecer la exploración</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-    
-<span class="k">class</span> <span class="nc">DeepQNetwork</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_model</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">double_dqn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> 
-                 <span class="n">target_update_freq</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">clip_grads</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clip_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span> <span class="o">=</span> <span class="n">double_dqn</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span> <span class="o">=</span> <span class="n">q_model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="n">q_model</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">out_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clip_error</span> <span class="o">=</span> <span class="n">clip_error</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clip_grads</span> <span class="o">=</span> <span class="n">clip_grads</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_update_freq</span> <span class="o">=</span> <span class="n">target_update_freq</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="n">double_dqn</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    
-    <span class="k">def</span> <span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
-        <span class="c1"># Estrategia epsilon greedy para seleccionar acción</span>
-        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">:</span> 
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-                <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">q</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_output</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> 
-        
-        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">q</span>
-    
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mini_batch</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">state_next</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">mini_batch</span>
-        <span class="c1"># Calcular Q</span>
-        <span class="n">q_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span><span class="p">:</span>
-                <span class="n">q_next_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">action_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">q_next_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_next</span><span class="p">)</span>               
-        <span class="c1"># Construir el target: r + gamma*max Q(s&#39;, a&#39;)</span>
-        <span class="n">td_target</span> <span class="o">=</span> <span class="n">reward</span>
-        <span class="n">td_target</span><span class="p">[</span><span class="o">~</span><span class="n">end</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="o">*</span><span class="n">q_next_best</span><span class="p">[</span><span class="o">~</span><span class="n">end</span><span class="p">]</span>
-        <span class="n">td_target</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
-        <span class="c1"># Calcular pérdido y sus gradientes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">q_current</span><span class="p">,</span> <span class="n">td_target</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_error</span><span class="p">:</span>
-            <span class="n">loss</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="c1"># Cortar gradientes grandes (mejora la estabilidad)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_grads</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                <span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-            <span class="c1"># torch.nn.utils.clip_grad.clip_grad_norm_(self.model.parameters(), 10)</span>
-        <span class="c1"># Actualizar</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="c1"># Transfer policy to target</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_policy2target</span><span class="p">()</span>
-        <span class="c1"># Retornar el valor de la loss</span>
-        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    
-    <span class="k">def</span> <span class="nf">transfer_policy2target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span><span class="p">:</span>            
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_update_freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> notebook
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">smooth_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window_length</span><span class="p">)</span><span class="o">/</span><span class="n">window_length</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">update_plot</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">smooth_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">195</span><span class="p">,</span> <span class="n">target_update</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">ax_</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-        <span class="n">ax_</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
-    <span class="n">episodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="n">episode</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      
-    <span class="k">if</span> <span class="n">episode</span> <span class="o">&gt;</span> <span class="n">smooth_window</span><span class="p">:</span>
-        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">[:</span><span class="o">-</span><span class="n">smooth_window</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-                   <span class="n">smooth_data</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">])</span><span class="o">+</span><span class="mf">1e-4</span><span class="p">))</span>
-    <span class="c1">#for update_time in diagnostics[&#39;target_updates&#39;]:</span>
-    <span class="c1">#    ax[1].plot([update_time, update_time], </span>
-    <span class="c1">#               [diagnostics[&#39;loss&#39;].min(), diagnostics[&#39;loss&#39;].max()], &#39;k--&#39;, alpha=0.1)                  </span>
-                   
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">episodes</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Recompensa&#39;</span><span class="p">);</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Q promedio&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">episodes</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episodios&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Paso </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>Ambas redes comparten arquitectura y cantidad de neuronas, sin embargo sólo se optimiza la <em>policy network</em></p>
+<p>Después de un “cierto número de épocas” los parametros de la policy network “se copian” en la <em>target network</em>. ¿Cada cuantas épocas actualizo la <em>target network</em>? Otro hiper-parámetro para el algoritmo.</p>
 </section>
-<section id="experimentos">
-<h2><span class="section-number">23.7. </span>Experimentos<a class="headerlink" href="#experimentos" title="Permalink to this heading">#</a></h2>
-<p>Usemos la clase DeepQNetwork para entrenar una agente que resuelva el problema del carro con péndulo</p>
+</section>
+<section id="double-dqn-en-ambiente-con-estado-continuo">
+<h2><span class="section-number">23.3. </span>Double-DQN en ambiente con estado continuo<a class="headerlink" href="#double-dqn-en-ambiente-con-estado-continuo" title="Permalink to this heading">#</a></h2>
+<p>Utilizaremos al ambiente <a class="reference external" href="https://gymnasium.farama.org/environments/box2d/lunar_lander/"><em>LunarLander</em></a>, donde el objetivo es aterrizar el módulo lunar entre las banderas amarillas. El espacio de acciones es discreto:</p>
 <ul class="simple">
-<li><p>Si uso <code class="docutils literal notranslate"><span class="pre">memory_length=1</span></code> es equivalente a no usar <em>replay memory</em>. Mientras más corta es la memoria más ruidoso es el entrenamiento.</p></li>
-<li><p>Con el parámetro <code class="docutils literal notranslate"><span class="pre">double_dqn</span></code> podemos activar la red objetivo que se actualizará cada <code class="docutils literal notranslate"><span class="pre">target_update_freq</span></code> pasos</p></li>
-<li><p>Otros parámetros a considerar son <code class="docutils literal notranslate"><span class="pre">gamma</span></code>, el tamaño del batch, la tasa de aprendizaje y la arquitectura de la red</p></li>
+<li><p>0: No actuar</p></li>
+<li><p>1: Activar cohete izquierdo</p></li>
+<li><p>2: Activar cohete principal</p></li>
+<li><p>3: Activar cohete derecho</p></li>
 </ul>
+<p>El espacio de estados es un vector de 8 dimensiones:</p>
+<ul class="simple">
+<li><p>Posición del módulo</p></li>
+<li><p>Velocidad del módulo</p></li>
+<li><p>Ángulo y velocidad angular del módulo</p></li>
+<li><p>Booleanos que indican si las patas izquierda y derecha tocaron el suelo, respectivamente</p></li>
+</ul>
+<p>El episodio termina si el módulo se estrella o aluniza fuera de las banderas. La recompensa aumenta a medida que el módulo se acerca a la plataforma. La recompensa disminuye con el ángulo y con cada vez que dispara los cohetes.</p>
+<p>A continuación se muestre un agente con política aleatoria.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;LunarLander-v2&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
 
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span>
-<span class="n">n_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span> <span class="c1"># Número de estados</span>
-<span class="n">n_action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span> <span class="c1"># Número de acciones</span>
-
-<span class="n">dqn_model</span> <span class="o">=</span> <span class="n">DeepQNetwork</span><span class="p">(</span><span class="n">q_model</span><span class="o">=</span><span class="n">MultilayerPerceptron</span><span class="p">(</span><span class="n">n_state</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_action</span><span class="p">,</span> <span class="n">n_hidden</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
-                         <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.99</span><span class="p">,</span>
-                         <span class="n">double_dqn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">target_update_freq</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                         <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">epsilon</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">epsilon_init</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">epsilon_end</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">epsilon_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">epsilon_init</span> <span class="o">-</span> <span class="n">epsilon_end</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">epsilon_rate</span><span class="o">*</span><span class="n">episode</span><span class="p">)</span> 
-
-<span class="n">memory</span> <span class="o">=</span> <span class="n">ReplayMemory</span><span class="p">(</span><span class="n">n_state</span><span class="p">,</span> <span class="n">memory_length</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>        
-
-<span class="n">diagnostics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-               <span class="s1">&#39;q_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;q_N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-<span class="n">episode</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">30000</span><span class="p">)):</span>    
-    <span class="c1"># Escoger acción</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">episode</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">q</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="c1"># Ejecutar acción</span>
-    <span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>        
-    <span class="c1"># Guardar en memoria</span>
-    <span class="n">memory</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">a</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">r</span><span class="o">/</span><span class="mf">200.</span><span class="p">),</span> <span class="n">end</span><span class="p">)</span>
-    <span class="c1"># Actualizar modelo    </span>
-    <span class="n">mini_batch</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">mini_batch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span>            
-    <span class="c1"># Guardar nuevo estado y continuar</span>
-    <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">r</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">s</span> 
-    <span class="c1"># Preparar siguiente episodio</span>
-    <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">episode</span> <span class="o">%</span> <span class="mi">25</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">update_plot</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
-        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>  
-        <span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">obs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    
+    <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="k">break</span>
+        
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>Intuición</strong></p>
-<blockquote>
-<div><p>La <em>loss</em> está subiendo, mi algoritmo está mal</p>
-</div></blockquote>
-<p>No necesariamente, recordemos que el “training set” está cambiando con cada paso</p>
-<p>Es normal ver que los <em>loss</em> tenga subidas abruptas</p>
-<p>En cierto modo estas subidas son deseables pues significa que nuestro algoritmo está “sorprendiendose” con nuevos estados</p>
-<blockquote>
-<div><p>La recompensa promedio se fue en picada, mi algoritmo está mal</p>
-</div></blockquote>
-<p>Lo que está ocurriendo es un problema común en deep RL que se llama: <strong>“olvido catastrófico”</strong></p>
-<p>El modelo es cada vez más bueno resolviendo el problema y la memoria se llena de “buenas transiciones”</p>
-<p>Los <em>minibatches</em> ya no tienen ejemplos erroneos: El modelo ya no sabe lo que está mal</p>
-<p>Se puede combatir con <em>prioritized replay memory</em> o con otros heurísticas</p>
+<p>Vamos a entrenar una Double Deep Q Network para resolver este problema utilizando la implementación de la librería <code class="docutils literal notranslate"><span class="pre">stable_baselines3</span></code></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip install stable-baselines3[extra]
+</pre></div>
+</div>
+<p>La clase <a class="reference external" href="https://stable-baselines3.readthedocs.io/en/master/modules/dqn.html">DQN</a>, recibe:</p>
+<ul class="simple">
+<li><p>Un string indicando el tipo de modelo que implementará la policy, por ejemplo “MlpPolicy” para un modelo de dos capas completamente conectadas o “ConvPolicy” para un modelo convolucional</p></li>
+<li><p>El ambiente</p></li>
+<li><p>Los hiperparámetros del entrenamiento, entre ellos el factor de descuento (<code class="docutils literal notranslate"><span class="pre">gamma</span></code>), la tasa de aprendizaje, el tamaño del replay memory (<code class="docutils literal notranslate"><span class="pre">buffer_size</span></code>), el tamaño de batch, el trade-off entre explotación y exploración (epsilon-greedy) y la frecuencia de actualización del modelo <em>target</em> (<code class="docutils literal notranslate"><span class="pre">target_update_interval</span></code>).</p></li>
+</ul>
+<p>El método tiene una función <code class="docutils literal notranslate"><span class="pre">learn</span></code> que realiza el entrenamiento. Podemos visualizar las curvas la <em>loss</em>, recompensa y largo de episodio utilizando tensorboard:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tensorboard --logdir=/tmp/tensorboard/
+</pre></div>
+</div>
+<p>Y luego abriendo: <a class="reference external" href="http://localhost:6006/">http://localhost:6006/</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">DQN</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;LunarLander-v2&quot;</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s2">&quot;MlpPolicy&quot;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="s2">&quot;/tmp/tensorboard/dqn_lunar_lander/&quot;</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> 
+            <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">train_freq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">gradient_steps</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">learning_starts</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">exploration_fraction</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span> <span class="n">exploration_final_eps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+            <span class="n">policy_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;net_arch&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">]})</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using cpu device
+Wrapping the env with a `Monitor` wrapper
+Wrapping the env in a DummyVecEnv.
+Logging to /tmp/tensorboard/dqn_lunar_lander/DQN_3
+----------------------------------
+| rollout/            |          |
+|    ep_len_mean      | 112      |
+|    ep_rew_mean      | -203     |
+|    exploration_rate | 0.664    |
+| time/               |          |
+|    episodes         | 4        |
+|    fps              | 117      |
+|    time_elapsed     | 3        |
+|    total_timesteps  | 448      |
+| train/              |          |
+|    learning_rate    | 0.0005   |
+|    loss             | 0.616    |
+|    n_updates        | 444      |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    ep_len_mean      | 252      |
+|    ep_rew_mean      | -148     |
+|    exploration_rate | 0.1      |
+| time/               |          |
+|    episodes         | 8        |
+|    fps              | 108      |
+|    time_elapsed     | 18       |
+|    total_timesteps  | 2014     |
+| train/              |          |
+|    learning_rate    | 0.0005   |
+|    loss             | 1.13     |
+|    n_updates        | 2012     |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    ep_len_mean      | 407      |
+|    ep_rew_mean      | -156     |
+|    exploration_rate | 0.1      |
+| time/               |          |
+|    episodes         | 12       |
+|    fps              | 106      |
+|    time_elapsed     | 46       |
+|    total_timesteps  | 4884     |
+| train/              |          |
+|    learning_rate    | 0.0005   |
+|    loss             | 1.23     |
+|    n_updates        | 4880     |
+----------------------------------
+----------------------------------
+| rollout/            |          |
+|    ep_len_mean      | 555      |
+|    ep_rew_mean      | -142     |
+|    exploration_rate | 0.1      |
+| time/               |          |
+|    episodes         | 16       |
+|    fps              | 106      |
+|    time_elapsed     | 83       |
+|    total_timesteps  | 8884     |
+| train/              |          |
+|    learning_rate    | 0.0005   |
+|    loss             | 0.549    |
+|    n_updates        | 8880     |
+----------------------------------
+CPU times: user 6min 13s, sys: 478 ms, total: 6min 14s
+Wall time: 1min 34s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;stable_baselines3.dqn.dqn.DQN at 0x7fe83367ec10&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Agente entrenado en acción (se abrirá en una ventana)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;LunarLander-v2&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
+
+<span class="n">obs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">_states</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Comentarios</strong></p>
+<p>¿Por qué a veces la <em>loss</em> sube?</p>
+<p>Recordemos que el “training set” está cambiando con cada paso. Es normal ver que los <em>loss</em> tenga subidas abruptas. En cierto modo estas subidas son deseables pues significa que nuestro algoritmo está “sorprendiendose” con nuevos estados</p>
+<p>¿Qué significa si la recompensa promedio se fue en picada?</p>
+<p>Lo que está ocurriendo es un problema común en deep RL que se llama: <strong>“olvido catastrófico”</strong>. El modelo es cada vez más bueno resolviendo el problema y la memoria se llena de “buenas transiciones”. Por lo tanto los <em>minibatches</em> ya no tienen ejemplos erroneos y el modelo ya no sabe lo que está mal.</p>
+<p>Se puede combatir con <em>prioritized replay memory</em> o con otros heurísticas:</p>
 <ul class="simple">
 <li><p>Reservar un espacio en la memoria para las transiciones (de exploración) iniciales</p></li>
 <li><p><strong>Early stopping:</strong> Guardar el modelo de mayor recompensa y detener el aprendizaje si la recompensa no sube en un cierto número de episodios</p></li>
 </ul>
-<p><strong>Probando el agente DQN</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">gym</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-    <span class="n">s_future</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">display</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="k">break</span>
-<span class="n">display</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <section id="rainbow-dqn">
-<h2><span class="section-number">23.8. </span><a class="reference external" href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow DQN</a><a class="headerlink" href="#rainbow-dqn" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">23.4. </span><a class="reference external" href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow DQN</a><a class="headerlink" href="#rainbow-dqn" title="Permalink to this heading">#</a></h2>
 <p>Rainbow DQN es un trabajo que reune todos los avances relacionados a DQN</p>
 <ol class="arabic simple">
 <li><p><em>Double DQN</em>: Usar un modelo separado para calcular los targets</p></li>
@@ -1012,17 +842,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recuerdo-value-learning">23.1. Recuerdo: Value Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-space-invaders">23.1.1. Ambiente: Space invaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">23.1. Aproximación de funciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">23.2. Deep Q-Network (DQN)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">23.2.1. Experience Replay y Memory replay</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">23.2.2. <em>Double DQN</em></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aproximacion-de-funciones">23.2. Aproximación de funciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-q-network-dqn">23.3. Deep Q-Network (DQN)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dqn-con-estados-continuos-el-retorno-del-carro-con-pendulo">23.4. DQN con estados continuos: El retorno del carro con péndulo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experience-replay-y-memory-replay">23.5. Experience Replay y Memory replay</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn">23.6. <em>Double DQN</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimentos">23.7. Experimentos</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">23.8. Rainbow DQN</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dqn-en-ambiente-con-estado-continuo">23.3. Double-DQN en ambiente con estado continuo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rainbow-dqn">23.4. Rainbow DQN</a></li>
 </ul>
   </nav></div>
 
