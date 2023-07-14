@@ -436,7 +436,7 @@ a \sim \pi_\theta (A|S=s)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counter({0: 7111, 2: 1904, 1: 985})
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counter({0: 7031, 2: 1936, 1: 1033})
 </pre></div>
 </div>
 </div>
@@ -465,7 +465,7 @@ a \sim \pi_\theta (A|S=s)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0549bed5e983d37c5e5ea2740cdf702060021d46a5fa4e1fc38a862cfdd1a3a9.png" src="../../_images/0549bed5e983d37c5e5ea2740cdf702060021d46a5fa4e1fc38a862cfdd1a3a9.png" />
+<img alt="../../_images/5bcb33e2516ea915aaff70deacf97dc64a2f2d535113ac6ef5657d85bca21862.png" src="../../_images/5bcb33e2516ea915aaff70deacf97dc64a2f2d535113ac6ef5657d85bca21862.png" />
 </div>
 </div>
 </section>
@@ -590,7 +590,7 @@ a \sim \pi_\theta (A|S=s)
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "63ffcf335cdd48fcaff313918c5e6f02", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "8d6e74b6f4f346278b0993828f57f473", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -606,7 +606,7 @@ a \sim \pi_\theta (A|S=s)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/59939fed3e9e8376d2d27f744f65708cfdebbafb1742cf9229f20713b675e3ef.png" src="../../_images/59939fed3e9e8376d2d27f744f65708cfdebbafb1742cf9229f20713b675e3ef.png" />
+<img alt="../../_images/1e4f884df7839f0898bfa301324111691c6b1ec7b0afa2ebbe52cad36b42c9e2.png" src="../../_images/1e4f884df7839f0898bfa301324111691c6b1ec7b0afa2ebbe52cad36b42c9e2.png" />
 </div>
 </div>
 <p>El siguiente bloque muestra el agente desarrollando la tarea según la política aprendida en una nueva ventana.</p>
@@ -631,63 +631,7 @@ a \sim \pi_\theta (A|S=s)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">error</span><span class="g g-Whitespace">                                     </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/time_limit.py:75,</span> in <span class="ni">TimeLimit.reset</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Resets the environment with :param:`**kwargs` and sets the number of steps elapsed to zero.</span>
-<span class="g g-Whitespace">     </span><span class="mi">67</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span><span class="sd"> Args:</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span><span class="sd">     The reset environment</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elapsed_steps</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="ne">---&gt; </span><span class="mi">75</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/order_enforcing.py:61,</span> in <span class="ni">OrderEnforcing.reset</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Resets the environment with `kwargs`.&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">60</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_reset</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="ne">---&gt; </span><span class="mi">61</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/wrappers/env_checker.py:55,</span> in <span class="ni">PassiveEnvChecker.reset</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checked_reset</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="bp">self</span><span class="o">.</span><span class="n">checked_reset</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="ne">---&gt; </span><span class="mi">55</span>     <span class="k">return</span> <span class="n">env_reset_passive_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/utils/passive_env_checker.py:215,</span> in <span class="ni">env_reset_passive_checker</span><span class="nt">(env, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span>     <span class="n">logger</span><span class="o">.</span><span class="n">deprecation</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">211</span>         <span class="s2">&quot;Current gymnasium version requires that `Env.reset` can be passed `options` to allow the environment initialisation to be passed additional information.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">214</span> <span class="c1"># Checks the result of env.reset with kwargs</span>
-<span class="ne">--&gt; </span><span class="mi">215</span> <span class="n">result</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">217</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span>         <span class="sa">f</span><span class="s2">&quot;The result returned by `env.reset()` was not a tuple of the form `(obs, info)`, where `obs` is a observation and `info` is a dictionary containing additional information. Actual type: `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="si">}</span><span class="s2">`&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="p">)</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/envs/classic_control/cartpole.py:209,</span> in <span class="ni">CartPoleEnv.reset</span><span class="nt">(self, seed, options)</span>
-<span class="g g-Whitespace">    </span><span class="mi">206</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps_beyond_terminated</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">209</span>     <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="p">{}</span>
-
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/gymnasium/envs/classic_control/cartpole.py:233,</span> in <span class="ni">CartPoleEnv.render</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">231</span> <span class="n">pygame</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">232</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">render_mode</span> <span class="o">==</span> <span class="s2">&quot;human&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">233</span>     <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">234</span>     <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">pygame</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">235</span>         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen_height</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">236</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">237</span> <span class="k">else</span><span class="p">:</span>  <span class="c1"># mode == &quot;rgb_array&quot;</span>
-
-<span class="ne">error</span>: wayland not available
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>499
 </pre></div>
 </div>
 </div>

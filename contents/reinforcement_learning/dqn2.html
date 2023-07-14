@@ -64,8 +64,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'contents/reinforcement_learning/dqn2';</script>
     <link rel="index" title="Índice" href="../../genindex.html" />
     <link rel="search" title="Búsqueda" href="../../search.html" />
@@ -379,11 +377,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">24.1. Agente DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">24.2. Gráficas de aprendizaje</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">24.3. Entrenamiento del agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">24.4. Guardar el agente para futura referencia y evaluar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">24.5. Agentes artesanales pre-entrenados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arcade-learning-environment">24.1. Arcade Learning Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-con-stable-baselines3">24.2. Entrenamiento con <code class="docutils literal notranslate"><span class="pre">stable_baselines3</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -397,44 +392,35 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="dqn-a-partir-de-pixeles">
 <h1><span class="section-number">24. </span>DQN a partir de píxeles<a class="headerlink" href="#dqn-a-partir-de-pixeles" title="Permalink to this heading">#</a></h1>
-<p>El <em>gym</em> de OpenAI tiene una colección de juegos de ATARI 2600 que pueden usarse como benchmark</p>
-<p>La mayoría tiene una versión normal y una versión RAM</p>
+<section id="arcade-learning-environment">
+<h2><span class="section-number">24.1. </span>Arcade Learning Environment<a class="headerlink" href="#arcade-learning-environment" title="Permalink to this heading">#</a></h2>
+<p>La librería <em>gymnasium</em> se conecta con el <a class="reference external" href="https://github.com/mgbellemare/Arcade-Learning-Environment">Arcade Learning Environment (ALE)</a> el cual tiene una colección de juegos de ATARI 2600 listos para utilizarle como benchmark de aprendizaje por refuerzo. La mayoría tiene una versión normal y una versión RAM:</p>
 <ul class="simple">
 <li><p>En la versión normal las observaciones son imágenes de 260x120x3</p></li>
 <li><p>En la versión RAM las observaciones son 128 bits que corresponden a la memoria de la consola</p></li>
 </ul>
-<p>En este ejemplo nos concentraremos en la versión normal y usaremos redes convolucionales para resolverlo.</p>
+<p>En este ejemplo nos concentraremos en la versión normal. Veamos por ejemplo el clásico juego <a class="reference external" href="https://en.wikipedia.org/wiki/Breakout_(video_game)"><em>Breakout</em></a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env_name</span> <span class="o">=</span> <span class="s2">&quot;PongNoFrameskip-v4&quot;</span>
-<span class="c1">#env_name =&quot;BreakoutNoFrameskip-v4&quot;</span>
+<span class="c1">#env_name = &quot;PongNoFrameskip-v4&quot;</span>
+<span class="n">env_name</span> <span class="o">=</span><span class="s2">&quot;BreakoutNoFrameskip-v4&quot;</span>
 <span class="c1">#env_name = &quot;SpaceInvadersNoFrameskip-v4&quot;</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">env_name</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">env_name</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">)</span>
 <span class="n">state</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
 <span class="n">display</span><span class="p">(</span><span class="s2">&quot;Las acciones de este ambiente:&quot;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">unwrapped</span><span class="o">.</span><span class="n">get_action_meanings</span><span class="p">())</span>
 <span class="n">display</span><span class="p">(</span><span class="s2">&quot;La dimensión del estado:&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">state</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
-[Powered by Stella]
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Las acciones de este ambiente:&#39;
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;NOOP&#39;, &#39;FIRE&#39;, &#39;RIGHT&#39;, &#39;LEFT&#39;, &#39;RIGHTFIRE&#39;, &#39;LEFTFIRE&#39;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;NOOP&#39;, &#39;FIRE&#39;, &#39;RIGHT&#39;, &#39;LEFT&#39;]
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;La dimensión del estado:&#39;
@@ -443,469 +429,357 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(210, 160, 3)
 </pre></div>
 </div>
-<img alt="../../_images/9eb9e4560575c9d92ba1b3929ee7c16dc1d466d20afddf73a606cfe9b1eb074f.png" src="../../_images/9eb9e4560575c9d92ba1b3929ee7c16dc1d466d20afddf73a606cfe9b1eb074f.png" />
 </div>
 </div>
-<p>El estado es una imagen de 210 x 160 x 3 pixeles</p>
-<p>Para facilitar el entrenamiento se recomienda hacer un preprocesamiento como el que sigue</p>
+<p>El estado es una imagen de 210 x 160 x 3 pixeles:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/aaf87ef96835302884b2fe2562f4f6923ede5cf7d30affeddd39af0db012c31c.png" src="../../_images/aaf87ef96835302884b2fe2562f4f6923ede5cf7d30affeddd39af0db012c31c.png" />
+</div>
+</div>
+</section>
+<section id="entrenamiento-con-stable-baselines3">
+<h2><span class="section-number">24.2. </span>Entrenamiento con <code class="docutils literal notranslate"><span class="pre">stable_baselines3</span></code><a class="headerlink" href="#entrenamiento-con-stable-baselines3" title="Permalink to this heading">#</a></h2>
+<p>Para facilitar el entrenamiento se recomienda hacer un preprocesamiento como el que sigue:</p>
 <ol class="arabic simple">
-<li><p>(opcional) Descartar parte de la imagen que no aporta información</p></li>
 <li><p>Reescalar la imagen a un menor tamaño</p></li>
 <li><p>Combinar los canales y generar una imagen de escala de grises</p></li>
 <li><p>Crear un stack de cuatro frames como representación del estado</p></li>
 <li><p>Convertir los pixeles a float y normalizar al rango [0, 1]</p></li>
 </ol>
-<p>Para esto usaremos la librería <em>torchvision</em> y los <em>wrappers</em> de OpenAI</p>
+<p>Adicionalmente es muy útil entrenar con más de un ambiente al mismo tiempo en paralelo.</p>
+<p>Para esto usaremos los wrappers vectoriales de <code class="docutils literal notranslate"><span class="pre">stable_baselines3</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">gymnasium.wrappers</span> <span class="kn">import</span> <span class="n">AtariPreprocessing</span><span class="p">,</span> <span class="n">FrameStack</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.env_util</span> <span class="kn">import</span> <span class="n">make_atari_env</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">VecFrameStack</span>
 
-<span class="k">def</span> <span class="nf">wrap_env</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">EpisodicLifeEnv</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># Perder una vida es equivalente a perder el episodio</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">FireResetEnv</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># Hace un disparo al inicio (algunos juegos lo necesitan)</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">WarpFrame</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># Crop, resize y conversión a escala de  grises</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">ClipRewardEnv</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># La recompensa se corta en [-1, 1] (mejora la estabilidad)</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">FrameStack</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="c1"># El ambiente entrega de a 4 frames    </span>
-    <span class="k">return</span> <span class="n">env</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">VecFrameStack</span><span class="p">(</span><span class="n">make_atari_env</span><span class="p">(</span><span class="n">env_name</span><span class="p">,</span> <span class="n">n_envs</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span> <span class="n">n_stack</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">FrameStack</span><span class="p">(</span><span class="n">AtariPreprocessing</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">env_name</span><span class="p">),</span> 
-                                    <span class="n">noop_max</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
-                                    <span class="n">frame_skip</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> 
-                                    <span class="n">screen_size</span><span class="o">=</span><span class="mi">84</span><span class="p">,</span> 
-                                    <span class="n">terminal_on_life_loss</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">num_stack</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">state</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">state</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 
-<span class="k">def</span> <span class="nf">transform_state</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">))</span>
-
-<span class="n">transformed_state</span> <span class="o">=</span> <span class="n">transform_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tamaño del tensor transformado: </span><span class="si">{</span><span class="n">transformed_state</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">transformed_state</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tamaño del tensor transformado: </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
-    <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">transformed_state</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys_r</span><span class="p">);</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys_r</span><span class="p">);</span>
     <span class="n">ax</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tamaño del tensor transformado: (torch.Size([4, 84, 84]), torch.float32)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tamaño del tensor transformado: ((4, 84, 84, 4), dtype(&#39;uint8&#39;))
 </pre></div>
 </div>
-<img alt="../../_images/06c696de56af8f5d6530c021e99fd83707d54d6f9c9778f83b007ad789fc3205.png" src="../../_images/06c696de56af8f5d6530c021e99fd83707d54d6f9c9778f83b007ad789fc3205.png" />
+<img alt="../../_images/ebbb0841479f57b9b4e0307105ec7eb5888ea873a307d74957392b3c3cf4afb2.png" src="../../_images/ebbb0841479f57b9b4e0307105ec7eb5888ea873a307d74957392b3c3cf4afb2.png" />
 </div>
 </div>
-<p><strong>Red convolucional para estimar la función Q</strong></p>
+<p>Veamos un agente aleatorio desempeñándose en este ambiente:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConvolutionalNeuralNetwork</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_input</span><span class="p">,</span> <span class="n">n_output</span><span class="p">,</span> <span class="n">n_filters</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">n_hidden</span><span class="o">=</span><span class="mi">256</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">n_input</span><span class="p">,</span> <span class="n">n_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">n_filters</span><span class="p">,</span> <span class="n">n_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conv3</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">n_filters</span><span class="p">,</span> <span class="n">n_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">linear1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="n">n_filters</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
-        
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv3</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">32</span><span class="p">)</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear1</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
-        <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>Replay Memory</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ReplayMemory</span><span class="p">:</span>
-    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dim</span><span class="p">,</span> <span class="n">memory_length</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">memory_length</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="c1"># Tensores vacíos para la historia</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">memory_length</span><span class="p">,)</span> <span class="o">+</span> <span class="n">state_dim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">memory_length</span><span class="p">,)</span> <span class="o">+</span> <span class="n">state_dim</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># Adicionalmente guardaremos la condición de término</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">memory_length</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s_current</span><span class="p">,</span> <span class="n">s_future</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="c1"># Agregamos una tupla en la memoria</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_current</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_future</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">]</span> <span class="o">=</span> <span class="n">end</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">filled</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span>
-        
-    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>        
-        <span class="c1"># Extraemos una muestra aleatoria de la memoria</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">:</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>        
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_current</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_future</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>    
-    
-</pre></div>
-</div>
-</div>
-</div>
-<section id="agente-dqn">
-<h2><span class="section-number">24.1. </span>Agente DQN<a class="headerlink" href="#agente-dqn" title="Permalink to this heading">#</a></h2>
-<p>Detalles prácticos a considerar</p>
-<ul class="simple">
-<li><p><strong>Huber Loss:</strong> Combinación del error cuadrático y el error absoluto. Se usa el error cuadrático para errores pequeños y el error absoluto para errores grandes. Mejora la estabilidad numérica del algoritmo</p></li>
-<li><p><strong>Gradient clipping:</strong> Limitar el gradiente en un rango [mínimo, máximo], usualmente <span class="math notranslate nohighlight">\([0,1]\)</span>. También se puede limitar dividiendo por la norma</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">copy</span>
-    
-<span class="k">class</span> <span class="nc">DeepQNetwork</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_model</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">double_dqn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> 
-                 <span class="n">target_update_freq</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">clip_grads</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">clip_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">huber</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span> <span class="o">=</span> <span class="n">double_dqn</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span> <span class="o">=</span> <span class="n">q_model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="n">q_model</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">out_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clip_error</span> <span class="o">=</span> <span class="n">clip_error</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clip_grads</span> <span class="o">=</span> <span class="n">clip_grads</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">target_update_freq</span> <span class="o">=</span> <span class="n">target_update_freq</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">huber</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">SmoothL1Loss</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="n">double_dqn</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-    
-    <span class="k">def</span> <span class="nf">select_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
-        <span class="c1"># Estrategia epsilon greedy para seleccionar acción</span>
-        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">:</span> 
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-                <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-                <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">q</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">high</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_output</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> 
-        
-        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">q</span>
-    
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mini_batch</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">state</span><span class="p">,</span> <span class="n">state_next</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">mini_batch</span>
-        <span class="c1"># Calcular Q</span>
-        <span class="n">q_current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span><span class="p">:</span>
-                <span class="n">q_next_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">action_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">q_next_best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="p">(</span><span class="n">state_next</span><span class="p">)</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">action_next</span><span class="p">)</span>               
-        <span class="c1"># Construir el target: r + gamma*max Q(s&#39;, a&#39;)</span>
-        <span class="n">td_target</span> <span class="o">=</span> <span class="n">reward</span>
-        <span class="n">td_target</span><span class="p">[</span><span class="o">~</span><span class="n">end</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="o">*</span><span class="n">q_next_best</span><span class="p">[</span><span class="o">~</span><span class="n">end</span><span class="p">]</span>
-        <span class="n">td_target</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span>
-        <span class="c1"># Calcular pérdido y sus gradientes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">q_current</span><span class="p">,</span> <span class="n">td_target</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_error</span><span class="p">:</span>
-            <span class="n">loss</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-        <span class="c1"># Cortar gradientes grandes (mejora la estabilidad)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_grads</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
-                <span class="n">param</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clamp_</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-            <span class="c1">#torch.nn.utils.clip_grad.clip_grad_norm_(self.q_policy.parameters(), 10)</span>
-        <span class="c1"># Actualizar</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-        <span class="c1"># Transfer policy to target</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transfer_policy2target</span><span class="p">()</span>
-        <span class="c1"># Retornar el valor de la loss</span>
-        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    
-    <span class="k">def</span> <span class="nf">transfer_policy2target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">double_dqn</span><span class="p">:</span>            
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_counter</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_update_freq</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="graficas-de-aprendizaje">
-<h2><span class="section-number">24.2. </span>Gráficas de aprendizaje<a class="headerlink" href="#graficas-de-aprendizaje" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> notebook
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">convolve</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">def</span> <span class="nf">smooth_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">window_length</span><span class="p">)</span><span class="o">/</span><span class="n">window_length</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">([</span><span class="n">action</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">)</span>
+    <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">update_plot</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">smooth_window</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">ax_</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-        <span class="n">ax_</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
-    <span class="n">episodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="n">episode</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>      
-    <span class="k">if</span> <span class="n">episode</span> <span class="o">&gt;</span> <span class="n">smooth_window</span><span class="p">:</span>
-        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">[:</span><span class="o">-</span><span class="n">smooth_window</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> 
-                   <span class="n">smooth_data</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>        
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">])</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">])</span><span class="o">+</span><span class="mf">1e-4</span><span class="p">))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>               
-        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">episodes</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Recompensa&#39;</span><span class="p">);</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Q promedio&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episodes</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">episodes</span><span class="p">))</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episodios&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Paso </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="entrenamiento-del-agente">
-<h2><span class="section-number">24.3. </span>Entrenamiento del agente<a class="headerlink" href="#entrenamiento-del-agente" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
-
-<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">n_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">84</span><span class="p">)</span>
-<span class="n">n_action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span> 
-
-<span class="n">dqn_model</span> <span class="o">=</span> <span class="n">DeepQNetwork</span><span class="p">(</span><span class="n">q_model</span><span class="o">=</span><span class="n">ConvolutionalNeuralNetwork</span><span class="p">(</span><span class="n">n_state</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_action</span><span class="p">),</span>
-                         <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.99</span><span class="p">,</span>
-                         <span class="n">double_dqn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">target_update_freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                         <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">huber</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">epsilon</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">epsilon_init</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_end</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">epsilon_rate</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">epsilon_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">epsilon_init</span> <span class="o">-</span> <span class="n">epsilon_end</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">epsilon_rate</span><span class="o">*</span><span class="n">episode</span><span class="p">)</span> 
-
-<span class="n">memory</span> <span class="o">=</span> <span class="n">ReplayMemory</span><span class="p">(</span><span class="n">n_state</span><span class="p">,</span> <span class="n">memory_length</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>        
-
-<span class="n">diagnostics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-               <span class="s1">&#39;q_sum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;q_N&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-<span class="n">episode</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
-<span class="n">stacked_states</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">)):</span>    
-    <span class="c1"># Escoger acción</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">transform_state</span><span class="p">(</span><span class="n">stacked_states</span><span class="p">)</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">episode</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">q</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    
-    <span class="c1"># Aplicar la acción </span>
-    <span class="n">stacked_states_next</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  
-    <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">r</span>
-    <span class="c1"># Guardar en memoria</span>
-    <span class="n">memory</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">transform_state</span><span class="p">(</span><span class="n">stacked_states_next</span><span class="p">),</span> 
-                <span class="n">a</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">terminated</span><span class="p">)</span>
-    
-    <span class="n">stacked_states</span> <span class="o">=</span> <span class="n">stacked_states_next</span>
-    
-    <span class="c1"># Actualizar modelo    </span>
-    <span class="n">mini_batch</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">mini_batch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">)</span>            
-    
-    <span class="c1"># Preparar siguiente episodio</span>
-    <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">episode</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">update_plot</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
-        <span class="n">episode</span> <span class="o">+=</span> <span class="mi">1</span>   
-        <span class="n">terminated</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">stacked_states</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_sum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">diagnostics</span><span class="p">[</span><span class="s1">&#39;q_N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">!</span>rm<span class="w"> </span>random.gif
+<span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="s2">&quot;random.gif&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;GIF&#39;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;random.gif&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1a83882bbc794524aeef39dff4052437", "version_major": 2, "version_minor": 0}</script><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">48</span><span class="p">],</span> <span class="n">line</span> <span class="mi">28</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="n">stacked_states</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">)):</span>    
-<span class="g g-Whitespace">     </span><span class="mi">27</span>     <span class="c1"># Escoger acción</span>
-<span class="ne">---&gt; </span><span class="mi">28</span>     <span class="n">state</span> <span class="o">=</span> <span class="n">transform_state</span><span class="p">(</span><span class="n">stacked_states</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">29</span>     <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">episode</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span>     <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/phuijse/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/utils/passive_env_checker.py:364: UserWarning: <span class=" -Color -Color-Yellow">WARN: No render fps was declared in the environment (env.metadata[&#39;render_fps&#39;] is None or not defined), rendering may occur at inconsistent fps.</span>
+  logger.warn(
+</pre></div>
+</div>
+<img alt="../../_images/cecb1b6196bb2b9cdd07ac03dd38f4e21a8a51cceb181dd86020ade0d8ee955e.gif" src="../../_images/cecb1b6196bb2b9cdd07ac03dd38f4e21a8a51cceb181dd86020ade0d8ee955e.gif" />
+</div>
+</div>
+<p>Para entrenar el agente utilizaremos una red convolucional <code class="docutils literal notranslate"><span class="pre">CnnPolicy</span></code>. Utilizaremos un buffer de tamaño 100.000 y  durante las primeros 100.000 pasos no entrenamos, sólo llenamos el buffer.</p>
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>Para llegar a un buen resultado en los ambientes de Atari con DQN se necesitan al menos 1.000.000 de pasos con la configuración que se muestra a continuación. Se recomienda utilizar una GPU para entrenar. En la práctica también es recomendable utilizar algoritmos más eficientes como A3C.</p>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
-<span class="nn">Cell In[47], line 22,</span> in <span class="ni">transform_state</span><span class="nt">(state)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="k">def</span> <span class="nf">transform_state</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">22</span>     <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">DQN</span>
 
-<span class="ne">ValueError</span>: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (2,) + inhomogeneous part.
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+
+<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s2">&quot;CnnPolicy&quot;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="s2">&quot;/tmp/tensorboard/dqn_atari/&quot;</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> 
+            <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span> <span class="n">train_freq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">gradient_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">learning_starts</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> 
+            <span class="n">exploration_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">exploration_final_eps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> 
+            <span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">10_000_000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">savgol_filter</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">diagnostics</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-    <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-    <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-    <span class="n">ax_</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">ax_</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episode&#39;</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">51</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">ax_</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">diagnostics</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">6</span>     <span class="n">ax_</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">ax_</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">ax_</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Episode&#39;</span><span class="p">);</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">15</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">model</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="s2">&quot;CnnPolicy&quot;</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tensorboard_log</span><span class="o">=</span><span class="s2">&quot;/tmp/tensorboard/dqn_atari/&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>             <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">buffer_size</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> 
+<span class="g g-Whitespace">     </span><span class="mi">10</span>             <span class="n">target_update_interval</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span> <span class="n">train_freq</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">gradient_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>             <span class="n">learning_starts</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> 
+<span class="g g-Whitespace">     </span><span class="mi">12</span>             <span class="n">exploration_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">exploration_final_eps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> 
+<span class="g g-Whitespace">     </span><span class="mi">13</span>             <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">model</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">10_000_000</span><span class="p">)</span>
 
-<span class="nn">File ~/.conda/envs/info147/lib/python3.9/site-packages/scipy/signal/_savitzky_golay.py:345,</span> in <span class="ni">savgol_filter</span><span class="nt">(x, window_length, polyorder, deriv, delta, axis, mode, cval)</span>
-<span class="g g-Whitespace">    </span><span class="mi">343</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;interp&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="k">if</span> <span class="n">window_length</span> <span class="o">&gt;</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]:</span>
-<span class="ne">--&gt; </span><span class="mi">345</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;If mode is &#39;interp&#39;, window_length must be less &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">346</span>                          <span class="s2">&quot;than or equal to the size of x.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">348</span>     <span class="c1"># Do not pad. Instead, for the elements within `window_length // 2`</span>
-<span class="g g-Whitespace">    </span><span class="mi">349</span>     <span class="c1"># of the ends of the sequence, use the polynomial that is fitted to</span>
-<span class="g g-Whitespace">    </span><span class="mi">350</span>     <span class="c1"># the last `window_length` elements.</span>
-<span class="g g-Whitespace">    </span><span class="mi">351</span>     <span class="n">y</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coeffs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/dqn/dqn.py:267,</span> in <span class="ni">DQN.learn</span><span class="nt">(self, total_timesteps, callback, log_interval, tb_log_name, reset_num_timesteps, progress_bar)</span>
+<span class="g g-Whitespace">    </span><span class="mi">258</span> <span class="k">def</span> <span class="nf">learn</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">259</span>     <span class="bp">self</span><span class="p">:</span> <span class="n">SelfDQN</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">260</span>     <span class="n">total_timesteps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span>     <span class="n">progress_bar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelfDQN</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">267</span>     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>         <span class="n">total_timesteps</span><span class="o">=</span><span class="n">total_timesteps</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>         <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>         <span class="n">log_interval</span><span class="o">=</span><span class="n">log_interval</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">271</span>         <span class="n">tb_log_name</span><span class="o">=</span><span class="n">tb_log_name</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span>         <span class="n">reset_num_timesteps</span><span class="o">=</span><span class="n">reset_num_timesteps</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span>         <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">274</span>     <span class="p">)</span>
 
-<span class="ne">ValueError</span>: If mode is &#39;interp&#39;, window_length must be less than or equal to the size of x.
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/off_policy_algorithm.py:312,</span> in <span class="ni">OffPolicyAlgorithm.learn</span><span class="nt">(self, total_timesteps, callback, log_interval, tb_log_name, reset_num_timesteps, progress_bar)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span> <span class="n">callback</span><span class="o">.</span><span class="n">on_training_start</span><span class="p">(</span><span class="nb">locals</span><span class="p">(),</span> <span class="nb">globals</span><span class="p">())</span>
+<span class="g g-Whitespace">    </span><span class="mi">311</span> <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_timesteps</span> <span class="o">&lt;</span> <span class="n">total_timesteps</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">312</span>     <span class="n">rollout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_rollouts</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">313</span>         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">314</span>         <span class="n">train_freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_freq</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">315</span>         <span class="n">action_noise</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">action_noise</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span>         <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span>         <span class="n">learning_starts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_starts</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span>         <span class="n">replay_buffer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">replay_buffer</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span>         <span class="n">log_interval</span><span class="o">=</span><span class="n">log_interval</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">320</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">322</span>     <span class="k">if</span> <span class="n">rollout</span><span class="o">.</span><span class="n">continue_training</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">323</span>         <span class="k">break</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/off_policy_algorithm.py:544,</span> in <span class="ni">OffPolicyAlgorithm.collect_rollouts</span><span class="nt">(self, env, callback, train_freq, replay_buffer, action_noise, learning_starts, log_interval)</span>
+<span class="g g-Whitespace">    </span><span class="mi">541</span> <span class="n">actions</span><span class="p">,</span> <span class="n">buffer_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_action</span><span class="p">(</span><span class="n">learning_starts</span><span class="p">,</span> <span class="n">action_noise</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">num_envs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">543</span> <span class="c1"># Rescale and perform action</span>
+<span class="ne">--&gt; </span><span class="mi">544</span> <span class="n">new_obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">dones</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">546</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_timesteps</span> <span class="o">+=</span> <span class="n">env</span><span class="o">.</span><span class="n">num_envs</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="n">num_collected_steps</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/vec_env/base_vec_env.py:197,</span> in <span class="ni">VecEnv.step</span><span class="nt">(self, actions)</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">191</span><span class="sd"> Step the environments with the given action</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span><span class="sd"> :param actions: the action</span>
+<span class="g g-Whitespace">    </span><span class="mi">194</span><span class="sd"> :return: observation, reward, done, information</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_async</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">197</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_wait</span><span class="p">()</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/vec_env/vec_transpose.py:95,</span> in <span class="ni">VecTransposeImage.step_wait</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="k">def</span> <span class="nf">step_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VecEnvStepReturn</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">95</span>     <span class="n">observations</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">dones</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">venv</span><span class="o">.</span><span class="n">step_wait</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>     <span class="c1"># Transpose the terminal observations</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">done</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dones</span><span class="p">):</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/vec_env/vec_frame_stack.py:33,</span> in <span class="ni">VecFrameStack.step_wait</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="k">def</span> <span class="nf">step_wait</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],]:</span>
+<span class="ne">---&gt; </span><span class="mi">33</span>     <span class="n">observations</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">dones</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">venv</span><span class="o">.</span><span class="n">step_wait</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">34</span>     <span class="n">observations</span><span class="p">,</span> <span class="n">infos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacked_obs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">dones</span><span class="p">,</span> <span class="n">infos</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span>     <span class="k">return</span> <span class="n">observations</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">dones</span><span class="p">,</span> <span class="n">infos</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/vec_env/dummy_vec_env.py:58,</span> in <span class="ni">DummyVecEnv.step_wait</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="k">def</span> <span class="nf">step_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VecEnvStepReturn</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="c1"># Avoid circular imports</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span>     <span class="k">for</span> <span class="n">env_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_envs</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">58</span>         <span class="n">obs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_rews</span><span class="p">[</span><span class="n">env_idx</span><span class="p">],</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">buf_infos</span><span class="p">[</span><span class="n">env_idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">envs</span><span class="p">[</span><span class="n">env_idx</span><span class="p">]</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span>             <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">env_idx</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span>         <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">61</span>         <span class="c1"># convert to SB3 VecEnv api</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span>         <span class="bp">self</span><span class="o">.</span><span class="n">buf_dones</span><span class="p">[</span><span class="n">env_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/core.py:408,</span> in <span class="ni">Wrapper.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">405</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">WrapperActType</span>
+<span class="g g-Whitespace">    </span><span class="mi">406</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">WrapperObsType</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">407</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Uses the :meth:`step` of the :attr:`env` that can be overwritten to change the returned data.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">408</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/core.py:502,</span> in <span class="ni">RewardWrapper.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">ActType</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ObsType</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">501</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Modifies the :attr:`env` :meth:`step` reward using :meth:`self.reward`.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">502</span>     <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="k">return</span> <span class="n">observation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward</span><span class="p">(</span><span class="n">reward</span><span class="p">),</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/core.py:469,</span> in <span class="ni">ObservationWrapper.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">465</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">466</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">ActType</span>
+<span class="g g-Whitespace">    </span><span class="mi">467</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">WrapperObsType</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">468</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Modifies the :attr:`env` after calling :meth:`step` using :meth:`self.observation` on the returned observations.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">469</span>     <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">470</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation</span><span class="p">(</span><span class="n">observation</span><span class="p">),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/core.py:408,</span> in <span class="ni">Wrapper.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">405</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">WrapperActType</span>
+<span class="g g-Whitespace">    </span><span class="mi">406</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">WrapperObsType</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">407</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Uses the :meth:`step` of the :attr:`env` that can be overwritten to change the returned data.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">408</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/atari_wrappers.py:112,</span> in <span class="ni">EpisodicLifeEnv.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AtariStepReturn</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">112</span>     <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">113</span>     <span class="bp">self</span><span class="o">.</span><span class="n">was_real_done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+<span class="g g-Whitespace">    </span><span class="mi">114</span>     <span class="c1"># check current lives, make loss of life terminal,</span>
+<span class="g g-Whitespace">    </span><span class="mi">115</span>     <span class="c1"># then update lives to handle bonus lives</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/atari_wrappers.py:178,</span> in <span class="ni">MaxAndSkipEnv.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">176</span> <span class="n">terminated</span> <span class="o">=</span> <span class="n">truncated</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_skip</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">178</span>     <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="n">done</span> <span class="o">=</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span>     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skip</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/core.py:408,</span> in <span class="ni">Wrapper.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">    </span><span class="mi">404</span> <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">405</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">WrapperActType</span>
+<span class="g g-Whitespace">    </span><span class="mi">406</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">WrapperObsType</span><span class="p">,</span> <span class="n">SupportsFloat</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="g g-Whitespace">    </span><span class="mi">407</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Uses the :meth:`step` of the :attr:`env` that can be overwritten to change the returned data.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">408</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/stable_baselines3/common/monitor.py:94,</span> in <span class="ni">Monitor.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">needs_reset</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Tried to step environment that needs reset&quot;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">94</span> <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">reward</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span> <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/wrappers/order_enforcing.py:56,</span> in <span class="ni">OrderEnforcing.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_reset</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span>     <span class="k">raise</span> <span class="n">ResetNeeded</span><span class="p">(</span><span class="s2">&quot;Cannot call env.step() before calling env.reset()&quot;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">56</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/gymnasium/wrappers/env_checker.py:49,</span> in <span class="ni">PassiveEnvChecker.step</span><span class="nt">(self, action)</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span>     <span class="k">return</span> <span class="n">env_step_passive_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">48</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">49</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="nn">File ~/.conda/envs/RL/lib/python3.9/site-packages/shimmy/atari_env.py:294,</span> in <span class="ni">AtariEnv.step</span><span class="nt">(self, action_ind)</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span> <span class="n">reward</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">frameskip</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">294</span>     <span class="n">reward</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">295</span> <span class="n">is_terminal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">game_over</span><span class="p">(</span><span class="n">with_truncation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="n">is_truncated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ale</span><span class="o">.</span><span class="n">game_truncated</span><span class="p">()</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
-<img alt="../../_images/cb2a80b01e4aac8618530e75929c3ae53daf5afabd7057a9446370cfda06ca90.png" src="../../_images/cb2a80b01e4aac8618530e75929c3ae53daf5afabd7057a9446370cfda06ca90.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8.3 s, sys: 135 ms, total: 8.44 s
+Wall time: 7.68 s
+</pre></div>
 </div>
 </div>
-</section>
-<section id="guardar-el-agente-para-futura-referencia-y-evaluar">
-<h2><span class="section-number">24.4. </span>Guardar el agente para futura referencia y evaluar<a class="headerlink" href="#guardar-el-agente-para-futura-referencia-y-evaluar" title="Permalink to this heading">#</a></h2>
+</details>
+</div>
+<p>Las métricas del entrenamiento en este caso:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">reward</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;metrics/rewards.csv&quot;</span><span class="p">)[[</span><span class="s1">&#39;Step&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;metrics/epsilon.csv&quot;</span><span class="p">)[[</span><span class="s1">&#39;Step&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;metrics/loss.csv&quot;</span><span class="p">)[[</span><span class="s1">&#39;Step&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rewards</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rewards</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Reward&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epsilon</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loss</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">loss</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoca&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;gymnasium.wrappers.frame_stack.LazyFrames at 0x7fb08fb90720&gt;,
- {&#39;lives&#39;: 0, &#39;episode_frame_number&#39;: 13, &#39;frame_number&#39;: 3932})
-</pre></div>
+<img alt="../../_images/400de06d92a5a16291e6d9bdfaa46bbcbf120ad70221b15f23989b3ff3086b1b.png" src="../../_images/400de06d92a5a16291e6d9bdfaa46bbcbf120ad70221b15f23989b3ff3086b1b.png" />
 </div>
 </div>
-</div>
+<p>El mejor modelo se puede guardar en respaldar en disco con:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mi_modelo.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">([</span><span class="n">dqn_model</span><span class="p">,</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">q_policy</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()],</span> <span class="n">f</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;dqn_breakout&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>El modelo guardado se puede cargar desde disco para evaluarse o también seguir entrenándose volviendo a ejecutar <code class="docutils literal notranslate"><span class="pre">learn</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.env_util</span> <span class="kn">import</span> <span class="n">make_atari_env</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.vec_env</span> <span class="kn">import</span> <span class="n">VecFrameStack</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">DQN</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">wrap_env</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">env_name</span><span class="p">),</span> <span class="n">skip</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">stacked_states</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">VecFrameStack</span><span class="p">(</span><span class="n">make_atari_env</span><span class="p">(</span><span class="n">env_name</span><span class="p">,</span> <span class="n">n_envs</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span> <span class="n">n_stack</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="k">while</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">stacked_states</span><span class="p">)</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">stacked_states</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> 
-    <span class="n">sleep</span><span class="p">(</span><span class="mf">.01</span><span class="p">)</span>     
+<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">DQN</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;dqn_breakout&quot;</span><span class="p">)</span>
+
+<span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">action</span><span class="p">,</span> <span class="n">_state</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+    <span class="n">obs</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;rgb_array&quot;</span><span class="p">)</span>
+    <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="o">!</span>rm<span class="w"> </span>trained.gif
+<span class="n">imageio</span><span class="o">.</span><span class="n">mimsave</span><span class="p">(</span><span class="s2">&quot;trained.gif&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;GIF&#39;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;trained.gif&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-</section>
-<section id="agentes-artesanales-pre-entrenados">
-<h2><span class="section-number">24.5. </span>Agentes artesanales pre-entrenados<a class="headerlink" href="#agentes-artesanales-pre-entrenados" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="c1"># Estos agentes corresponden a la última iteración, </span>
-<span class="c1"># pero en realidad debería grabarse el que obtiene mejor recompensa </span>
-
-<span class="c1"># Pong entrenado durante 200_000 pasos con memoria de 10_000, aprox 2hrs de entrenamiento</span>
-<span class="n">env_name</span> <span class="o">=</span> <span class="s2">&quot;PongNoFrameskip-v4&quot;</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;modelos/pong_masomenos.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">dqn_model_loaded</span><span class="p">,</span> <span class="n">q_policy_state_dict_loaded</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gym</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-
-<span class="n">random_agent</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">env</span> <span class="o">=</span> <span class="n">wrap_env</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">env_name</span><span class="p">),</span> <span class="n">skip</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">stacked_states</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-<span class="n">end</span> <span class="o">=</span> <span class="kc">False</span>
-
-<span class="k">while</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">random_agent</span><span class="p">:</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">stacked_states</span><span class="p">)</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">dqn_model_loaded</span><span class="o">.</span><span class="n">select_action</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
-    <span class="n">stacked_states</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> 
-    <span class="n">sleep</span><span class="p">(</span><span class="mf">.01</span><span class="p">)</span>     
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/72854d977a3bcaba53b15b3f875f93dbe1ee99d69ebd824bd16fd8b9badeedba.gif" src="../../_images/72854d977a3bcaba53b15b3f875f93dbe1ee99d69ebd824bd16fd8b9badeedba.gif" />
 </div>
 </div>
 </section>
@@ -978,11 +852,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agente-dqn">24.1. Agente DQN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graficas-de-aprendizaje">24.2. Gráficas de aprendizaje</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-agente">24.3. Entrenamiento del agente</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-el-agente-para-futura-referencia-y-evaluar">24.4. Guardar el agente para futura referencia y evaluar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agentes-artesanales-pre-entrenados">24.5. Agentes artesanales pre-entrenados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arcade-learning-environment">24.1. Arcade Learning Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-con-stable-baselines3">24.2. Entrenamiento con <code class="docutils literal notranslate"><span class="pre">stable_baselines3</span></code></a></li>
 </ul>
   </nav></div>
 
